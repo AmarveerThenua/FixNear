@@ -1,12 +1,14 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 const ProfessionalCard = ({ professional }) => {
+
   return (
     <div className="bg-white border border-gray-200 rounded-2xl overflow-hidden hover:shadow-xl transition duration-300">
 
-      
       <div className="p-6">
 
+        {/* Profile */}
         <div className="flex items-center gap-4">
 
           <img
@@ -16,6 +18,7 @@ const ProfessionalCard = ({ professional }) => {
           />
 
           <div>
+
             <h3 className="text-lg font-semibold text-gray-900">
               {professional.name}
             </h3>
@@ -23,11 +26,12 @@ const ProfessionalCard = ({ professional }) => {
             <p className="text-blue-600 text-sm font-medium">
               {professional.profession}
             </p>
+
           </div>
 
         </div>
 
-      
+        {/* Rating */}
         <div className="flex items-center gap-2 mt-5">
 
           <span className="text-yellow-500">
@@ -44,7 +48,7 @@ const ProfessionalCard = ({ professional }) => {
 
         </div>
 
-       
+        {/* Details */}
         <div className="mt-4 space-y-2 text-sm text-gray-600">
 
           <p>
@@ -52,7 +56,7 @@ const ProfessionalCard = ({ professional }) => {
           </p>
 
           <p>
-            🚗 {professional.distance} away
+            🚗 {professional.distance} km away
           </p>
 
           <p>
@@ -61,10 +65,11 @@ const ProfessionalCard = ({ professional }) => {
 
         </div>
 
- 
+        {/* Bottom */}
         <div className="mt-6 flex items-center justify-between">
 
           <div>
+
             <p className="text-xs text-gray-500">
               Starting from
             </p>
@@ -72,6 +77,7 @@ const ProfessionalCard = ({ professional }) => {
             <p className="text-xl font-bold text-gray-900">
               ₹{professional.price}
             </p>
+
           </div>
 
           {professional.available ? (
@@ -86,9 +92,13 @@ const ProfessionalCard = ({ professional }) => {
 
         </div>
 
-        <button className="w-full mt-5 py-2.5 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition">
+        {/* View Profile */}
+        <Link
+          to={`/professionals/${professional.id}`}
+          className="block text-center w-full mt-5 py-2.5 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition"
+        >
           View Profile
-        </button>
+        </Link>
 
       </div>
 

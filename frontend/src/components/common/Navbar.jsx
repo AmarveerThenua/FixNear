@@ -2,18 +2,20 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 
 const Navbar = () => {
+
   return (
     <nav className="w-full bg-white shadow-sm">
+
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
 
-        
-        <div>
-          <Link to="/" className="text-2xl font-bold text-blue-600">
+        {/* Logo */}
+        <Link to="/">
+          <h1 className="text-2xl font-bold text-blue-600">
             FixNear
-          </Link>
-        </div>
+          </h1>
+        </Link>
 
-    
+        {/* Navigation Links */}
         <div className="flex items-center gap-8">
 
           <Link
@@ -38,7 +40,7 @@ const Navbar = () => {
           </Link>
 
           <Link
-            to="/register/worker"
+            to="/register"
             className="text-gray-700 hover:text-blue-600"
           >
             Become a Professional
@@ -46,12 +48,12 @@ const Navbar = () => {
 
         </div>
 
-        
+        {/* Authentication */}
         <div className="flex items-center gap-3">
 
           <Link
             to="/login"
-            className="px-4 py-2 text-blue-600"
+            className="px-4 py-2 text-blue-600 hover:text-blue-700"
           >
             Login
           </Link>
@@ -66,6 +68,7 @@ const Navbar = () => {
         </div>
 
       </div>
+
     </nav>
   )
 }
