@@ -48,10 +48,7 @@ const UserSidebar = () => {
 
     fetchUnreadCount();
 
-    const interval = setInterval(
-      fetchUnreadCount,
-      10000
-    );
+    const interval = setInterval(fetchUnreadCount, 10000);
 
     return () => clearInterval(interval);
   }, [user]);
@@ -99,36 +96,38 @@ const UserSidebar = () => {
 
   return (
     <>
-      <button
-        type="button"
-        onClick={() => setSidebarOpen(true)}
-        className="
-          lg:hidden
-          fixed
-          top-4
-          left-4
-          z-[60]
-          w-10
-          h-10
-          flex
-          items-center
-          justify-center
-          bg-white
-          text-gray-700
-          rounded-lg
-          shadow-md
-          border
-          border-gray-200
-          hover:bg-gray-50
-          transition
-        "
-        aria-label="Open sidebar"
-      >
-        <FontAwesomeIcon
-          icon={faBars}
-          className="text-lg"
-        />
-      </button>
+      {!sidebarOpen && (
+        <button
+          type="button"
+          onClick={() => setSidebarOpen(true)}
+          className="
+            lg:hidden
+            fixed
+            top-4
+            left-4
+            z-[60]
+            w-10
+            h-10
+            flex
+            items-center
+            justify-center
+            bg-white
+            text-gray-700
+            rounded-lg
+            shadow-md
+            border
+            border-gray-200
+            hover:bg-gray-50
+            transition
+          "
+          aria-label="Open sidebar"
+        >
+          <FontAwesomeIcon
+            icon={faBars}
+            className="text-lg"
+          />
+        </button>
+      )}
 
       {sidebarOpen && (
         <div
@@ -201,28 +200,30 @@ const UserSidebar = () => {
             </p>
           </div>
 
-          <button
-            type="button"
-            onClick={closeSidebar}
-            className="
-              lg:hidden
-              w-9
-              h-9
-              flex
-              items-center
-              justify-center
-              rounded-lg
-              text-gray-600
-              hover:bg-gray-100
-              transition
-            "
-            aria-label="Close sidebar"
-          >
-            <FontAwesomeIcon
-              icon={faXmark}
-              className="text-xl"
-            />
-          </button>
+          {sidebarOpen && (
+            <button
+              type="button"
+              onClick={closeSidebar}
+              className="
+                lg:hidden
+                w-9
+                h-9
+                flex
+                items-center
+                justify-center
+                rounded-lg
+                text-gray-600
+                hover:bg-gray-100
+                transition
+              "
+              aria-label="Close sidebar"
+            >
+              <FontAwesomeIcon
+                icon={faXmark}
+                className="text-xl"
+              />
+            </button>
+          )}
         </div>
 
         <nav

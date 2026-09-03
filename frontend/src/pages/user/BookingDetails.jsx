@@ -31,17 +31,9 @@ const BookingDetails = () => {
           }
         );
 
-        console.log(
-          "Booking Details:",
-          response.data.booking
-        );
-
         setBooking(response.data.booking);
       } catch (error) {
-        console.error(
-          "Fetch booking error:",
-          error
-        );
+        console.error("Fetch booking error:", error);
 
         setError(
           error.response?.data?.message ||
@@ -68,9 +60,7 @@ const BookingDetails = () => {
       setCancelling(true);
       setError("");
 
-      const token = localStorage.getItem(
-        "fixnearToken"
-      );
+      const token = localStorage.getItem("fixnearToken");
 
       if (!token) {
         setError("Please login again.");
@@ -87,17 +77,9 @@ const BookingDetails = () => {
         }
       );
 
-      console.log(
-        "Cancel Booking:",
-        response.data
-      );
-
       setBooking(response.data.booking);
     } catch (error) {
-      console.error(
-        "Cancel booking error:",
-        error
-      );
+      console.error("Cancel booking error:", error);
 
       setError(
         error.response?.data?.message ||
@@ -108,13 +90,30 @@ const BookingDetails = () => {
     }
   };
 
+  const getStatusClass = () => {
+    switch (booking?.status) {
+      case "pending":
+        return "bg-yellow-100 text-yellow-700";
+      case "confirmed":
+        return "bg-blue-100 text-blue-700";
+      case "in-progress":
+        return "bg-purple-100 text-purple-700";
+      case "completed":
+        return "bg-green-100 text-green-700";
+      case "cancelled":
+        return "bg-red-100 text-red-700";
+      default:
+        return "bg-gray-100 text-gray-700";
+    }
+  };
+
   if (loading) {
     return (
-      <section className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
+      <section className="h-[calc(100vh-110px)] min-h-[400px] bg-gray-50 flex items-center justify-center px-3">
         <div className="text-center">
-          <div className="w-9 h-9 sm:w-10 sm:h-10 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin mx-auto"></div>
+          <div className="w-8 h-8 sm:w-9 sm:h-9 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin mx-auto" />
 
-          <p className="mt-4 text-sm sm:text-base text-gray-600">
+          <p className="mt-3 text-xs sm:text-sm text-gray-600">
             Loading booking...
           </p>
         </div>
@@ -124,19 +123,19 @@ const BookingDetails = () => {
 
   if (error && !booking) {
     return (
-      <section className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
+      <section className="h-[calc(100vh-110px)] min-h-[400px] bg-gray-50 flex items-center justify-center px-3">
         <div className="text-center max-w-md">
-          <h1 className="text-xl sm:text-2xl font-bold text-gray-900">
+          <h1 className="text-lg sm:text-xl font-bold text-gray-900">
             Booking Not Found
           </h1>
 
-          <p className="mt-2 text-sm sm:text-base text-red-500 break-words">
+          <p className="mt-2 text-xs sm:text-sm text-red-500 break-words">
             {error}
           </p>
 
           <Link
             to="/my-bookings"
-            className="inline-block mt-5 sm:mt-6 px-5 sm:px-6 py-2.5 sm:py-3 bg-blue-600 text-white text-sm sm:text-base rounded-lg hover:bg-blue-700 transition"
+            className="inline-block mt-4 px-4 py-2 bg-blue-600 text-white text-xs sm:text-sm rounded-lg hover:bg-blue-700 transition"
           >
             Back to My Bookings
           </Link>
@@ -151,194 +150,174 @@ const BookingDetails = () => {
 
   const professional = booking.professional;
 
-  const getStatusClass = () => {
-    switch (booking.status) {
-      case "pending":
-        return "bg-yellow-100 text-yellow-700";
-
-      case "confirmed":
-        return "bg-blue-100 text-blue-700";
-
-      case "in-progress":
-        return "bg-purple-100 text-purple-700";
-
-      case "completed":
-        return "bg-green-100 text-green-700";
-
-      case "cancelled":
-        return "bg-red-100 text-red-700";
-
-      default:
-        return "bg-gray-100 text-gray-700";
-    }
-  };
-
   const formattedStatus =
     booking.status?.charAt(0).toUpperCase() +
     booking.status?.slice(1);
 
   return (
-    <section className="min-h-screen bg-gray-50 py-6 sm:py-8 md:py-12">
-      <div className="max-w-4xl mx-auto px-3 sm:px-5 md:px-6">
-        <Link
-          to="/my-bookings"
-          className="inline-flex items-center text-sm sm:text-base text-blue-600 hover:text-blue-700 transition"
-        >
-          ← Back to My Bookings
-        </Link>
-
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 mt-5 sm:mt-6">
-          <div className="min-w-0">
-            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
-              Booking Details
-            </h1>
-
-            <p className="mt-1 text-xs sm:text-sm text-gray-500 break-all">
-              Booking ID: {booking._id}
-            </p>
-          </div>
+    <section className="min-h-[calc(100vh-110px)] bg-gray-50 py-3 sm:py-4 lg:py-5">
+      <div className="max-w-6xl mx-auto px-2.5 sm:px-4 lg:px-5">
+        <div className="flex items-center justify-between gap-2">
+          <Link
+            to="/my-bookings"
+            className="text-[10px] sm:text-xs lg:text-sm text-blue-600 hover:text-blue-700 transition whitespace-nowrap"
+          >
+            ← Back to My Bookings
+          </Link>
 
           <span
-            className={`inline-block w-fit px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold ${getStatusClass()}`}
+            className={`px-2 sm:px-3 py-1 rounded-full text-[9px] sm:text-xs lg:text-sm font-semibold whitespace-nowrap ${getStatusClass()}`}
           >
             {formattedStatus}
           </span>
         </div>
 
+        <div className="flex items-center justify-between gap-2 mt-2 sm:mt-3">
+          <div className="min-w-0">
+            <h1 className="text-base sm:text-xl lg:text-2xl font-bold text-gray-900">
+              Booking Details
+            </h1>
+
+            <p className="mt-0.5 text-[8px] sm:text-[10px] lg:text-xs text-gray-500 truncate">
+              ID: {booking._id}
+            </p>
+          </div>
+        </div>
+
         {error && (
-          <div className="mt-5 sm:mt-6 p-3 sm:p-4 bg-red-50 border border-red-200 rounded-lg">
-            <p className="text-xs sm:text-sm text-red-600 break-words">
+          <div className="mt-2 sm:mt-3 p-2 sm:p-3 bg-red-50 border border-red-200 rounded-lg">
+            <p className="text-[10px] sm:text-xs text-red-600 break-words">
               {error}
             </p>
           </div>
         )}
 
-        <div className="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-5 md:p-6 mt-5 sm:mt-6">
-          <h2 className="text-lg sm:text-xl font-bold text-gray-900 mb-4 sm:mb-5">
-            Professional
-          </h2>
-
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-            {professional?.image ? (
-              <img
-                src={professional.image}
-                alt={professional.name}
-                className="w-16 h-16 sm:w-20 sm:h-20 rounded-full object-cover flex-shrink-0"
-              />
-            ) : (
-              <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gray-100 flex items-center justify-center text-2xl sm:text-3xl flex-shrink-0">
-                👤
-              </div>
-            )}
-
-            <div className="min-w-0">
-              <h3 className="text-lg sm:text-xl font-bold text-gray-900 break-words">
-                {professional?.name || "Professional"}
-              </h3>
-
-              <p className="text-sm sm:text-base text-blue-600 font-medium mt-0.5 break-words">
-                {professional?.profession ||
-                  booking.service}
-              </p>
-
-              {professional?.phone && (
-                <p className="mt-1 text-sm sm:text-base text-gray-500 break-words">
-                  📞 {professional.phone}
-                </p>
-              )}
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-5 md:p-6 mt-5 sm:mt-6">
-          <h2 className="text-lg sm:text-xl font-bold text-gray-900 mb-4 sm:mb-5">
-            Service Details
-          </h2>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-            <div className="min-w-0">
-              <p className="text-xs sm:text-sm text-gray-500">
-                Service
-              </p>
-
-              <p className="mt-1 text-sm sm:text-base font-semibold text-gray-900 break-words">
-                {booking.service}
-              </p>
-            </div>
-
-            <div className="min-w-0">
-              <p className="text-xs sm:text-sm text-gray-500">
-                Price
-              </p>
-
-              <p className="mt-1 text-sm sm:text-base font-semibold text-gray-900">
-                ₹{booking.price}
-              </p>
-            </div>
-
-            <div className="min-w-0">
-              <p className="text-xs sm:text-sm text-gray-500">
-                Date
-              </p>
-
-              <p className="mt-1 text-sm sm:text-base font-semibold text-gray-900">
-                {new Date(
-                  booking.date
-                ).toLocaleDateString("en-IN", {
-                  day: "numeric",
-                  month: "long",
-                  year: "numeric",
-                })}
-              </p>
-            </div>
-
-            <div className="min-w-0">
-              <p className="text-xs sm:text-sm text-gray-500">
-                Time
-              </p>
-
-              <p className="mt-1 text-sm sm:text-base font-semibold text-gray-900">
-                {booking.time}
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-5 md:p-6 mt-5 sm:mt-6">
-          <h2 className="text-lg sm:text-xl font-bold text-gray-900 mb-4 sm:mb-5">
-            Service Address
-          </h2>
-
-          <p className="text-sm sm:text-base text-gray-700 break-words leading-relaxed">
-            {booking.address}
-          </p>
-
-          <p className="mt-1 text-sm sm:text-base text-gray-600 break-words">
-            {booking.city}
-            {booking.pincode
-              ? ` - ${booking.pincode}`
-              : ""}
-          </p>
-        </div>
-
-        {booking.description && (
-          <div className="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-5 md:p-6 mt-5 sm:mt-6">
-            <h2 className="text-lg sm:text-xl font-bold text-gray-900 mb-3 sm:mb-4">
-              Problem Description
+        <div className="grid grid-cols-2 gap-2 sm:gap-3 lg:gap-4 mt-3 sm:mt-4">
+          <div className="bg-white rounded-lg sm:rounded-xl shadow-sm border border-gray-100 p-2.5 sm:p-3 lg:p-4">
+            <h2 className="text-xs sm:text-sm lg:text-base font-bold text-gray-900 mb-2 sm:mb-3">
+              Professional
             </h2>
 
-            <p className="text-sm sm:text-base text-gray-600 leading-relaxed break-words">
-              {booking.description}
+            <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+              {professional?.image ? (
+                <img
+                  src={professional.image}
+                  alt={professional.name}
+                  className="w-9 h-9 sm:w-12 sm:h-12 lg:w-14 lg:h-14 rounded-full object-cover shrink-0"
+                />
+              ) : (
+                <div className="w-9 h-9 sm:w-12 sm:h-12 lg:w-14 lg:h-14 rounded-full bg-gray-100 flex items-center justify-center text-base sm:text-xl shrink-0">
+                  👤
+                </div>
+              )}
+
+              <div className="min-w-0">
+                <h3 className="text-xs sm:text-sm lg:text-base font-bold text-gray-900 truncate">
+                  {professional?.name || "Professional"}
+                </h3>
+
+                <p className="text-[9px] sm:text-xs lg:text-sm text-blue-600 font-medium mt-0.5 truncate">
+                  {professional?.profession || booking.service}
+                </p>
+
+                {professional?.phone && (
+                  <p className="mt-0.5 text-[9px] sm:text-xs lg:text-sm text-gray-500 truncate">
+                    📞 {professional.phone}
+                  </p>
+                )}
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-lg sm:rounded-xl shadow-sm border border-gray-100 p-2.5 sm:p-3 lg:p-4">
+            <h2 className="text-xs sm:text-sm lg:text-base font-bold text-gray-900 mb-2 sm:mb-3">
+              Service Details
+            </h2>
+
+            <div className="grid grid-cols-2 gap-x-2 gap-y-2 sm:gap-3">
+              <div className="min-w-0">
+                <p className="text-[8px] sm:text-[10px] lg:text-xs text-gray-500">
+                  Service
+                </p>
+
+                <p className="mt-0.5 text-[10px] sm:text-xs lg:text-sm font-semibold text-gray-900 truncate">
+                  {booking.service}
+                </p>
+              </div>
+
+              <div className="min-w-0">
+                <p className="text-[8px] sm:text-[10px] lg:text-xs text-gray-500">
+                  Price
+                </p>
+
+                <p className="mt-0.5 text-[10px] sm:text-xs lg:text-sm font-semibold text-gray-900 truncate">
+                  ₹{booking.price}
+                </p>
+              </div>
+
+              <div className="min-w-0">
+                <p className="text-[8px] sm:text-[10px] lg:text-xs text-gray-500">
+                  Date
+                </p>
+
+                <p className="mt-0.5 text-[10px] sm:text-xs lg:text-sm font-semibold text-gray-900 truncate">
+                  {new Date(booking.date).toLocaleDateString(
+                    "en-IN",
+                    {
+                      day: "numeric",
+                      month: "short",
+                      year: "numeric",
+                    }
+                  )}
+                </p>
+              </div>
+
+              <div className="min-w-0">
+                <p className="text-[8px] sm:text-[10px] lg:text-xs text-gray-500">
+                  Time
+                </p>
+
+                <p className="mt-0.5 text-[10px] sm:text-xs lg:text-sm font-semibold text-gray-900 truncate">
+                  {booking.time}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-lg sm:rounded-xl shadow-sm border border-gray-100 p-2.5 sm:p-3 lg:p-4">
+            <h2 className="text-xs sm:text-sm lg:text-base font-bold text-gray-900 mb-1.5 sm:mb-2">
+              Service Address
+            </h2>
+
+            <p className="text-[10px] sm:text-xs lg:text-sm text-gray-700 break-words leading-relaxed line-clamp-2">
+              {booking.address}
+            </p>
+
+            <p className="mt-0.5 text-[9px] sm:text-xs lg:text-sm text-gray-600 break-words truncate">
+              {booking.city}
+              {booking.pincode ? ` - ${booking.pincode}` : ""}
             </p>
           </div>
-        )}
 
-        <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4">
+          {booking.description && (
+            <div className="bg-white rounded-lg sm:rounded-xl shadow-sm border border-gray-100 p-2.5 sm:p-3 lg:p-4">
+              <h2 className="text-xs sm:text-sm lg:text-base font-bold text-gray-900 mb-1.5 sm:mb-2">
+                Problem Description
+              </h2>
+
+              <p className="text-[10px] sm:text-xs lg:text-sm text-gray-600 leading-relaxed break-words line-clamp-3">
+                {booking.description}
+              </p>
+            </div>
+          )}
+        </div>
+
+        <div className="grid grid-cols-2 gap-2 sm:gap-3 mt-3 sm:mt-4">
           <Link
             to="/my-bookings"
-            className="w-full sm:flex-1 py-3 text-center border border-gray-300 text-gray-700 text-sm sm:text-base font-semibold rounded-xl hover:bg-gray-100 transition"
+            className="flex items-center justify-center py-2 sm:py-2.5 bg-white border border-gray-300 text-gray-700 text-[10px] sm:text-xs lg:text-sm font-semibold rounded-lg hover:bg-gray-100 transition"
           >
-            Back to My Bookings
+            Back to Bookings
           </Link>
 
           {booking.status !== "cancelled" &&
@@ -347,11 +326,9 @@ const BookingDetails = () => {
                 type="button"
                 onClick={handleCancel}
                 disabled={cancelling}
-                className="w-full sm:flex-1 py-3 bg-red-600 text-white text-sm sm:text-base font-semibold rounded-xl hover:bg-red-700 disabled:bg-red-300 disabled:cursor-not-allowed transition"
+                className="flex items-center justify-center py-2 sm:py-2.5 bg-red-600 text-white text-[10px] sm:text-xs lg:text-sm font-semibold rounded-lg hover:bg-red-700 disabled:bg-red-300 disabled:cursor-not-allowed transition"
               >
-                {cancelling
-                  ? "Cancelling..."
-                  : "Cancel Booking"}
+                {cancelling ? "Cancelling..." : "Cancel Booking"}
               </button>
             )}
         </div>

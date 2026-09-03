@@ -66,45 +66,45 @@ const Dashboard = () => {
   }, []);
 
   return (
-    <section className="min-h-screen bg-gray-50 py-8 sm:py-12 md:py-16">
+    <section className="min-h-screen bg-gray-50 py-5 sm:py-8 md:py-12 lg:py-16">
       <div className="max-w-7xl mx-auto px-3 sm:px-5 md:px-6">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 wrap-break-word">
+          <h1 className="text-lg sm:text-2xl md:text-3xl font-bold text-gray-900 break-words">
             Welcome, {user?.name} 👋
           </h1>
 
-          <p className="mt-2 text-sm sm:text-base text-gray-600 leading-relaxed">
+          <p className="mt-1 sm:mt-2 text-xs sm:text-sm md:text-base text-gray-600 leading-relaxed">
             Manage your services and bookings from here.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-5 md:gap-6 mt-7 sm:mt-9 md:mt-10">
-          <div className="bg-[#2563EB]  p-4 sm:p-5 md:p-6 rounded-xl shadow-sm border border-gray-100">
-            <p className="text-sm sm:text-base text-white">
+        <div className="grid grid-cols-1 min-[400px]:grid-cols-3 gap-2.5 sm:gap-4 md:gap-6 mt-5 sm:mt-7 md:mt-9">
+          <div className="bg-[#2563EB] p-3 sm:p-4 md:p-6 rounded-lg sm:rounded-xl shadow-sm">
+            <p className="text-[11px] min-[400px]:text-xs sm:text-sm md:text-base text-white leading-tight">
               Total Bookings
             </p>
 
-            <p className="mt-1.5 sm:mt-2 text-2xl sm:text-3xl font-bold text-gray-900">
+            <p className="mt-1 sm:mt-1.5 md:mt-2 text-xl min-[400px]:text-2xl sm:text-3xl font-bold text-white">
               {loading ? "..." : stats.total}
             </p>
           </div>
 
-          <div className="bg-[#F59E0B]   p-4 sm:p-5 md:p-6 rounded-xl shadow-sm border border-gray-100">
-            <p className="text-sm sm:text-base text-white">
+          <div className="bg-[#F59E0B] p-3 sm:p-4 md:p-6 rounded-lg sm:rounded-xl shadow-sm">
+            <p className="text-[11px] min-[400px]:text-xs sm:text-sm md:text-base text-white leading-tight">
               Active Bookings
             </p>
 
-            <p className="mt-1.5 sm:mt-2 text-2xl sm:text-3xl font-bold text-gray-900">
+            <p className="mt-1 sm:mt-1.5 md:mt-2 text-xl min-[400px]:text-2xl sm:text-3xl font-bold text-white">
               {loading ? "..." : stats.active}
             </p>
           </div>
 
-          <div className="bg-[#16A34A]  p-4 sm:p-5 md:p-6 rounded-xl shadow-sm border border-gray-100 sm:col-span-2 md:col-span-1">
-            <p className="text-sm sm:text-base text-white">
+          <div className="bg-[#16A34A] p-3 sm:p-4 md:p-6 rounded-lg sm:rounded-xl shadow-sm">
+            <p className="text-[11px] min-[400px]:text-xs sm:text-sm md:text-base text-white leading-tight">
               Completed
             </p>
 
-            <p className="mt-1.5 sm:mt-2 text-2xl sm:text-3xl font-bold text-gray-900">
+            <p className="mt-1 sm:mt-1.5 md:mt-2 text-xl min-[400px]:text-2xl sm:text-3xl font-bold text-white">
               {loading ? "..." : stats.completed}
             </p>
           </div>

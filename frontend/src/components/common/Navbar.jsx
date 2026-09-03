@@ -3,18 +3,13 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faBell,
-  faBars,
-  faXmark,
-} from "@fortawesome/free-solid-svg-icons";
+import { faBell } from "@fortawesome/free-solid-svg-icons";
 
 const Navbar = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
   const [unreadCount, setUnreadCount] = useState(0);
-  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const fetchNotifications = async () => {
@@ -44,19 +39,12 @@ const Navbar = () => {
 
     fetchNotifications();
 
-    const interval = setInterval(() => {
-      fetchNotifications();
-    }, 10000);
+    const interval = setInterval(fetchNotifications, 10000);
 
     return () => clearInterval(interval);
   }, [user]);
 
-  const closeMenu = () => {
-    setMenuOpen(false);
-  };
-
   const handleLogout = () => {
-    closeMenu();
     logout();
     navigate("/login");
   };
@@ -77,82 +65,29 @@ const Navbar = () => {
 
   return (
     <nav className="w-full bg-white shadow-sm relative z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
-        <div className="flex items-center justify-between">
-          <Link to="/" onClick={closeMenu}>
-            <h1 className="text-2xl sm:text-3xl font-bold text-blue-600">
+      <div className="max-w-7xl mx-auto px-3 sm:px-5 lg:px-6">
+        <div className="flex items-center justify-between gap-2 py-2.5 sm:py-3 lg:py-4">
+          <Link to="/" className="shrink-0">
+            <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-blue-600">
               FixNear
             </h1>
           </Link>
 
-          <div className="hidden lg:flex items-center gap-6 xl:gap-8">
-            <Link
-              to="/"
-              className="text-gray-700 hover:text-blue-600 transition"
-            >
-              Home
-            </Link>
-
-            <Link
-              to="/services"
-              className="text-gray-700 hover:text-blue-600 transition"
-            >
-              Services
-            </Link>
-
-            {user?.role === "user" && (
-              <Link
-                to="/professionals"
-                className="text-gray-700 hover:text-blue-600 transition"
-              >
-                Find Professionals
-              </Link>
-            )}
-
-            {user?.role === "user" && (
-              <Link
-                to="/become-professional"
-                className="text-gray-700 hover:text-blue-600 transition whitespace-nowrap"
-              >
-                Become a Professional
-              </Link>
-            )}
-          </div>
-
-          <div className="hidden lg:flex items-center gap-3">
+          <div className="flex items-center gap-1 sm:gap-2 lg:gap-3 shrink-0">
             {user ? (
               <>
                 <Link
                   to={notificationPath}
-                  className="relative flex items-center justify-center w-10 h-10 rounded-full hover:bg-gray-100 transition"
+                  className="relative flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 lg:w-10 lg:h-10 rounded-full hover:bg-gray-100 transition"
                   title="Notifications"
                 >
                   <FontAwesomeIcon
                     icon={faBell}
-                    className="text-gray-700 text-xl"
+                    className="text-gray-700 text-sm sm:text-base lg:text-xl"
                   />
 
                   {unreadCount > 0 && (
-                    <span
-                      className="
-                        absolute
-                        -top-1
-                        -right-1
-                        min-w-5
-                        h-5
-                        px-1
-                        flex
-                        items-center
-                        justify-center
-                        bg-red-500
-                        text-white
-                        text-[11px]
-                        font-bold
-                        rounded-full
-                        border-2
-                        border-white
-                      "
-                    >
+                    <span className="absolute -top-1 -right-1 min-w-4 h-4 sm:min-w-5 sm:h-5 px-1 flex items-center justify-center bg-red-500 text-white text-[8px] sm:text-[10px] lg:text-[11px] font-bold rounded-full border-2 border-white">
                       {unreadCount > 99 ? "99+" : unreadCount}
                     </span>
                   )}
@@ -160,24 +95,15 @@ const Navbar = () => {
 
                 <Link
                   to={dashboardPath}
-                  className="px-3 xl:px-4 py-2 text-blue-600 hover:text-blue-700 transition"
+                  className="px-2 sm:px-3 lg:px-4 py-1.5 sm:py-2 text-xs sm:text-sm lg:text-base text-blue-600 hover:text-blue-700 transition whitespace-nowrap"
                 >
                   Dashboard
                 </Link>
 
                 <button
+                  type="button"
                   onClick={handleLogout}
-                  className="
-                    px-4
-                    xl:px-5
-                    py-2
-                    border
-                    border-red-200
-                    text-red-600
-                    rounded-lg
-                    hover:bg-red-50
-                    transition
-                  "
+                  className="px-2.5 sm:px-3 lg:px-5 py-1.5 sm:py-2 border border-red-200 text-red-600 text-xs sm:text-sm lg:text-base rounded-lg hover:bg-red-50 transition whitespace-nowrap"
                 >
                   Logout
                 </button>
@@ -186,252 +112,58 @@ const Navbar = () => {
               <>
                 <Link
                   to="/login"
-                  className="px-4 py-2 text-blue-600 hover:text-blue-700 transition"
+                  className="px-2 sm:px-3 lg:px-4 py-1.5 sm:py-2 text-xs sm:text-sm lg:text-base text-blue-600 hover:text-blue-700 transition"
                 >
                   Login
                 </Link>
 
                 <Link
                   to="/register"
-                  className="
-                    px-5
-                    py-2
-                    bg-blue-600
-                    text-white
-                    rounded-lg
-                    hover:bg-blue-700
-                    transition
-                  "
+                  className="px-2.5 sm:px-4 lg:px-5 py-1.5 sm:py-2 bg-blue-600 text-white text-xs sm:text-sm lg:text-base rounded-lg hover:bg-blue-700 transition"
                 >
                   Register
                 </Link>
               </>
             )}
           </div>
-
-          <button
-            onClick={() => setMenuOpen(!menuOpen)}
-            className="
-              lg:hidden
-              w-10
-              h-10
-              flex
-              items-center
-              justify-center
-              rounded-lg
-              text-gray-700
-              hover:bg-gray-100
-              transition
-            "
-            aria-label="Toggle navigation menu"
-          >
-            <FontAwesomeIcon
-              icon={menuOpen ? faXmark : faBars}
-              className="text-xl"
-            />
-          </button>
         </div>
 
-        {menuOpen && (
-          <div
-            className="
-              lg:hidden
-              mt-4
-              pt-4
-              border-t
-              border-gray-200
-              animate-[slideDown_0.2s_ease-out]
-            "
-          >
-            <div className="flex flex-col gap-2">
+        <div className="border-t border-gray-100">
+          <div className="flex items-center gap-1 sm:gap-2 lg:gap-6 xl:gap-8 py-2 overflow-x-auto scrollbar-hide whitespace-nowrap">
+            <Link
+              to="/"
+              className="shrink-0 px-2 sm:px-3 lg:px-0 py-1.5 text-xs sm:text-sm lg:text-base text-gray-700 hover:text-blue-600 transition"
+            >
+              Home
+            </Link>
+
+            <Link
+              to="/services"
+              className="shrink-0 px-2 sm:px-3 lg:px-0 py-1.5 text-xs sm:text-sm lg:text-base text-gray-700 hover:text-blue-600 transition"
+            >
+              Services
+            </Link>
+
+            {user?.role === "user" && (
               <Link
-                to="/"
-                onClick={closeMenu}
-                className="
-                  px-4
-                  py-3
-                  rounded-lg
-                  text-gray-700
-                  hover:bg-blue-50
-                  hover:text-blue-600
-                  transition
-                "
+                to="/professionals"
+                className="shrink-0 px-2 sm:px-3 lg:px-0 py-1.5 text-xs sm:text-sm lg:text-base text-gray-700 hover:text-blue-600 transition"
               >
-                Home
+                Find Professionals
               </Link>
+            )}
 
+            {user?.role === "user" && (
               <Link
-                to="/services"
-                onClick={closeMenu}
-                className="
-                  px-4
-                  py-3
-                  rounded-lg
-                  text-gray-700
-                  hover:bg-blue-50
-                  hover:text-blue-600
-                  transition
-                "
+                to="/become-professional"
+                className="shrink-0 px-2 sm:px-3 lg:px-0 py-1.5 text-xs sm:text-sm lg:text-base text-gray-700 hover:text-blue-600 transition"
               >
-                Services
+                Become a Professional
               </Link>
-
-              {user?.role === "user" && (
-                <Link
-                  to="/professionals"
-                  onClick={closeMenu}
-                  className="
-                    px-4
-                    py-3
-                    rounded-lg
-                    text-gray-700
-                    hover:bg-blue-50
-                    hover:text-blue-600
-                    transition
-                  "
-                >
-                  Find Professionals
-                </Link>
-              )}
-
-              {user?.role === "user" && (
-                <Link
-                  to="/become-professional"
-                  onClick={closeMenu}
-                  className="
-                    px-4
-                    py-3
-                    rounded-lg
-                    text-gray-700
-                    hover:bg-blue-50
-                    hover:text-blue-600
-                    transition
-                  "
-                >
-                  Become a Professional
-                </Link>
-              )}
-
-              {user ? (
-                <div className="mt-2 pt-3 border-t border-gray-200">
-                  <Link
-                    to={notificationPath}
-                    onClick={closeMenu}
-                    className="
-                      flex
-                      items-center
-                      justify-between
-                      px-4
-                      py-3
-                      rounded-lg
-                      text-gray-700
-                      hover:bg-blue-50
-                      hover:text-blue-600
-                      transition
-                    "
-                  >
-                    <span>Notifications</span>
-
-                    {unreadCount > 0 && (
-                      <span className="min-w-6 h-6 px-1 flex items-center justify-center bg-red-500 text-white text-xs font-bold rounded-full">
-                        {unreadCount > 99 ? "99+" : unreadCount}
-                      </span>
-                    )}
-                  </Link>
-
-                  <Link
-                    to={dashboardPath}
-                    onClick={closeMenu}
-                    className="
-                      block
-                      px-4
-                      py-3
-                      rounded-lg
-                      text-blue-600
-                      hover:bg-blue-50
-                      transition
-                    "
-                  >
-                    Dashboard
-                  </Link>
-
-                  <button
-                    onClick={handleLogout}
-                    className="
-                      w-full
-                      mt-2
-                      px-4
-                      py-3
-                      text-left
-                      border
-                      border-red-200
-                      text-red-600
-                      rounded-lg
-                      hover:bg-red-50
-                      transition
-                    "
-                  >
-                    Logout
-                  </button>
-                </div>
-              ) : (
-                <div className="mt-2 pt-3 border-t border-gray-200 flex flex-col gap-2">
-                  <Link
-                    to="/login"
-                    onClick={closeMenu}
-                    className="
-                      px-4
-                      py-3
-                      text-center
-                      text-blue-600
-                      border
-                      border-blue-200
-                      rounded-lg
-                      hover:bg-blue-50
-                      transition
-                    "
-                  >
-                    Login
-                  </Link>
-
-                  <Link
-                    to="/register"
-                    onClick={closeMenu}
-                    className="
-                      px-4
-                      py-3
-                      text-center
-                      bg-blue-600
-                      text-white
-                      rounded-lg
-                      hover:bg-blue-700
-                      transition
-                    "
-                  >
-                    Register
-                  </Link>
-                </div>
-              )}
-            </div>
+            )}
           </div>
-        )}
+        </div>
       </div>
-
-      <style>
-        {`
-          @keyframes slideDown {
-            from {
-              opacity: 0;
-              transform: translateY(-10px);
-            }
-
-            to {
-              opacity: 1;
-              transform: translateY(0);
-            }
-          }
-        `}
-      </style>
     </nav>
   );
 };
