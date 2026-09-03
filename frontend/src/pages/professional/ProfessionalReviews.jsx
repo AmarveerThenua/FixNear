@@ -4,24 +4,18 @@ const ProfessionalReviews = () => {
   const [reviews, setReviews] = useState([]);
   const [totalReviews, setTotalReviews] = useState(0);
   const [averageRating, setAverageRating] = useState(0);
-
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   const token = localStorage.getItem("fixnearToken");
-
-  // ====================
-  // Fetch Professional Profile
-  // ====================
 
   const fetchReviews = async () => {
     try {
       setLoading(true);
       setError("");
 
-      // First get logged-in professional profile
       const professionalResponse = await fetch(
-        "http://localhost:5000/api/professionals/me",
+        `${import.meta.env.VITE_API_URL}/professionals/me`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -48,12 +42,8 @@ const ProfessionalReviews = () => {
         return;
       }
 
-      // ====================
-      // Get Reviews
-      // ====================
-
       const response = await fetch(
-        `http://localhost:5000/api/reviews/professional/${professionalId}`
+        `${import.meta.env.VITE_API_URL}/reviews/professional/${professionalId}`
       );
 
       const data = await response.json();
@@ -84,10 +74,6 @@ const ProfessionalReviews = () => {
     fetchReviews();
   }, []);
 
-  // ====================
-  // Star Component
-  // ====================
-
   const Stars = ({ rating, size = "text-xl" }) => {
     return (
       <div className="flex items-center gap-0.5 sm:gap-1">
@@ -107,10 +93,6 @@ const ProfessionalReviews = () => {
     );
   };
 
-  // ====================
-  // Loading
-  // ====================
-
   if (loading) {
     return (
       <div className="min-h-[300px] sm:min-h-[400px] flex items-center justify-center p-4">
@@ -125,10 +107,6 @@ const ProfessionalReviews = () => {
     );
   }
 
-  // ====================
-  // Error
-  // ====================
-
   if (error) {
     return (
       <div className="max-w-5xl mx-auto px-3 sm:px-4 md:px-6 py-5 sm:py-8">
@@ -141,10 +119,6 @@ const ProfessionalReviews = () => {
 
   return (
     <div className="max-w-5xl mx-auto px-3 sm:px-4 md:px-6 py-5 sm:py-8">
-      {/* ==================== */}
-      {/* Header */}
-      {/* ==================== */}
-
       <div className="mb-5 sm:mb-8">
         <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
           Reviews
@@ -155,14 +129,8 @@ const ProfessionalReviews = () => {
         </p>
       </div>
 
-      {/* ==================== */}
-      {/* Rating Summary */}
-      {/* ==================== */}
-
       <div className="bg-white border border-gray-200 rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 shadow-sm mb-6 sm:mb-8">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6">
-          {/* Average Rating */}
-
           <div className="flex items-center gap-3 sm:gap-5 min-w-0">
             <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl sm:rounded-2xl bg-yellow-50 flex items-center justify-center flex-shrink-0">
               <span className="text-2xl sm:text-3xl font-bold text-yellow-500">
@@ -191,8 +159,6 @@ const ProfessionalReviews = () => {
             </div>
           </div>
 
-          {/* Total Reviews */}
-
           <div className="flex items-center gap-3 sm:gap-5 min-w-0">
             <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl sm:rounded-2xl bg-blue-50 flex items-center justify-center flex-shrink-0">
               <span className="text-2xl sm:text-3xl font-bold text-blue-600">
@@ -213,10 +179,6 @@ const ProfessionalReviews = () => {
         </div>
       </div>
 
-      {/* ==================== */}
-      {/* Reviews */}
-      {/* ==================== */}
-
       <div>
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-4 sm:mb-5">
           <div>
@@ -236,8 +198,6 @@ const ProfessionalReviews = () => {
               : "reviews"}
           </span>
         </div>
-
-        {/* No Reviews */}
 
         {reviews.length === 0 ? (
           <div className="bg-white border border-gray-200 rounded-xl sm:rounded-2xl p-7 sm:p-10 md:p-12 text-center">
@@ -261,8 +221,6 @@ const ProfessionalReviews = () => {
                 key={review._id}
                 className="bg-white border border-gray-200 rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 shadow-sm hover:shadow-md transition"
               >
-                {/* Customer */}
-
                 <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4">
                   <div className="flex items-center gap-3 sm:gap-4 min-w-0">
                     <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
@@ -285,8 +243,6 @@ const ProfessionalReviews = () => {
                     </div>
                   </div>
 
-                  {/* Stars */}
-
                   <div className="self-start sm:self-auto">
                     <Stars
                       rating={review.rating}
@@ -295,15 +251,11 @@ const ProfessionalReviews = () => {
                   </div>
                 </div>
 
-                {/* Comment */}
-
                 <div className="mt-4 sm:mt-5">
                   <p className="text-sm sm:text-base text-gray-700 leading-relaxed break-words">
                     "{review.comment}"
                   </p>
                 </div>
-
-                {/* Date */}
 
                 <div className="mt-4 sm:mt-5 pt-3 sm:pt-4 border-t border-gray-100">
                   <p className="text-xs sm:text-sm text-gray-500">

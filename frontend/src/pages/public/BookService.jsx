@@ -21,10 +21,6 @@ const BookService = () => {
   const [bookingLoading, setBookingLoading] = useState(false);
   const [error, setError] = useState("");
 
-  // =========================
-  // Get Today's Local Date
-  // =========================
-
   const getTodayDate = () => {
     const today = new Date();
 
@@ -38,15 +34,11 @@ const BookService = () => {
     return `${year}-${month}-${day}`;
   };
 
-  // =========================
-  // Fetch Professional
-  // =========================
-
   useEffect(() => {
     const fetchProfessional = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/professionals/${id}`
+          `${import.meta.env.VITE_API_URL}/professionals/${id}`
         );
 
         setProfessional(response.data.professional);
@@ -68,14 +60,9 @@ const BookService = () => {
     fetchProfessional();
   }, [id]);
 
-  // =========================
-  // Handle Input
-  // =========================
-
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    // Pincode
     if (name === "pincode") {
       const onlyNumbers = value
         .replace(/\D/g, "")
@@ -89,7 +76,6 @@ const BookService = () => {
       return;
     }
 
-    // City
     if (name === "city") {
       const cityValue = value
         .replace(/[^a-zA-Z\s]/g, "")
@@ -103,7 +89,6 @@ const BookService = () => {
       return;
     }
 
-    // Notes Limit
     if (name === "notes") {
       setFormData({
         ...formData,
@@ -113,7 +98,6 @@ const BookService = () => {
       return;
     }
 
-    // Address Limit
     if (name === "address") {
       setFormData({
         ...formData,
@@ -129,10 +113,6 @@ const BookService = () => {
     });
   };
 
-  // =========================
-  // Validate Booking Form
-  // =========================
-
   const validateForm = () => {
     const date = formData.date.trim();
     const time = formData.time.trim();
@@ -141,7 +121,6 @@ const BookService = () => {
     const pincode = formData.pincode.trim();
     const notes = formData.notes.trim();
 
-    // Professional Availability
     if (!professional) {
       return "Professional information is not available.";
     }
@@ -150,7 +129,6 @@ const BookService = () => {
       return "This professional is currently unavailable.";
     }
 
-    // Date
     if (!date) {
       return "Please select a booking date.";
     }
@@ -161,12 +139,10 @@ const BookService = () => {
       return "Booking date cannot be in the past.";
     }
 
-    // Time
     if (!time) {
       return "Please select a booking time.";
     }
 
-    // Prevent past time for today's booking
     if (date === today) {
       const now = new Date();
 
@@ -185,7 +161,6 @@ const BookService = () => {
       }
     }
 
-    // Address
     if (!address) {
       return "Please enter your service address.";
     }
@@ -194,7 +169,6 @@ const BookService = () => {
       return "Please enter a complete service address.";
     }
 
-    // City
     if (!city) {
       return "Please enter your city.";
     }
@@ -207,7 +181,6 @@ const BookService = () => {
       return "City name can contain only letters and spaces.";
     }
 
-    // Pincode
     if (!pincode) {
       return "Please enter your pincode.";
     }
@@ -216,17 +189,12 @@ const BookService = () => {
       return "Please enter a valid 6-digit pincode.";
     }
 
-    // Notes
     if (notes.length > 500) {
       return "Problem description cannot exceed 500 characters.";
     }
 
     return "";
   };
-
-  // =========================
-  // Create Booking
-  // =========================
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -240,7 +208,6 @@ const BookService = () => {
       return;
     }
 
-    // Prevent Double Submit
     if (bookingLoading) {
       return;
     }
@@ -248,7 +215,6 @@ const BookService = () => {
     setBookingLoading(true);
 
     try {
-      // Get JWT
       const token = localStorage.getItem(
         "fixnearToken"
       );
@@ -262,7 +228,6 @@ const BookService = () => {
         return;
       }
 
-      // Booking Data
       const bookingData = {
         professional: professional._id,
         service: professional.profession,
@@ -276,9 +241,8 @@ const BookService = () => {
 
       console.log("Booking Data:", bookingData);
 
-      // API Request
       const response = await axios.post(
-        "http://localhost:5000/api/bookings",
+        `${import.meta.env.VITE_API_URL}/bookings`,
         bookingData,
         {
           headers: {
@@ -292,7 +256,6 @@ const BookService = () => {
         response.data
       );
 
-      // Redirect
       navigate("/booking-success", {
         state: {
           booking: response.data.booking,
@@ -313,10 +276,6 @@ const BookService = () => {
     }
   };
 
-  // =========================
-  // Loading
-  // =========================
-
   if (loading) {
     return (
       <section className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
@@ -330,10 +289,6 @@ const BookService = () => {
       </section>
     );
   }
-
-  // =========================
-  // Professional Not Found
-  // =========================
 
   if (!professional) {
     return (
@@ -358,25 +313,15 @@ const BookService = () => {
     );
   }
 
-  // =========================
-  // Booking Page
-  // =========================
-
   return (
     <section className="min-h-screen bg-gray-50 py-6 sm:py-8 md:py-12">
       <div className="max-w-3xl mx-auto px-3 sm:px-5 md:px-6">
-        {/* Back */}
-
         <Link
           to={`/professionals/${professional._id}`}
           className="inline-flex items-center text-sm sm:text-base text-blue-600 hover:text-blue-700 transition"
         >
           ← Back to Profile
         </Link>
-
-        {/* =========================
-            Booking Card
-        ========================= */}
 
         <div className="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-6 md:p-8 mt-4 sm:mt-6">
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 break-words">
@@ -387,10 +332,6 @@ const BookService = () => {
             {professional.profession} • ₹
             {professional.price}
           </p>
-
-          {/* =========================
-              Availability
-          ========================= */}
 
           <div className="mt-3 sm:mt-4">
             {professional.available ? (
@@ -404,10 +345,6 @@ const BookService = () => {
             )}
           </div>
 
-          {/* =========================
-              Error
-          ========================= */}
-
           {error && (
             <div className="mt-5 sm:mt-6 p-3 sm:p-4 bg-red-50 border border-red-200 rounded-lg">
               <p className="text-xs sm:text-sm text-red-600 break-words">
@@ -415,10 +352,6 @@ const BookService = () => {
               </p>
             </div>
           )}
-
-          {/* =========================
-              Unavailable Message
-          ========================= */}
 
           {!professional.available && (
             <div className="mt-5 sm:mt-6 p-3 sm:p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
@@ -436,21 +369,11 @@ const BookService = () => {
             </div>
           )}
 
-          {/* =========================
-              Form
-          ========================= */}
-
           <form
             onSubmit={handleSubmit}
             className="mt-6 sm:mt-8 space-y-5 sm:space-y-6"
           >
-            {/* =========================
-                Date + Time
-            ========================= */}
-
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-              {/* Date */}
-
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Select Date
@@ -468,8 +391,6 @@ const BookService = () => {
                 />
               </div>
 
-              {/* Time */}
-
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Select Time
@@ -486,10 +407,6 @@ const BookService = () => {
                 />
               </div>
             </div>
-
-            {/* =========================
-                Address
-            ========================= */}
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -512,13 +429,7 @@ const BookService = () => {
               </p>
             </div>
 
-            {/* =========================
-                City + Pincode
-            ========================= */}
-
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-              {/* City */}
-
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   City
@@ -536,8 +447,6 @@ const BookService = () => {
                   className="w-full px-3 sm:px-4 py-3 text-sm sm:text-base border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none disabled:bg-gray-100 disabled:cursor-not-allowed"
                 />
               </div>
-
-              {/* Pincode */}
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -564,10 +473,6 @@ const BookService = () => {
               </div>
             </div>
 
-            {/* =========================
-                Notes
-            ========================= */}
-
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Describe Your Problem
@@ -589,10 +494,6 @@ const BookService = () => {
                 {formData.notes.length}/500
               </div>
             </div>
-
-            {/* =========================
-                Summary
-            ========================= */}
 
             <div className="bg-gray-50 rounded-xl p-4 sm:p-5">
               <h2 className="text-base sm:text-lg font-semibold text-gray-900 mb-3">
@@ -631,10 +532,6 @@ const BookService = () => {
                 </div>
               </div>
             </div>
-
-            {/* =========================
-                Confirm Booking
-            ========================= */}
 
             <button
               type="submit"

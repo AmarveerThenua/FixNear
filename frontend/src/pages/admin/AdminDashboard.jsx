@@ -6,7 +6,6 @@ const AdminDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-
   const fetchDashboard = async () => {
     try {
       const token = localStorage.getItem("fixnearToken");
@@ -18,7 +17,7 @@ const AdminDashboard = () => {
       }
 
       const response = await axios.get(
-        "http://localhost:5000/api/admin/dashboard",
+        `${import.meta.env.VITE_API_URL}/admin/dashboard`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -40,8 +39,6 @@ const AdminDashboard = () => {
     }
   };
 
-
-
   useEffect(() => {
     fetchDashboard();
 
@@ -50,7 +47,6 @@ const AdminDashboard = () => {
     return () => clearInterval(interval);
   }, []);
 
-  
   if (loading) {
     return (
       <div className="min-h-[60vh] bg-gray-50 flex items-center justify-center px-4">
@@ -65,12 +61,10 @@ const AdminDashboard = () => {
     );
   }
 
-
   if (error) {
     return (
       <div className="min-h-[60vh] bg-gray-50 flex items-center justify-center px-4 sm:px-6 py-8">
         <div className="bg-white rounded-xl shadow-sm border border-red-200 p-5 sm:p-8 text-center max-w-md w-full">
-
           <div className="text-4xl sm:text-5xl mb-4">
             ⚠️
           </div>
@@ -109,11 +103,7 @@ const AdminDashboard = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 px-3 sm:px-4 md:px-6 lg:px-8 py-5 sm:py-6 md:py-8">
-
-      
-
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6 sm:mb-8">
-
         <div className="min-w-0">
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">
             Admin Dashboard
@@ -130,18 +120,11 @@ const AdminDashboard = () => {
         >
           🔄 Refresh
         </button>
-
       </div>
 
-
-
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3 sm:gap-5 mb-6 sm:mb-8">
-
-        {/* Total Users */}
-
         <div className="bg-white rounded-xl p-4 sm:p-6 border border-gray-200 shadow-sm">
           <div className="flex items-center justify-between gap-3">
-
             <div className="min-w-0">
               <p className="text-xs sm:text-sm text-gray-500">
                 Total Users
@@ -155,15 +138,11 @@ const AdminDashboard = () => {
             <div className="w-10 h-10 sm:w-12 sm:h-12 shrink-0 bg-blue-50 rounded-xl flex items-center justify-center text-xl sm:text-2xl">
               👥
             </div>
-
           </div>
         </div>
 
-
-
         <div className="bg-white rounded-xl p-4 sm:p-6 border border-gray-200 shadow-sm">
           <div className="flex items-center justify-between gap-3">
-
             <div className="min-w-0">
               <p className="text-xs sm:text-sm text-gray-500">
                 Professionals
@@ -177,16 +156,11 @@ const AdminDashboard = () => {
             <div className="w-10 h-10 sm:w-12 sm:h-12 shrink-0 bg-green-50 rounded-xl flex items-center justify-center text-xl sm:text-2xl">
               👷
             </div>
-
           </div>
         </div>
 
-
-     
-
         <div className="bg-white rounded-xl p-4 sm:p-6 border border-gray-200 shadow-sm">
           <div className="flex items-center justify-between gap-3">
-
             <div className="min-w-0">
               <p className="text-xs sm:text-sm text-gray-500">
                 Total Bookings
@@ -200,15 +174,11 @@ const AdminDashboard = () => {
             <div className="w-10 h-10 sm:w-12 sm:h-12 shrink-0 bg-purple-50 rounded-xl flex items-center justify-center text-xl sm:text-2xl">
               📅
             </div>
-
           </div>
         </div>
 
-
-
         <div className="bg-white rounded-xl p-4 sm:p-6 border border-gray-200 shadow-sm">
           <div className="flex items-center justify-between gap-3">
-
             <div className="min-w-0">
               <p className="text-xs sm:text-sm text-gray-500">
                 Total Revenue
@@ -222,27 +192,17 @@ const AdminDashboard = () => {
             <div className="w-10 h-10 sm:w-12 sm:h-12 shrink-0 bg-yellow-50 rounded-xl flex items-center justify-center text-xl sm:text-2xl">
               💰
             </div>
-
           </div>
         </div>
-
       </div>
 
-
-    
-
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 sm:gap-6 mb-6 sm:mb-8">
-
-        {/* Professional Overview */}
-
         <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-4 sm:p-6">
-
           <h2 className="text-lg sm:text-xl font-bold text-gray-800 mb-4 sm:mb-6">
             Professional Overview
           </h2>
 
           <div className="grid grid-cols-2 gap-3 sm:gap-4">
-
             <div className="bg-gray-50 rounded-lg p-3 sm:p-5">
               <p className="text-xs sm:text-sm text-gray-500">
                 Total
@@ -282,22 +242,15 @@ const AdminDashboard = () => {
                 {users.admins || 0}
               </p>
             </div>
-
           </div>
-
         </div>
 
-
-      
-
         <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-4 sm:p-6">
-
           <h2 className="text-lg sm:text-xl font-bold text-gray-800 mb-4 sm:mb-6">
             Booking Overview
           </h2>
 
           <div className="space-y-3 sm:space-y-4">
-
             <div className="flex items-center justify-between gap-3">
               <span className="text-sm sm:text-base text-gray-600">
                 Pending
@@ -347,23 +300,13 @@ const AdminDashboard = () => {
                 {bookings.cancelled || 0}
               </span>
             </div>
-
           </div>
-
         </div>
-
       </div>
 
-
-
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3 sm:gap-5">
-
-        {/* Reviews */}
-
         <div className="bg-white rounded-xl p-4 sm:p-6 border border-gray-200 shadow-sm">
-
           <div className="flex items-center gap-3 sm:gap-4">
-
             <div className="w-10 h-10 sm:w-12 sm:h-12 shrink-0 bg-yellow-50 rounded-xl flex items-center justify-center text-xl sm:text-2xl">
               ⭐
             </div>
@@ -377,17 +320,11 @@ const AdminDashboard = () => {
                 {reviews.total || 0}
               </p>
             </div>
-
           </div>
-
         </div>
 
-
-
         <div className="bg-white rounded-xl p-4 sm:p-6 border border-gray-200 shadow-sm">
-
           <div className="flex items-center gap-3 sm:gap-4">
-
             <div className="w-10 h-10 sm:w-12 sm:h-12 shrink-0 bg-red-50 rounded-xl flex items-center justify-center text-xl sm:text-2xl">
               🔔
             </div>
@@ -401,17 +338,11 @@ const AdminDashboard = () => {
                 {notifications.unread || 0}
               </p>
             </div>
-
           </div>
-
         </div>
 
-
-
         <div className="bg-white rounded-xl p-4 sm:p-6 border border-gray-200 shadow-sm">
-
           <div className="flex items-center gap-3 sm:gap-4">
-
             <div className="w-10 h-10 sm:w-12 sm:h-12 shrink-0 bg-green-50 rounded-xl flex items-center justify-center text-xl sm:text-2xl">
               ✅
             </div>
@@ -425,13 +356,9 @@ const AdminDashboard = () => {
                 {bookings.completed || 0}
               </p>
             </div>
-
           </div>
-
         </div>
-
       </div>
-
     </div>
   );
 };

@@ -1,19 +1,75 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-const ProfessionalBookings = () => {
-  const [bookings, setBookings] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [updatingId, setUpdatingId] = useState(null);
+const BecomeProfessional = () => {
+  const navigate = useNavigate();
 
-  const token = localStorage.getItem("fixnearToken");
+  const [formData, setFormData] = useState({
+    name: "",
+    profession: "",
+    email: "",
+    phone: "",
+    skills: "",
+    experience: "",
+    description: "",
+    address: "",
+    city: "",
+    state: "",
+    pincode: "",
+    location: "",
+    serviceArea: "",
+    price: "",
+    available: true,
+  });
 
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
 
-  const fetchBookings = async () => {
+    setFormData({
+      ...formData,
+      [name]: type === "checkbox" ? checked : value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    setError("");
+    setSuccess("");
+    setLoading(true);
+
     try {
-      const response = await axios.get(
-        "http://localhost:5000/api/bookings/professional",
+      const token = localStorage.getItem("fixnearToken");
+
+      if (!token) {
+        setError(
+          "Please login before becoming a professional."
+        );
+        setLoading(false);
+        return;
+      }
+
+      const professionalData = {
+        ...formData,
+        skills: formData.skills
+          .split(",")
+          .map((skill) => skill.trim())
+          .filter(Boolean),
+        serviceArea: formData.serviceArea
+          .split(",")
+          .map((area) => area.trim())
+          .filter(Boolean),
+        price: Number(formData.price),
+      };
+
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/professionals`,
+        professionalData,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -21,342 +77,410 @@ const ProfessionalBookings = () => {
         }
       );
 
-      setBookings(response.data.bookings || []);
+      console.log(
+        "Professional Registration:",
+        response.data
+      );
+
+      if (response.data.token) {
+        localStorage.setItem(
+          "fixnearToken",
+          response.data.token
+        );
+      }
+
+      if (response.data.user) {
+        localStorage.setItem(
+          "fixnearUser",
+          JSON.stringify(response.data.user)
+        );
+      }
+
+      setSuccess(
+        "Professional profile created successfully! Redirecting..."
+      );
+
+      setFormData({
+        name: "",
+        profession: "",
+        email: "",
+        phone: "",
+        skills: "",
+        experience: "",
+        description: "",
+        address: "",
+        city: "",
+        state: "",
+        pincode: "",
+        location: "",
+        serviceArea: "",
+        price: "",
+        available: true,
+      });
+
+      setTimeout(() => {
+        navigate("/professional-dashboard", {
+          replace: true,
+        });
+      }, 1000);
     } catch (error) {
       console.error(
-        "Failed to fetch booking requests:",
-        error.response?.data || error.message
+        "Professional Registration Error:",
+        error
+      );
+
+      setError(
+        error.response?.data?.message ||
+          "Unable to create professional profile. Please try again."
       );
     } finally {
       setLoading(false);
     }
   };
 
-  useEffect(() => {
-    fetchBookings();
-  }, []);
-
-
-
-  const updateBookingStatus = async (bookingId, status) => {
-    try {
-      setUpdatingId(bookingId);
-
-      const response = await axios.put(
-        `http://localhost:5000/api/bookings/${bookingId}/status`,
-        {
-          status,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      alert(response.data.message);
-
-   
-      await fetchBookings();
-    } catch (error) {
-      console.error(
-        "Failed to update booking status:",
-        error.response?.data || error.message
-      );
-
-      alert(
-        error.response?.data?.message ||
-          "Failed to update booking status"
-      );
-    } finally {
-      setUpdatingId(null);
-    }
-  };
-
-
-
-  const getStatusClass = (status) => {
-    switch (status) {
-      case "pending":
-        return "bg-yellow-100 text-yellow-700";
-
-      case "confirmed":
-        return "bg-blue-100 text-blue-700";
-
-      case "in-progress":
-        return "bg-purple-100 text-purple-700";
-
-      case "completed":
-        return "bg-green-100 text-green-700";
-
-      case "cancelled":
-        return "bg-red-100 text-red-700";
-
-      default:
-        return "bg-gray-100 text-gray-700";
-    }
-  };
-
-  
-
-  if (loading) {
-    return (
-      <div className="p-4 sm:p-6">
-        <div className="flex justify-center items-center min-h-60 sm:min-h-75">
-          <div className="w-9 h-9 sm:w-10 sm:h-10 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div className="p-3 sm:p-4 md:p-6">
-     
+    <section className="min-h-screen bg-gray-50 py-8 sm:py-10 md:py-12 px-4 sm:px-6">
+      <div className="max-w-4xl mx-auto">
+        <div className="text-center mb-7 sm:mb-9 md:mb-10">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900">
+            Become a Professional
+          </h1>
 
-      <div className="mb-5 sm:mb-6">
-        <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">
-          Booking Requests
-        </h1>
-
-        <p className="text-sm sm:text-base text-gray-500 mt-1">
-          Manage booking requests from your customers.
-        </p>
-      </div>
-
-      
-
-      {bookings.length === 0 ? (
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 sm:p-10 text-center">
-          <div className="text-4xl sm:text-5xl mb-3 sm:mb-4">
-            📭
-          </div>
-
-          <h2 className="text-lg sm:text-xl font-semibold text-gray-800">
-            No Booking Requests
-          </h2>
-
-          <p className="text-sm sm:text-base text-gray-500 mt-2">
-            You don't have any booking requests yet.
+          <p className="mt-2 sm:mt-3 text-sm sm:text-base text-gray-600 max-w-2xl mx-auto leading-relaxed">
+            Join FixNear and offer your services to
+            customers near you.
           </p>
         </div>
-      ) : (
-       
 
-        <div className="space-y-4 sm:space-y-5">
-          {bookings.map((booking) => (
-            <div
-              key={booking._id}
-              className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 sm:p-5 md:p-6"
-            >
-           
-
-              <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4">
-                <div className="min-w-0">
-                  <h2 className="text-lg sm:text-xl font-semibold text-gray-800 break-words">
-                    {booking.service}
-                  </h2>
-
-                  <p className="text-sm sm:text-base text-gray-500 mt-1 break-words">
-                    Customer:{" "}
-                    <span className="font-medium text-gray-700">
-                      {booking.user?.name ||
-                        "Unknown Customer"}
-                    </span>
-                  </p>
-                </div>
-
-            
-
-                <span
-                  className={`self-start px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold capitalize whitespace-nowrap ${getStatusClass(
-                    booking.status
-                  )}`}
-                >
-                  {booking.status}
-                </span>
-              </div>
-
-            
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-5 sm:mt-6">
-                {/* Phone */}
-
-                <div className="min-w-0">
-                  <p className="text-xs sm:text-sm text-gray-400">
-                    Phone
-                  </p>
-
-                  <p className="font-medium text-sm sm:text-base text-gray-700 mt-0.5 break-words">
-                    {booking.user?.phone ||
-                      "Not provided"}
-                  </p>
-                </div>
-
-            
-
-                <div className="min-w-0">
-                  <p className="text-xs sm:text-sm text-gray-400">
-                    Date
-                  </p>
-
-                  <p className="font-medium text-sm sm:text-base text-gray-700 mt-0.5">
-                    {new Date(
-                      booking.date
-                    ).toLocaleDateString()}
-                  </p>
-                </div>
-
-          
-
-                <div className="min-w-0">
-                  <p className="text-xs sm:text-sm text-gray-400">
-                    Time
-                  </p>
-
-                  <p className="font-medium text-sm sm:text-base text-gray-700 mt-0.5 break-words">
-                    {booking.time}
-                  </p>
-                </div>
-
-                
-
-                <div className="min-w-0">
-                  <p className="text-xs sm:text-sm text-gray-400">
-                    Price
-                  </p>
-
-                  <p className="font-semibold text-sm sm:text-base text-green-600 mt-0.5">
-                    ₹{booking.price}
-                  </p>
-                </div>
-              </div>
-
-              
-              <div className="mt-5">
-                <p className="text-xs sm:text-sm text-gray-400">
-                  Address
-                </p>
-
-                <p className="text-sm sm:text-base text-gray-700 mt-0.5 break-words leading-relaxed">
-                  {booking.address}
-                  {booking.city
-                    ? `, ${booking.city}`
-                    : ""}
-                  {booking.pincode
-                    ? ` - ${booking.pincode}`
-                    : ""}
-                </p>
-              </div>
-
-             
-
-              {booking.description && (
-                <div className="mt-4">
-                  <p className="text-xs sm:text-sm text-gray-400">
-                    Description
-                  </p>
-
-                  <p className="text-sm sm:text-base text-gray-700 mt-0.5 break-words leading-relaxed">
-                    {booking.description}
-                  </p>
-                </div>
-              )}
-
-              
-
-              {booking.status === "pending" && (
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-5 sm:mt-6">
-                  {/* Accept */}
-
-                  <button
-                    type="button"
-                    disabled={
-                      updatingId === booking._id
-                    }
-                    onClick={() =>
-                      updateBookingStatus(
-                        booking._id,
-                        "confirmed"
-                      )
-                    }
-                    className="w-full px-4 sm:px-5 py-2.5 sm:py-3 bg-green-600 text-white text-sm sm:text-base font-medium rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition"
-                  >
-                    {updatingId === booking._id
-                      ? "Updating..."
-                      : "Accept"}
-                  </button>
-
-              
-
-                  <button
-                    type="button"
-                    disabled={
-                      updatingId === booking._id
-                    }
-                    onClick={() =>
-                      updateBookingStatus(
-                        booking._id,
-                        "cancelled"
-                      )
-                    }
-                    className="w-full px-4 sm:px-5 py-2.5 sm:py-3 bg-red-600 text-white text-sm sm:text-base font-medium rounded-lg hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition"
-                  >
-                    {updatingId === booking._id
-                      ? "Updating..."
-                      : "Reject"}
-                  </button>
-                </div>
-              )}
-
-             
-
-              {booking.status === "confirmed" && (
-                <div className="mt-5 sm:mt-6">
-                  <button
-                    type="button"
-                    disabled={
-                      updatingId === booking._id
-                    }
-                    onClick={() =>
-                      updateBookingStatus(
-                        booking._id,
-                        "completed"
-                      )
-                    }
-                    className="w-full sm:w-auto px-4 sm:px-5 py-2.5 sm:py-3 bg-blue-600 text-white text-sm sm:text-base font-medium rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition"
-                  >
-                    {updatingId === booking._id
-                      ? "Completing..."
-                      : "Complete Service"}
-                  </button>
-                </div>
-              )}
-
-              
-
-              {booking.status === "completed" && (
-                <div className="mt-5 sm:mt-6">
-                  <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-2 bg-green-100 text-green-700 rounded-lg text-sm sm:text-base font-medium">
-                    ✓ Service Completed
-                  </div>
-                </div>
-              )}
-
-       
-
-              {booking.status === "cancelled" && (
-                <div className="mt-5 sm:mt-6">
-                  <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-2 bg-red-100 text-red-700 rounded-lg text-sm sm:text-base font-medium">
-                    ✕ Booking Cancelled
-                  </div>
-                </div>
-              )}
+        <div className="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-6 md:p-8 lg:p-10">
+          {error && (
+            <div className="mb-5 sm:mb-6 p-3 sm:p-4 bg-red-50 border border-red-200 rounded-lg">
+              <p className="text-xs sm:text-sm text-red-600 break-words leading-relaxed">
+                {error}
+              </p>
             </div>
-          ))}
+          )}
+
+          {success && (
+            <div className="mb-5 sm:mb-6 p-3 sm:p-4 bg-green-50 border border-green-200 rounded-lg">
+              <p className="text-xs sm:text-sm text-green-600 break-words leading-relaxed">
+                {success}
+              </p>
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit}>
+            <h2 className="text-lg sm:text-xl font-bold text-gray-900 mb-4 sm:mb-5">
+              Personal Information
+            </h2>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Full Name
+                </label>
+
+                <input
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  placeholder="Enter your full name"
+                  required
+                  autoComplete="name"
+                  className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Email Address
+                </label>
+
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder="Enter your email"
+                  required
+                  autoComplete="email"
+                  className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Phone Number
+                </label>
+
+                <input
+                  type="tel"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  placeholder="Enter your phone number"
+                  required
+                  autoComplete="tel"
+                  inputMode="tel"
+                  className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                />
+              </div>
+            </div>
+
+            <h2 className="text-lg sm:text-xl font-bold text-gray-900 mt-8 sm:mt-10 mb-4 sm:mb-5">
+              Professional Information
+            </h2>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Type of Work
+                </label>
+
+                <select
+                  name="profession"
+                  value={formData.profession}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white transition"
+                >
+                  <option value="">
+                    Select your profession
+                  </option>
+                  <option value="Electrician">
+                    Electrician
+                  </option>
+                  <option value="Plumber">Plumber</option>
+                  <option value="Carpenter">Carpenter</option>
+                  <option value="Painter">Painter</option>
+                  <option value="AC Repair">AC Repair</option>
+                  <option value="Appliance Repair">
+                    Appliance Repair
+                  </option>
+                  <option value="Cleaning">Cleaning</option>
+                  <option value="Beautician">Beautician</option>
+                  <option value="Mechanic">Mechanic</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Experience
+                </label>
+
+                <input
+                  type="text"
+                  name="experience"
+                  value={formData.experience}
+                  onChange={handleChange}
+                  placeholder="e.g. 5 years"
+                  required
+                  className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                />
+              </div>
+            </div>
+
+            <div className="mt-4 sm:mt-5">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Skills
+              </label>
+
+              <input
+                type="text"
+                name="skills"
+                value={formData.skills}
+                onChange={handleChange}
+                placeholder="House Wiring, Fan Installation, Switch Repair"
+                required
+                className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+              />
+
+              <p className="text-xs text-gray-500 mt-2 leading-relaxed">
+                Separate multiple skills with commas.
+              </p>
+            </div>
+
+            <div className="mt-4 sm:mt-5">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                About Your Services
+              </label>
+
+              <textarea
+                name="description"
+                value={formData.description}
+                onChange={handleChange}
+                placeholder="Describe your experience and services..."
+                rows="4"
+                required
+                className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none transition"
+              />
+            </div>
+
+            <h2 className="text-lg sm:text-xl font-bold text-gray-900 mt-8 sm:mt-10 mb-4 sm:mb-5">
+              Address & Location
+            </h2>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Full Address
+              </label>
+
+              <textarea
+                name="address"
+                value={formData.address}
+                onChange={handleChange}
+                placeholder="House/Flat number, Street, Sector..."
+                rows="3"
+                required
+                className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none transition"
+              />
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-5 mt-4 sm:mt-5">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  City
+                </label>
+
+                <input
+                  type="text"
+                  name="city"
+                  value={formData.city}
+                  onChange={handleChange}
+                  placeholder="Noida"
+                  required
+                  autoComplete="address-level2"
+                  className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  State
+                </label>
+
+                <input
+                  type="text"
+                  name="state"
+                  value={formData.state}
+                  onChange={handleChange}
+                  placeholder="Uttar Pradesh"
+                  required
+                  autoComplete="address-level1"
+                  className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Pincode
+                </label>
+
+                <input
+                  type="text"
+                  name="pincode"
+                  value={formData.pincode}
+                  onChange={handleChange}
+                  placeholder="201301"
+                  required
+                  inputMode="numeric"
+                  autoComplete="postal-code"
+                  maxLength="6"
+                  className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                />
+              </div>
+            </div>
+
+            <div className="mt-4 sm:mt-5">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Location / Area
+              </label>
+
+              <input
+                type="text"
+                name="location"
+                value={formData.location}
+                onChange={handleChange}
+                placeholder="e.g. Sector 62, Noida"
+                required
+                className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+              />
+            </div>
+
+            <div className="mt-4 sm:mt-5">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Service Areas
+              </label>
+
+              <input
+                type="text"
+                name="serviceArea"
+                value={formData.serviceArea}
+                onChange={handleChange}
+                placeholder="Sector 62, Sector 63, Sector 61"
+                required
+                className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+              />
+
+              <p className="text-xs text-gray-500 mt-2 leading-relaxed">
+                Separate multiple areas with commas.
+              </p>
+            </div>
+
+            <h2 className="text-lg sm:text-xl font-bold text-gray-900 mt-8 sm:mt-10 mb-4 sm:mb-5">
+              Service Details
+            </h2>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Starting Price (₹)
+                </label>
+
+                <input
+                  type="number"
+                  name="price"
+                  value={formData.price}
+                  onChange={handleChange}
+                  placeholder="299"
+                  min="0"
+                  required
+                  inputMode="numeric"
+                  className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                />
+              </div>
+
+              <div className="flex items-center min-h-[48px] md:mt-7">
+                <input
+                  type="checkbox"
+                  name="available"
+                  checked={formData.available}
+                  onChange={handleChange}
+                  className="w-5 h-5 flex-shrink-0 accent-blue-600 cursor-pointer"
+                />
+
+                <label className="ml-3 text-sm sm:text-base text-gray-700 leading-relaxed cursor-pointer">
+                  I am currently available for work
+                </label>
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full mt-8 sm:mt-10 py-3 sm:py-4 px-4 bg-blue-600 text-white text-sm sm:text-base font-semibold rounded-lg sm:rounded-xl hover:bg-blue-700 disabled:bg-blue-300 disabled:cursor-not-allowed transition"
+            >
+              {loading
+                ? "Creating Professional Profile..."
+                : "Create Professional Profile"}
+            </button>
+          </form>
         </div>
-      )}
-    </div>
+      </div>
+    </section>
   );
 };
 
-export default ProfessionalBookings;
+export default BecomeProfessional;

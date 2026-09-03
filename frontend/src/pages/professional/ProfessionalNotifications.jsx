@@ -16,10 +16,6 @@ const ProfessionalNotifications = () => {
   const [unreadCount, setUnreadCount] = useState(0);
   const [loading, setLoading] = useState(true);
 
-  // ====================
-  // Get Notifications
-  // ====================
-
   const fetchNotifications = async () => {
     const token = localStorage.getItem("fixnearToken");
 
@@ -30,7 +26,7 @@ const ProfessionalNotifications = () => {
 
     try {
       const response = await axios.get(
-        "http://localhost:5000/api/notifications",
+        `${import.meta.env.VITE_API_URL}/notifications`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -50,10 +46,6 @@ const ProfessionalNotifications = () => {
     }
   };
 
-  // ====================
-  // Initial Fetch
-  // ====================
-
   useEffect(() => {
     fetchNotifications();
 
@@ -64,16 +56,12 @@ const ProfessionalNotifications = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // ====================
-  // Mark Notification Read
-  // ====================
-
   const markAsRead = async (notificationId) => {
     const token = localStorage.getItem("fixnearToken");
 
     try {
       await axios.put(
-        `http://localhost:5000/api/notifications/${notificationId}/read`,
+        `${import.meta.env.VITE_API_URL}/notifications/${notificationId}/read`,
         {},
         {
           headers: {
@@ -104,16 +92,12 @@ const ProfessionalNotifications = () => {
     }
   };
 
-  // ====================
-  // Mark All As Read
-  // ====================
-
   const markAllAsRead = async () => {
     const token = localStorage.getItem("fixnearToken");
 
     try {
       await axios.put(
-        "http://localhost:5000/api/notifications/read-all",
+        `${import.meta.env.VITE_API_URL}/notifications/read-all`,
         {},
         {
           headers: {
@@ -138,10 +122,6 @@ const ProfessionalNotifications = () => {
     }
   };
 
-  // ====================
-  // Delete Notification
-  // ====================
-
   const deleteNotification = async (notificationId) => {
     const token = localStorage.getItem("fixnearToken");
 
@@ -151,7 +131,7 @@ const ProfessionalNotifications = () => {
       );
 
       await axios.delete(
-        `http://localhost:5000/api/notifications/${notificationId}`,
+        `${import.meta.env.VITE_API_URL}/notifications/${notificationId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -178,38 +158,24 @@ const ProfessionalNotifications = () => {
     }
   };
 
-  // ====================
-  // Notification Icon
-  // ====================
-
   const getNotificationIcon = (type) => {
     switch (type) {
       case "new_booking":
         return faCalendarCheck;
-
       case "booking_accepted":
         return faCircleCheck;
-
       case "booking_rejected":
         return faCalendarXmark;
-
       case "booking_completed":
         return faCircleCheck;
-
       case "booking_cancelled":
         return faCalendarXmark;
-
       case "new_review":
         return faStar;
-
       default:
         return faBell;
     }
   };
-
-  // ====================
-  // Format Date
-  // ====================
 
   const formatDate = (date) => {
     return new Date(date).toLocaleString("en-IN", {
@@ -223,10 +189,6 @@ const ProfessionalNotifications = () => {
 
   return (
     <div className="p-3 sm:p-4 md:p-6">
-      {/* ====================
-          Header
-      ==================== */}
-
       <div className="mb-5 sm:mb-6 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4">
         <div className="min-w-0">
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">
@@ -238,18 +200,12 @@ const ProfessionalNotifications = () => {
           </p>
         </div>
 
-        {/* Unread Count */}
-
         {unreadCount > 0 && (
           <div className="self-start bg-red-50 text-red-600 px-3 sm:px-4 py-2 rounded-lg text-sm sm:text-base font-semibold whitespace-nowrap">
             {unreadCount} unread
           </div>
         )}
       </div>
-
-      {/* ====================
-          Mark All As Read
-      ==================== */}
 
       {unreadCount > 0 && (
         <div className="mb-4 sm:mb-5">
@@ -264,10 +220,6 @@ const ProfessionalNotifications = () => {
         </div>
       )}
 
-      {/* ====================
-          Loading
-      ==================== */}
-
       {loading && (
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 sm:p-8 text-center">
           <div className="flex justify-center mb-3">
@@ -280,7 +232,6 @@ const ProfessionalNotifications = () => {
         </div>
       )}
 
-    
       {!loading && notifications.length === 0 && (
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 sm:p-10 text-center">
           <div className="w-14 h-14 sm:w-16 sm:h-16 mx-auto rounded-full bg-gray-100 flex items-center justify-center mb-3 sm:mb-4">
@@ -299,7 +250,6 @@ const ProfessionalNotifications = () => {
           </p>
         </div>
       )}
-
 
       {!loading && notifications.length > 0 && (
         <div className="space-y-3">
@@ -321,8 +271,6 @@ const ProfessionalNotifications = () => {
               `}
             >
               <div className="flex gap-3 sm:gap-4">
-             
-
                 <div
                   className={`
                     w-9 h-9
@@ -346,8 +294,6 @@ const ProfessionalNotifications = () => {
                     className="text-sm sm:text-base"
                   />
                 </div>
-
-         
 
                 <div className="flex-1 min-w-0">
                   <div className="flex items-start justify-between gap-2 sm:gap-4">
@@ -378,14 +324,10 @@ const ProfessionalNotifications = () => {
                       </p>
                     </div>
 
-              
-
                     {!notification.isRead && (
                       <span className="w-2.5 h-2.5 bg-blue-600 rounded-full flex-shrink-0 mt-1.5 sm:mt-2" />
                     )}
                   </div>
-
-                 
 
                   {notification.booking && (
                     <div className="mt-3 text-xs sm:text-sm text-gray-500 bg-gray-50 rounded-lg p-2.5 sm:p-3 break-words">
@@ -404,8 +346,6 @@ const ProfessionalNotifications = () => {
                       )}
                     </div>
                   )}
-
-                  {/* Actions */}
 
                   <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mt-3 sm:mt-4">
                     {!notification.isRead && (

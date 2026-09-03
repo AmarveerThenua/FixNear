@@ -3,17 +3,12 @@ import React, { useEffect, useState } from "react";
 const ManageReviews = () => {
   const [reviews, setReviews] = useState([]);
   const [filteredReviews, setFilteredReviews] = useState([]);
-
   const [search, setSearch] = useState("");
   const [ratingFilter, setRatingFilter] = useState("all");
-
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-
   const [selectedReview, setSelectedReview] = useState(null);
   const [showDetails, setShowDetails] = useState(false);
-
-
 
   const fetchReviews = async () => {
     try {
@@ -27,7 +22,7 @@ const ManageReviews = () => {
       }
 
       const response = await fetch(
-        "http://localhost:5000/api/reviews/admin/all",
+        `${import.meta.env.VITE_API_URL}/reviews/admin/all`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -38,9 +33,7 @@ const ManageReviews = () => {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(
-          data.message || "Failed to fetch reviews"
-        );
+        throw new Error(data.message || "Failed to fetch reviews");
       }
 
       setReviews(data.reviews || []);
@@ -56,8 +49,6 @@ const ManageReviews = () => {
     fetchReviews();
   }, []);
 
-
-
   useEffect(() => {
     let result = [...reviews];
 
@@ -66,18 +57,10 @@ const ManageReviews = () => {
 
       result = result.filter((review) => {
         return (
-          review.comment
-            ?.toLowerCase()
-            .includes(searchValue) ||
-          review.user?.name
-            ?.toLowerCase()
-            .includes(searchValue) ||
-          review.user?.email
-            ?.toLowerCase()
-            .includes(searchValue) ||
-          review.professional?.name
-            ?.toLowerCase()
-            .includes(searchValue) ||
+          review.comment?.toLowerCase().includes(searchValue) ||
+          review.user?.name?.toLowerCase().includes(searchValue) ||
+          review.user?.email?.toLowerCase().includes(searchValue) ||
+          review.professional?.name?.toLowerCase().includes(searchValue) ||
           review.professional?.profession
             ?.toLowerCase()
             .includes(searchValue)
@@ -87,16 +70,12 @@ const ManageReviews = () => {
 
     if (ratingFilter !== "all") {
       result = result.filter(
-        (review) =>
-          String(review.rating) ===
-          String(ratingFilter)
+        (review) => String(review.rating) === String(ratingFilter)
       );
     }
 
     setFilteredReviews(result);
   }, [reviews, search, ratingFilter]);
-
- 
 
   const deleteReview = async (reviewId) => {
     const confirmDelete = window.confirm(
@@ -109,7 +88,7 @@ const ManageReviews = () => {
       const token = localStorage.getItem("fixnearToken");
 
       const response = await fetch(
-        `http://localhost:5000/api/reviews/admin/${reviewId}`,
+        `${import.meta.env.VITE_API_URL}/reviews/admin/${reviewId}`,
         {
           method: "DELETE",
           headers: {
@@ -121,16 +100,10 @@ const ManageReviews = () => {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(
-          data.message || "Failed to delete review"
-        );
+        throw new Error(data.message || "Failed to delete review");
       }
 
-      setReviews((prev) =>
-        prev.filter(
-          (review) => review._id !== reviewId
-        )
-      );
+      setReviews((prev) => prev.filter((review) => review._id !== reviewId));
 
       setSelectedReview(null);
       setShowDetails(false);
@@ -142,14 +115,12 @@ const ManageReviews = () => {
     }
   };
 
-
-
   const viewReview = async (reviewId) => {
     try {
       const token = localStorage.getItem("fixnearToken");
 
       const response = await fetch(
-        `http://localhost:5000/api/reviews/admin/${reviewId}`,
+        `${import.meta.env.VITE_API_URL}/reviews/admin/${reviewId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -160,9 +131,7 @@ const ManageReviews = () => {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(
-          data.message || "Failed to fetch review"
-        );
+        throw new Error(data.message || "Failed to fetch review");
       }
 
       setSelectedReview(data.review);
@@ -173,21 +142,15 @@ const ManageReviews = () => {
     }
   };
 
-
-
   const formatDate = (date) => {
     if (!date) return "N/A";
 
-    return new Date(date).toLocaleDateString(
-      "en-IN",
-      {
-        day: "2-digit",
-        month: "short",
-        year: "numeric",
-      }
-    );
+    return new Date(date).toLocaleDateString("en-IN", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    });
   };
-
 
   const renderStars = (rating) => {
     const value = Number(rating) || 0;
@@ -197,11 +160,7 @@ const ManageReviews = () => {
         {[1, 2, 3, 4, 5].map((star) => (
           <span
             key={star}
-            className={
-              star <= value
-                ? "text-yellow-500"
-                : "text-gray-300"
-            }
+            className={star <= value ? "text-yellow-500" : "text-gray-300"}
           >
             ★
           </span>
@@ -209,7 +168,6 @@ const ManageReviews = () => {
       </div>
     );
   };
-
 
   const totalReviews = reviews.length;
 
@@ -225,14 +183,11 @@ const ManageReviews = () => {
     reviews.length > 0
       ? (
           reviews.reduce(
-            (sum, review) =>
-              sum + Number(review.rating || 0),
+            (sum, review) => sum + Number(review.rating || 0),
             0
           ) / reviews.length
         ).toFixed(1)
       : "0.0";
-
-
 
   if (loading) {
     return (
@@ -250,8 +205,6 @@ const ManageReviews = () => {
 
   return (
     <div className="space-y-4 sm:space-y-6 w-full min-w-0">
-
-
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div className="min-w-0">
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">
@@ -271,64 +224,43 @@ const ManageReviews = () => {
         </button>
       </div>
 
-
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-        {/* Total */}
-
         <div className="bg-white rounded-xl border border-gray-200 p-4 sm:p-5">
-          <p className="text-xs sm:text-sm text-gray-500">
-            Total Reviews
-          </p>
+          <p className="text-xs sm:text-sm text-gray-500">Total Reviews</p>
 
           <h2 className="text-xl sm:text-2xl font-bold text-gray-800 mt-2">
             {totalReviews}
           </h2>
         </div>
 
-
-
         <div className="bg-white rounded-xl border border-gray-200 p-4 sm:p-5">
-          <p className="text-xs sm:text-sm text-gray-500">
-            Average Rating
-          </p>
+          <p className="text-xs sm:text-sm text-gray-500">Average Rating</p>
 
           <div className="flex items-center gap-1.5 sm:gap-2 mt-2">
             <h2 className="text-xl sm:text-2xl font-bold text-gray-800">
               {averageRating}
             </h2>
 
-            <span className="text-yellow-500 text-lg sm:text-xl">
-              ★
-            </span>
+            <span className="text-yellow-500 text-lg sm:text-xl">★</span>
           </div>
         </div>
 
-    
-
         <div className="bg-white rounded-xl border border-gray-200 p-4 sm:p-5">
-          <p className="text-xs sm:text-sm text-gray-500">
-            5 Star Reviews
-          </p>
+          <p className="text-xs sm:text-sm text-gray-500">5 Star Reviews</p>
 
           <h2 className="text-xl sm:text-2xl font-bold text-green-600 mt-2">
             {fiveStarReviews}
           </h2>
         </div>
 
-   
-
         <div className="bg-white rounded-xl border border-gray-200 p-4 sm:p-5">
-          <p className="text-xs sm:text-sm text-gray-500">
-            Low Ratings
-          </p>
+          <p className="text-xs sm:text-sm text-gray-500">Low Ratings</p>
 
           <h2 className="text-xl sm:text-2xl font-bold text-red-600 mt-2">
             {lowRatingReviews}
           </h2>
         </div>
       </div>
-
-    
 
       <div className="bg-white rounded-xl border border-gray-200 p-4 sm:p-5">
         <div className="flex flex-col md:flex-row gap-3 sm:gap-4">
@@ -341,9 +273,7 @@ const ManageReviews = () => {
               type="text"
               placeholder="Search by customer, professional or review..."
               value={search}
-              onChange={(e) =>
-                setSearch(e.target.value)
-              }
+              onChange={(e) => setSearch(e.target.value)}
               className="w-full px-3 sm:px-4 py-2.5 border border-gray-300 rounded-lg outline-none text-sm sm:text-base focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             />
           </div>
@@ -355,34 +285,15 @@ const ManageReviews = () => {
 
             <select
               value={ratingFilter}
-              onChange={(e) =>
-                setRatingFilter(e.target.value)
-              }
+              onChange={(e) => setRatingFilter(e.target.value)}
               className="w-full px-3 sm:px-4 py-2.5 border border-gray-300 rounded-lg outline-none text-sm sm:text-base bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             >
-              <option value="all">
-                All Ratings
-              </option>
-
-              <option value="5">
-                5 Stars
-              </option>
-
-              <option value="4">
-                4 Stars
-              </option>
-
-              <option value="3">
-                3 Stars
-              </option>
-
-              <option value="2">
-                2 Stars
-              </option>
-
-              <option value="1">
-                1 Star
-              </option>
+              <option value="all">All Ratings</option>
+              <option value="5">5 Stars</option>
+              <option value="4">4 Stars</option>
+              <option value="3">3 Stars</option>
+              <option value="2">2 Stars</option>
+              <option value="1">1 Star</option>
             </select>
           </div>
         </div>
@@ -414,20 +325,15 @@ const ManageReviews = () => {
         )}
       </div>
 
-    
-
       {error && (
-        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm sm:text-base bwrap-break-word">
+        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm sm:text-base wrap-break-word">
           {error}
         </div>
       )}
 
-
       {filteredReviews.length === 0 ? (
         <div className="bg-white rounded-xl border border-gray-200 p-8 sm:p-10 text-center">
-          <div className="text-4xl mb-3">
-            ⭐
-          </div>
+          <div className="text-4xl mb-3">⭐</div>
 
           <h3 className="text-base sm:text-lg font-semibold text-gray-800">
             No reviews found
@@ -451,8 +357,6 @@ const ManageReviews = () => {
         </div>
       ) : (
         <div className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
-          {/* Table */}
-
           <div className="overflow-x-auto">
             <table className="w-full min-w-[950px]">
               <thead className="bg-gray-50 border-b border-gray-200">
@@ -489,8 +393,6 @@ const ManageReviews = () => {
                     key={review._id}
                     className="hover:bg-gray-50 transition"
                   >
-                  
-
                     <td className="px-4 sm:px-5 py-4">
                       <div className="min-w-42.5">
                         <p className="font-medium text-sm text-gray-800 truncate max-w-45">
@@ -503,23 +405,17 @@ const ManageReviews = () => {
                       </div>
                     </td>
 
-                    {/* Professional */}
-
                     <td className="px-4 sm:px-5 py-4">
                       <div className="min-w-37.5">
                         <p className="font-medium text-sm text-gray-800 truncate max-w-45">
-                          {review.professional?.name ||
-                            "N/A"}
+                          {review.professional?.name || "N/A"}
                         </p>
 
                         <p className="text-xs text-gray-500 truncate max-w-45">
-                          {review.professional
-                            ?.profession || ""}
+                          {review.professional?.profession || ""}
                         </p>
                       </div>
                     </td>
-
-                 
 
                     <td className="px-4 sm:px-5 py-4">
                       {renderStars(review.rating)}
@@ -529,42 +425,29 @@ const ManageReviews = () => {
                       </p>
                     </td>
 
-              
-
                     <td className="px-4 sm:px-5 py-4 max-w-xs">
                       <p className="text-sm text-gray-700 truncate max-w-[220px]">
-                        {review.comment ||
-                          "No comment"}
+                        {review.comment || "No comment"}
                       </p>
                     </td>
-
-                    
 
                     <td className="px-4 sm:px-5 py-4">
                       <p className="text-sm text-gray-700 whitespace-nowrap">
-                        {formatDate(
-                          review.createdAt
-                        )}
+                        {formatDate(review.createdAt)}
                       </p>
                     </td>
-
-                 
 
                     <td className="px-4 sm:px-5 py-4">
                       <div className="flex justify-end gap-2 min-w-[150px]">
                         <button
-                          onClick={() =>
-                            viewReview(review._id)
-                          }
+                          onClick={() => viewReview(review._id)}
                           className="px-3 py-1.5 text-xs font-medium text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 transition"
                         >
                           View
                         </button>
 
                         <button
-                          onClick={() =>
-                            deleteReview(review._id)
-                          }
+                          onClick={() => deleteReview(review._id)}
                           className="px-3 py-1.5 text-xs font-medium text-red-600 bg-red-50 rounded-lg hover:bg-red-100 transition"
                         >
                           Delete
@@ -577,15 +460,12 @@ const ManageReviews = () => {
             </table>
           </div>
 
-       
-
           <div className="lg:hidden px-4 py-2.5 border-t border-gray-100 bg-gray-50">
             <p className="text-xs text-gray-500 text-center">
               ← Swipe horizontally to view all columns →
             </p>
           </div>
 
-         
           <div className="px-4 sm:px-5 py-3 sm:py-4 border-t border-gray-200">
             <p className="text-xs sm:text-sm text-gray-500">
               Showing{" "}
@@ -602,8 +482,6 @@ const ManageReviews = () => {
         </div>
       )}
 
-  
-
       {showDetails && selectedReview && (
         <div
           className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-3 sm:p-4"
@@ -614,12 +492,8 @@ const ManageReviews = () => {
         >
           <div
             className="bg-white rounded-xl sm:rounded-2xl w-full max-w-2xl max-h-[94vh] sm:max-h-[90vh] overflow-hidden flex flex-col shadow-xl"
-            onClick={(event) =>
-              event.stopPropagation()
-            }
+            onClick={(event) => event.stopPropagation()}
           >
-      
-
             <div className="flex items-start justify-between gap-3 px-4 sm:px-6 py-4 sm:py-5 border-b border-gray-200 shrink-0">
               <div className="min-w-0">
                 <h2 className="text-lg sm:text-xl font-bold text-gray-800">
@@ -643,10 +517,7 @@ const ManageReviews = () => {
               </button>
             </div>
 
-           
-
             <div className="p-4 sm:p-6 space-y-4 sm:space-y-5 overflow-y-auto">
-              
               <div className="border border-gray-200 rounded-xl p-4 sm:p-5">
                 <p className="text-xs sm:text-sm text-gray-500 mb-2">
                   Rating
@@ -654,9 +525,7 @@ const ManageReviews = () => {
 
                 <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
                   <div className="text-xl sm:text-2xl">
-                    {renderStars(
-                      selectedReview.rating
-                    )}
+                    {renderStars(selectedReview.rating)}
                   </div>
 
                   <span className="font-semibold text-sm sm:text-base text-gray-800">
@@ -665,40 +534,28 @@ const ManageReviews = () => {
                 </div>
               </div>
 
-           
               <div className="border border-gray-200 rounded-xl p-4 sm:p-5">
                 <h3 className="font-semibold text-gray-800 mb-3 text-sm sm:text-base">
                   Customer
                 </h3>
 
                 <div className="space-y-2">
-                  <p className="text-sm text-gray-700 bwrap-break-word">
-                    <span className="font-medium">
-                      Name:
-                    </span>{" "}
-                    {selectedReview.user?.name ||
-                      "N/A"}
+                  <p className="text-sm text-gray-700 wrap-break-word">
+                    <span className="font-medium">Name:</span>{" "}
+                    {selectedReview.user?.name || "N/A"}
                   </p>
 
                   <p className="text-sm text-gray-700 break-all">
-                    <span className="font-medium">
-                      Email:
-                    </span>{" "}
-                    {selectedReview.user?.email ||
-                      "N/A"}
+                    <span className="font-medium">Email:</span>{" "}
+                    {selectedReview.user?.email || "N/A"}
                   </p>
 
-                  <p className="text-sm text-gray-700 bwrap-break-word">
-                    <span className="font-medium">
-                      Phone:
-                    </span>{" "}
-                    {selectedReview.user?.phone ||
-                      "N/A"}
+                  <p className="text-sm text-gray-700 wrap-break-word">
+                    <span className="font-medium">Phone:</span>{" "}
+                    {selectedReview.user?.phone || "N/A"}
                   </p>
                 </div>
               </div>
-
-         
 
               <div className="border border-gray-200 rounded-xl p-4 sm:p-5">
                 <h3 className="font-semibold text-gray-800 mb-3 text-sm sm:text-base">
@@ -706,46 +563,32 @@ const ManageReviews = () => {
                 </h3>
 
                 <div className="space-y-2">
-                  <p className="text-sm text-gray-700 bwrap-break-word">
-                    <span className="font-medium">
-                      Name:
-                    </span>{" "}
-                    {selectedReview.professional
-                      ?.name || "N/A"}
-                  </p>
-
-                  <p className="text-sm text-gray-700 bwrap-break-word">
-                    <span className="font-medium">
-                      Profession:
-                    </span>{" "}
-                    {selectedReview.professional
-                      ?.profession || "N/A"}
+                  <p className="text-sm text-gray-700 wrap-break-word">
+                    <span className="font-medium">Name:</span>{" "}
+                    {selectedReview.professional?.name || "N/A"}
                   </p>
 
                   <p className="text-sm text-gray-700 wrap-break-word">
-                    <span className="font-medium">
-                      Phone:
-                    </span>{" "}
-                    {selectedReview.professional
-                      ?.phone || "N/A"}
+                    <span className="font-medium">Profession:</span>{" "}
+                    {selectedReview.professional?.profession || "N/A"}
+                  </p>
+
+                  <p className="text-sm text-gray-700 wrap-break-word">
+                    <span className="font-medium">Phone:</span>{" "}
+                    {selectedReview.professional?.phone || "N/A"}
                   </p>
                 </div>
               </div>
-
-   
 
               <div className="border border-gray-200 rounded-xl p-4 sm:p-5">
                 <h3 className="font-semibold text-gray-800 mb-3 text-sm sm:text-base">
                   Customer Review
                 </h3>
 
-                <p className="text-sm text-gray-700 leading-6 whitespace-pre-wrap bwrap-break-word">
-                  {selectedReview.comment ||
-                    "No comment"}
+                <p className="text-sm text-gray-700 leading-6 whitespace-pre-wrap wrap-break-word">
+                  {selectedReview.comment || "No comment"}
                 </p>
               </div>
-
-            
 
               {selectedReview.booking && (
                 <div className="border border-gray-200 rounded-xl p-4 sm:p-5">
@@ -754,63 +597,42 @@ const ManageReviews = () => {
                   </h3>
 
                   <div className="space-y-2">
-                    <p className="text-sm text-gray-700 bwrap-break-word">
-                      <span className="font-medium">
-                        Service:
-                      </span>{" "}
-                      {selectedReview.booking
-                        ?.service || "N/A"}
+                    <p className="text-sm text-gray-700 wrap-break-word">
+                      <span className="font-medium">Service:</span>{" "}
+                      {selectedReview.booking?.service || "N/A"}
                     </p>
 
                     <p className="text-sm text-gray-700">
-                      <span className="font-medium">
-                        Date:
-                      </span>{" "}
-                      {formatDate(
-                        selectedReview.booking?.date
-                      )}
+                      <span className="font-medium">Date:</span>{" "}
+                      {formatDate(selectedReview.booking?.date)}
                     </p>
 
                     <p className="text-sm text-gray-700">
-                      <span className="font-medium">
-                        Status:
-                      </span>{" "}
+                      <span className="font-medium">Status:</span>{" "}
                       <span className="capitalize">
-                        {selectedReview.booking
-                          ?.status || "N/A"}
+                        {selectedReview.booking?.status || "N/A"}
                       </span>
                     </p>
                   </div>
                 </div>
               )}
 
-
               <div className="text-xs sm:text-sm text-gray-500">
                 Review submitted on{" "}
                 <span className="font-medium text-gray-700">
-                  {formatDate(
-                    selectedReview.createdAt
-                  )}
+                  {formatDate(selectedReview.createdAt)}
                 </span>
               </div>
 
-           
-
               <div className="border-t border-gray-200 pt-4 sm:pt-5">
                 <button
-                  onClick={() =>
-                    deleteReview(
-                      selectedReview._id
-                    )
-                  }
+                  onClick={() => deleteReview(selectedReview._id)}
                   className="w-full sm:w-auto px-4 py-2.5 bg-red-600 text-white text-sm rounded-lg hover:bg-red-700 transition"
                 >
                   Delete Review
                 </button>
               </div>
             </div>
-
-            
 
             <div className="px-4 sm:px-6 py-4 border-t border-gray-200 shrink-0">
               <button

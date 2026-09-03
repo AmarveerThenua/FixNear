@@ -17,14 +17,10 @@ const Reviews = () => {
 
   const token = localStorage.getItem("fixnearToken");
 
-  // =========================
-  // Fetch Existing Reviews
-  // =========================
-
   const fetchReviews = async () => {
     try {
       const response = await fetch(
-        "http://localhost:5000/api/reviews/my",
+        `${import.meta.env.VITE_API_URL}/reviews/my`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -42,14 +38,10 @@ const Reviews = () => {
     }
   };
 
-  // =========================
-  // Fetch Reviewable Bookings
-  // =========================
-
   const fetchReviewableBookings = async () => {
     try {
       const response = await fetch(
-        "http://localhost:5000/api/reviews/reviewable",
+        `${import.meta.env.VITE_API_URL}/reviews/reviewable`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -70,10 +62,6 @@ const Reviews = () => {
     }
   };
 
-  // =========================
-  // Fetch Everything
-  // =========================
-
   const fetchData = async () => {
     setLoading(true);
 
@@ -89,10 +77,6 @@ const Reviews = () => {
     fetchData();
   }, []);
 
-  // =========================
-  // Open Review Modal
-  // =========================
-
   const openReviewModal = (booking) => {
     setSelectedBooking(booking);
 
@@ -103,10 +87,6 @@ const Reviews = () => {
     setShowModal(true);
   };
 
-  // =========================
-  // Close Modal
-  // =========================
-
   const closeModal = () => {
     if (submitting) return;
 
@@ -116,10 +96,6 @@ const Reviews = () => {
     setHoverRating(0);
     setComment("");
   };
-
-  // =========================
-  // Submit Review
-  // =========================
 
   const handleSubmitReview = async (e) => {
     e.preventDefault();
@@ -138,7 +114,7 @@ const Reviews = () => {
       setSubmitting(true);
 
       const response = await fetch(
-        "http://localhost:5000/api/reviews",
+        `${import.meta.env.VITE_API_URL}/reviews`,
         {
           method: "POST",
           headers: {
@@ -180,10 +156,6 @@ const Reviews = () => {
     }
   };
 
-  // =========================
-  // Display Stars
-  // =========================
-
   const DisplayStars = ({ rating }) => {
     return (
       <div className="flex items-center gap-0.5 sm:gap-1">
@@ -198,10 +170,6 @@ const Reviews = () => {
       </div>
     );
   };
-
-  // =========================
-  // Interactive Stars
-  // =========================
 
   const InteractiveStars = () => {
     const currentRating =
@@ -232,10 +200,6 @@ const Reviews = () => {
     );
   };
 
-  // =========================
-  // Loading
-  // =========================
-
   if (loading) {
     return (
       <div className="min-h-[400px] flex items-center justify-center px-4">
@@ -252,10 +216,6 @@ const Reviews = () => {
 
   return (
     <div className="w-full max-w-5xl mx-auto">
-      {/* =========================
-          Page Header
-      ========================= */}
-
       <div className="mb-6 sm:mb-8">
         <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
           My Reviews
@@ -265,10 +225,6 @@ const Reviews = () => {
           Share your experience with the professionals you hired.
         </p>
       </div>
-
-      {/* =====================================
-          SERVICES WAITING FOR REVIEW
-      ===================================== */}
 
       {reviewableBookings.length > 0 && (
         <section className="mb-8 sm:mb-10">
@@ -289,11 +245,7 @@ const Reviews = () => {
                   key={booking._id}
                   className="bg-white border border-gray-200 rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 shadow-sm hover:shadow-md transition"
                 >
-                  {/* Professional + Button */}
-
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-5">
-                    {/* Professional */}
-
                     <div className="flex items-center gap-3 sm:gap-4 min-w-0">
                       <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full overflow-hidden bg-gray-100 flex-shrink-0">
                         {booking.professional?.image ? (
@@ -330,8 +282,6 @@ const Reviews = () => {
                       </div>
                     </div>
 
-                    {/* Button */}
-
                     <button
                       type="button"
                       onClick={() =>
@@ -344,8 +294,6 @@ const Reviews = () => {
                       Write Review
                     </button>
                   </div>
-
-                  {/* Booking Details */}
 
                   <div className="mt-4 sm:mt-5 pt-4 sm:pt-5 border-t border-gray-100">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3 text-xs sm:text-sm">
@@ -374,10 +322,6 @@ const Reviews = () => {
           </div>
         </section>
       )}
-
-      {/* =====================================
-          EXISTING REVIEWS
-      ===================================== */}
 
       <section>
         <h2 className="text-lg sm:text-xl font-bold text-gray-900 mb-4 sm:mb-5">
@@ -430,15 +374,11 @@ const Reviews = () => {
                 </p>
 
                 <div className="mt-4 sm:mt-5 pt-3 sm:pt-4 border-t border-gray-100 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs sm:text-sm text-gray-500">
-                  {review.booking
-                    ?.service && (
+                  {review.booking?.service && (
                     <>
                       <span>
                         Service:{" "}
-                        {
-                          review.booking
-                            .service
-                        }
+                        {review.booking.service}
                       </span>
 
                       <span className="hidden sm:inline">
@@ -461,15 +401,9 @@ const Reviews = () => {
         )}
       </section>
 
-      {/* =====================================
-          REVIEW MODAL
-      ===================================== */}
-
       {showModal && selectedBooking && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-3 sm:px-4 py-4">
           <div className="w-full max-w-lg max-h-[90vh] overflow-y-auto bg-white rounded-xl sm:rounded-2xl shadow-2xl">
-            {/* Modal Header */}
-
             <div className="flex items-start justify-between gap-4 px-4 sm:px-6 py-4 sm:py-5 border-b">
               <div className="min-w-0">
                 <h2 className="text-lg sm:text-xl font-bold text-gray-900">
@@ -496,14 +430,10 @@ const Reviews = () => {
               </button>
             </div>
 
-            {/* Modal Body */}
-
             <form
               onSubmit={handleSubmitReview}
               className="p-4 sm:p-6"
             >
-              {/* Rating */}
-
               <div className="text-center mb-6 sm:mb-7">
                 <p className="text-sm sm:text-base font-medium text-gray-800 mb-3 sm:mb-4">
                   How was your experience?
@@ -517,8 +447,6 @@ const Reviews = () => {
                   </p>
                 )}
               </div>
-
-              {/* Comment */}
 
               <div className="mb-5 sm:mb-6">
                 <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -542,8 +470,6 @@ const Reviews = () => {
                   {comment.length}/500
                 </div>
               </div>
-
-              {/* Buttons */}
 
               <div className="flex flex-col-reverse sm:flex-row gap-2.5 sm:gap-3">
                 <button

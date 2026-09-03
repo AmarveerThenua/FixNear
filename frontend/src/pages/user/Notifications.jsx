@@ -8,10 +8,6 @@ const Notifications = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  // =========================
-  // Fetch Notifications
-  // =========================
-
   const fetchNotifications = async () => {
     try {
       const token = localStorage.getItem("fixnearToken");
@@ -23,7 +19,7 @@ const Notifications = () => {
       }
 
       const response = await axios.get(
-        "http://localhost:5000/api/notifications",
+        `${import.meta.env.VITE_API_URL}/notifications`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -53,24 +49,16 @@ const Notifications = () => {
     }
   };
 
-  // =========================
-  // Load Notifications
-  // =========================
-
   useEffect(() => {
     fetchNotifications();
   }, []);
-
-  // =========================
-  // Mark One As Read
-  // =========================
 
   const markAsRead = async (id) => {
     try {
       const token = localStorage.getItem("fixnearToken");
 
       await axios.put(
-        `http://localhost:5000/api/notifications/${id}/read`,
+        `${import.meta.env.VITE_API_URL}/notifications/${id}/read`,
         {},
         {
           headers: {
@@ -101,16 +89,12 @@ const Notifications = () => {
     }
   };
 
-  // =========================
-  // Mark All As Read
-  // =========================
-
   const markAllAsRead = async () => {
     try {
       const token = localStorage.getItem("fixnearToken");
 
       await axios.put(
-        "http://localhost:5000/api/notifications/read-all",
+        `${import.meta.env.VITE_API_URL}/notifications/read-all`,
         {},
         {
           headers: {
@@ -135,16 +119,12 @@ const Notifications = () => {
     }
   };
 
-  // =========================
-  // Delete Notification
-  // =========================
-
   const deleteNotification = async (id) => {
     try {
       const token = localStorage.getItem("fixnearToken");
 
       await axios.delete(
-        `http://localhost:5000/api/notifications/${id}`,
+        `${import.meta.env.VITE_API_URL}/notifications/${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -181,10 +161,6 @@ const Notifications = () => {
     }
   };
 
-  // =========================
-  // Notification Icon
-  // =========================
-
   const getNotificationIcon = (type) => {
     switch (type) {
       case "booking_accepted":
@@ -210,10 +186,6 @@ const Notifications = () => {
     }
   };
 
-  // =========================
-  // Format Time
-  // =========================
-
   const formatTime = (date) => {
     const notificationDate = new Date(date);
 
@@ -228,10 +200,6 @@ const Notifications = () => {
       }
     );
   };
-
-  // =========================
-  // Loading
-  // =========================
 
   if (loading) {
     return (
@@ -249,10 +217,6 @@ const Notifications = () => {
 
   return (
     <section className="w-full">
-      {/* =========================
-          Header
-      ========================= */}
-
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6 sm:mb-8">
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-2 sm:gap-3">
@@ -283,10 +247,6 @@ const Notifications = () => {
         )}
       </div>
 
-      {/* =========================
-          Error
-      ========================= */}
-
       {error && (
         <div className="mb-5 sm:mb-6 p-3 sm:p-4 bg-red-50 border border-red-200 rounded-xl">
           <p className="text-sm sm:text-base text-red-600 break-words">
@@ -294,10 +254,6 @@ const Notifications = () => {
           </p>
         </div>
       )}
-
-      {/* =========================
-          Empty State
-      ========================= */}
 
       {notifications.length === 0 ? (
         <div className="bg-white rounded-xl sm:rounded-2xl border border-gray-200 p-7 sm:p-10 md:p-12 text-center">
@@ -314,10 +270,6 @@ const Notifications = () => {
           </p>
         </div>
       ) : (
-        /* =========================
-           Notifications
-        ========================= */
-
         <div className="space-y-3 sm:space-y-4">
           {notifications.map((notification) => (
             <div
@@ -329,8 +281,6 @@ const Notifications = () => {
               }`}
             >
               <div className="flex items-start gap-3 sm:gap-4 min-w-0">
-                {/* Icon */}
-
                 <div
                   className={`w-10 h-10 sm:w-11 sm:h-11 flex-shrink-0 rounded-full flex items-center justify-center text-base sm:text-lg ${
                     notification.isRead
@@ -342,8 +292,6 @@ const Notifications = () => {
                     notification.type
                   )}
                 </div>
-
-                {/* Content */}
 
                 <div className="flex-1 min-w-0">
                   <div className="flex flex-col gap-1.5 sm:flex-row sm:items-start sm:justify-between sm:gap-3">
@@ -367,8 +315,6 @@ const Notifications = () => {
                   <p className="mt-2 text-xs sm:text-sm text-gray-600 break-words leading-relaxed">
                     {notification.message}
                   </p>
-
-                  {/* Actions */}
 
                   <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mt-3">
                     {!notification.isRead && (

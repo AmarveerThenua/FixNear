@@ -12,10 +12,6 @@ const ManageUsers = () => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [selectedRole, setSelectedRole] = useState("");
 
-  // =========================
-  // Fetch Users
-  // =========================
-
   const fetchUsers = async () => {
     try {
       setLoading(true);
@@ -30,7 +26,7 @@ const ManageUsers = () => {
       }
 
       const response = await axios.get(
-        "http://localhost:5000/api/users/admin/all",
+        `${import.meta.env.VITE_API_URL}/users/admin/all`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -44,8 +40,7 @@ const ManageUsers = () => {
       console.error("Failed to fetch users:", error);
 
       setError(
-        error.response?.data?.message ||
-          "Failed to load users."
+        error.response?.data?.message || "Failed to load users."
       );
     } finally {
       setLoading(false);
@@ -56,10 +51,6 @@ const ManageUsers = () => {
     fetchUsers();
   }, []);
 
-  // =========================
-  // Update User Role
-  // =========================
-
   const handleRoleUpdate = async () => {
     if (!selectedUser || !selectedRole) {
       return;
@@ -69,7 +60,7 @@ const ManageUsers = () => {
       const token = localStorage.getItem("fixnearToken");
 
       await axios.put(
-        `http://localhost:5000/api/users/admin/${selectedUser._id}/role`,
+        `${import.meta.env.VITE_API_URL}/users/admin/${selectedUser._id}/role`,
         {
           role: selectedRole,
         },
@@ -96,10 +87,6 @@ const ManageUsers = () => {
     }
   };
 
-  // =========================
-  // Delete User
-  // =========================
-
   const handleDeleteUser = async (user) => {
     const confirmed = window.confirm(
       `Are you sure you want to delete ${user.name}?`
@@ -113,7 +100,7 @@ const ManageUsers = () => {
       const token = localStorage.getItem("fixnearToken");
 
       await axios.delete(
-        `http://localhost:5000/api/users/admin/${user._id}`,
+        `${import.meta.env.VITE_API_URL}/users/admin/${user._id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -122,9 +109,7 @@ const ManageUsers = () => {
       );
 
       setUsers((previousUsers) =>
-        previousUsers.filter(
-          (item) => item._id !== user._id
-        )
+        previousUsers.filter((item) => item._id !== user._id)
       );
 
       if (selectedUser?._id === user._id) {
@@ -143,39 +128,20 @@ const ManageUsers = () => {
     }
   };
 
-  // =========================
-  // Filter Users
-  // =========================
-
   const filteredUsers = users.filter((user) => {
-    const searchText = search
-      .toLowerCase()
-      .trim();
+    const searchText = search.toLowerCase().trim();
 
     const matchesSearch =
-      user.name
-        ?.toLowerCase()
-        .includes(searchText) ||
-      user.email
-        ?.toLowerCase()
-        .includes(searchText) ||
-      user.phone
-        ?.toLowerCase()
-        .includes(searchText) ||
-      user.location
-        ?.toLowerCase()
-        .includes(searchText);
+      user.name?.toLowerCase().includes(searchText) ||
+      user.email?.toLowerCase().includes(searchText) ||
+      user.phone?.toLowerCase().includes(searchText) ||
+      user.location?.toLowerCase().includes(searchText);
 
     const matchesRole =
-      roleFilter === "all" ||
-      user.role === roleFilter;
+      roleFilter === "all" || user.role === roleFilter;
 
     return matchesSearch && matchesRole;
   });
-
-  // =========================
-  // Loading
-  // =========================
 
   if (loading) {
     return (
@@ -190,10 +156,6 @@ const ManageUsers = () => {
       </div>
     );
   }
-
-  // =========================
-  // Error
-  // =========================
 
   if (error) {
     return (
@@ -214,20 +176,7 @@ const ManageUsers = () => {
           <button
             type="button"
             onClick={fetchUsers}
-            className="
-              mt-5
-              w-full
-              sm:w-auto
-              px-5
-              py-2.5
-              bg-blue-600
-              text-white
-              text-sm
-              sm:text-base
-              rounded-lg
-              hover:bg-blue-700
-              transition
-            "
+            className="mt-5 w-full sm:w-auto px-5 py-2.5 bg-blue-600 text-white text-sm sm:text-base rounded-lg hover:bg-blue-700 transition"
           >
             Try Again
           </button>
@@ -238,10 +187,6 @@ const ManageUsers = () => {
 
   return (
     <div className="w-full min-w-0 space-y-4 sm:space-y-6">
-      {/* =========================
-          Page Header
-      ========================= */}
-
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
         <div className="min-w-0">
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">
@@ -253,33 +198,13 @@ const ManageUsers = () => {
           </p>
         </div>
 
-        <div
-          className="
-            w-full
-            sm:w-auto
-            px-4
-            py-2.5
-            bg-blue-50
-            text-blue-600
-            rounded-lg
-            font-medium
-            text-sm
-            text-center
-            whitespace-nowrap
-          "
-        >
+        <div className="w-full sm:w-auto px-4 py-2.5 bg-blue-50 text-blue-600 rounded-lg font-medium text-sm text-center whitespace-nowrap">
           Total Users: {users.length}
         </div>
       </div>
 
-      {/* =========================
-          Search & Filter
-      ========================= */}
-
       <div className="bg-white border border-gray-200 rounded-xl p-4 sm:p-5 shadow-sm">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* Search */}
-
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Search Users
@@ -288,30 +213,11 @@ const ManageUsers = () => {
             <input
               type="text"
               value={search}
-              onChange={(event) =>
-                setSearch(event.target.value)
-              }
+              onChange={(event) => setSearch(event.target.value)}
               placeholder="Search by name, email or phone..."
-              className="
-                w-full
-                px-3
-                sm:px-4
-                py-2.5
-                sm:py-3
-                text-sm
-                sm:text-base
-                border
-                border-gray-300
-                rounded-lg
-                outline-none
-                focus:ring-2
-                focus:ring-blue-500
-                focus:border-blue-500
-              "
+              className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             />
           </div>
-
-          {/* Role Filter */}
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -320,47 +226,16 @@ const ManageUsers = () => {
 
             <select
               value={roleFilter}
-              onChange={(event) =>
-                setRoleFilter(event.target.value)
-              }
-              className="
-                w-full
-                px-3
-                sm:px-4
-                py-2.5
-                sm:py-3
-                text-sm
-                sm:text-base
-                border
-                border-gray-300
-                rounded-lg
-                outline-none
-                focus:ring-2
-                focus:ring-blue-500
-                focus:border-blue-500
-                bg-white
-              "
+              onChange={(event) => setRoleFilter(event.target.value)}
+              className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
             >
-              <option value="all">
-                All Roles
-              </option>
-
-              <option value="user">
-                Users
-              </option>
-
-              <option value="professional">
-                Professionals
-              </option>
-
-              <option value="admin">
-                Admins
-              </option>
+              <option value="all">All Roles</option>
+              <option value="user">Users</option>
+              <option value="professional">Professionals</option>
+              <option value="admin">Admins</option>
             </select>
           </div>
         </div>
-
-        {/* Filter Summary */}
 
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mt-4 pt-4 border-t border-gray-100">
           <p className="text-xs sm:text-sm text-gray-500">
@@ -390,10 +265,6 @@ const ManageUsers = () => {
         </div>
       </div>
 
-      {/* =========================
-          Users Table
-      ========================= */}
-
       <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
         <div className="px-4 sm:px-5 py-4 border-b border-gray-200">
           <h2 className="text-base sm:text-lg font-semibold text-gray-800">
@@ -404,8 +275,6 @@ const ManageUsers = () => {
             Manage accounts and user roles.
           </p>
         </div>
-
-        {/* Horizontal Scroll Only Inside Table */}
 
         <div className="w-full overflow-x-auto overscroll-x-contain">
           <table className="w-full min-w-[900px]">
@@ -452,8 +321,7 @@ const ManageUsers = () => {
                       No users found.
                     </p>
 
-                    {(search ||
-                      roleFilter !== "all") && (
+                    {(search || roleFilter !== "all") && (
                       <button
                         type="button"
                         onClick={() => {
@@ -473,92 +341,59 @@ const ManageUsers = () => {
                     key={user._id}
                     className="hover:bg-gray-50 transition"
                   >
-                    {/* User */}
-
                     <td className="px-4 sm:px-6 py-4">
                       <div className="flex items-center gap-3 min-w-[230px]">
                         <div className="w-10 h-10 sm:w-11 sm:h-11 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-semibold shrink-0">
-                          {user.name
-                            ?.charAt(0)
-                            .toUpperCase() || "U"}
+                          {user.name?.charAt(0).toUpperCase() || "U"}
                         </div>
 
                         <div className="min-w-0">
                           <p className="font-medium text-sm sm:text-base text-gray-800 truncate max-w-[180px]">
-                            {user.name ||
-                              "Unnamed User"}
+                            {user.name || "Unnamed User"}
                           </p>
 
                           <p className="text-xs sm:text-sm text-gray-500 truncate max-w-[210px]">
-                            {user.email ||
-                              "No email"}
+                            {user.email || "No email"}
                           </p>
                         </div>
                       </div>
                     </td>
 
-                    {/* Phone */}
-
                     <td className="px-4 sm:px-6 py-4 text-sm text-gray-600">
                       <span className="whitespace-nowrap">
-                        {user.phone ||
-                          "Not provided"}
+                        {user.phone || "Not provided"}
                       </span>
                     </td>
-
-                    {/* Location */}
 
                     <td className="px-4 sm:px-6 py-4 text-sm text-gray-600">
                       <span className="break-words">
-                        {user.location ||
-                          "Not provided"}
+                        {user.location || "Not provided"}
                       </span>
                     </td>
 
-                    {/* Role */}
-
                     <td className="px-4 sm:px-6 py-4">
                       <span
-                        className={`
-                          inline-flex
-                          px-2.5
-                          sm:px-3
-                          py-1
-                          rounded-full
-                          text-[10px]
-                          sm:text-xs
-                          font-medium
-                          capitalize
-                          whitespace-nowrap
-                          ${
-                            user.role === "admin"
-                              ? "bg-purple-100 text-purple-700"
-                              : user.role ===
-                                "professional"
-                              ? "bg-green-100 text-green-700"
-                              : "bg-blue-100 text-blue-700"
-                          }
-                        `}
+                        className={`inline-flex px-2.5 sm:px-3 py-1 rounded-full text-[10px] sm:text-xs font-medium capitalize whitespace-nowrap ${
+                          user.role === "admin"
+                            ? "bg-purple-100 text-purple-700"
+                            : user.role === "professional"
+                            ? "bg-green-100 text-green-700"
+                            : "bg-blue-100 text-blue-700"
+                        }`}
                       >
                         {user.role || "user"}
                       </span>
                     </td>
-
-                    {/* Joined */}
 
                     <td className="px-4 sm:px-6 py-4 text-sm text-gray-600">
                       <span className="whitespace-nowrap">
                         {user.createdAt
                           ? new Date(
                               user.createdAt
-                            ).toLocaleDateString(
-                              "en-IN"
-                            )
+                            ).toLocaleDateString("en-IN")
                           : "—"}
                       </span>
                     </td>
-
-                    {/* Actions */}
 
                     <td className="px-4 sm:px-6 py-4">
                       <div className="flex items-center justify-end gap-2 min-w-[170px]">
@@ -566,45 +401,17 @@ const ManageUsers = () => {
                           type="button"
                           onClick={() => {
                             setSelectedUser(user);
-                            setSelectedRole(
-                              user.role
-                            );
+                            setSelectedRole(user.role);
                           }}
-                          className="
-                            min-h-10
-                            px-3
-                            py-2
-                            text-xs
-                            sm:text-sm
-                            bg-blue-50
-                            text-blue-600
-                            rounded-lg
-                            hover:bg-blue-100
-                            transition
-                            whitespace-nowrap
-                          "
+                          className="min-h-10 px-3 py-2 text-xs sm:text-sm bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition whitespace-nowrap"
                         >
                           Edit Role
                         </button>
 
                         <button
                           type="button"
-                          onClick={() =>
-                            handleDeleteUser(user)
-                          }
-                          className="
-                            min-h-10
-                            px-3
-                            py-2
-                            text-xs
-                            sm:text-sm
-                            bg-red-50
-                            text-red-600
-                            rounded-lg
-                            hover:bg-red-100
-                            transition
-                            whitespace-nowrap
-                          "
+                          onClick={() => handleDeleteUser(user)}
+                          className="min-h-10 px-3 py-2 text-xs sm:text-sm bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition whitespace-nowrap"
                         >
                           Delete
                         </button>
@@ -617,8 +424,6 @@ const ManageUsers = () => {
           </table>
         </div>
 
-        {/* Mobile Scroll Hint */}
-
         {filteredUsers.length > 0 && (
           <div className="lg:hidden px-4 py-2.5 border-t border-gray-100 bg-gray-50">
             <p className="text-xs text-gray-500 text-center">
@@ -628,44 +433,18 @@ const ManageUsers = () => {
         )}
       </div>
 
-      {/* =========================
-          Edit Role Modal
-      ========================= */}
-
       {selectedUser && (
         <div
-          className="
-            fixed
-            inset-0
-            z-50
-            bg-black/50
-            flex
-            items-center
-            justify-center
-            p-3
-            sm:p-4
-          "
+          className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-3 sm:p-4"
           onClick={() => {
             setSelectedUser(null);
             setSelectedRole("");
           }}
         >
           <div
-            className="
-              bg-white
-              rounded-xl
-              shadow-xl
-              w-full
-              max-w-md
-              max-h-[90vh]
-              overflow-y-auto
-            "
-            onClick={(event) =>
-              event.stopPropagation()
-            }
+            className="bg-white rounded-xl shadow-xl w-full max-w-md max-h-[90vh] overflow-y-auto"
+            onClick={(event) => event.stopPropagation()}
           >
-            {/* Modal Header */}
-
             <div className="flex items-start justify-between gap-3 p-4 sm:p-6 border-b border-gray-200">
               <div className="min-w-0">
                 <h2 className="text-lg sm:text-xl font-bold text-gray-800">
@@ -687,26 +466,12 @@ const ManageUsers = () => {
                   setSelectedUser(null);
                   setSelectedRole("");
                 }}
-                className="
-                  w-9
-                  h-9
-                  flex
-                  items-center
-                  justify-center
-                  shrink-0
-                  rounded-full
-                  bg-gray-100
-                  hover:bg-gray-200
-                  text-gray-600
-                  transition
-                "
+                className="w-9 h-9 flex items-center justify-center shrink-0 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 transition"
                 aria-label="Close"
               >
                 ✕
               </button>
             </div>
-
-            {/* Modal Body */}
 
             <div className="p-4 sm:p-6">
               <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -716,50 +481,24 @@ const ManageUsers = () => {
               <select
                 value={selectedRole}
                 onChange={(event) =>
-                  setSelectedRole(
-                    event.target.value
-                  )
+                  setSelectedRole(event.target.value)
                 }
-                className="
-                  w-full
-                  px-3
-                  sm:px-4
-                  py-2.5
-                  sm:py-3
-                  text-sm
-                  sm:text-base
-                  border
-                  border-gray-300
-                  rounded-lg
-                  outline-none
-                  focus:ring-2
-                  focus:ring-blue-500
-                  bg-white
-                "
+                className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 bg-white"
               >
-                <option value="user">
-                  User
-                </option>
-
+                <option value="user">User</option>
                 <option value="professional">
                   Professional
                 </option>
-
-                <option value="admin">
-                  Admin
-                </option>
+                <option value="admin">Admin</option>
               </select>
 
               <div className="mt-4 p-3 bg-yellow-50 border border-yellow-100 rounded-lg">
                 <p className="text-xs sm:text-sm text-yellow-700 leading-relaxed">
-                  Changing a user's role may
-                  change the areas of FixNear
-                  they can access.
+                  Changing a user's role may change the areas of
+                  FixNear they can access.
                 </p>
               </div>
             </div>
-
-            {/* Modal Footer */}
 
             <div className="flex flex-col-reverse sm:flex-row sm:justify-end gap-2 sm:gap-3 p-4 sm:p-6 border-t border-gray-200">
               <button
@@ -768,20 +507,7 @@ const ManageUsers = () => {
                   setSelectedUser(null);
                   setSelectedRole("");
                 }}
-                className="
-                  w-full
-                  sm:w-auto
-                  px-4
-                  py-2.5
-                  border
-                  border-gray-300
-                  text-gray-700
-                  text-sm
-                  sm:text-base
-                  rounded-lg
-                  hover:bg-gray-50
-                  transition
-                "
+                className="w-full sm:w-auto px-4 py-2.5 border border-gray-300 text-gray-700 text-sm sm:text-base rounded-lg hover:bg-gray-50 transition"
               >
                 Cancel
               </button>
@@ -789,19 +515,7 @@ const ManageUsers = () => {
               <button
                 type="button"
                 onClick={handleRoleUpdate}
-                className="
-                  w-full
-                  sm:w-auto
-                  px-4
-                  py-2.5
-                  bg-blue-600
-                  text-white
-                  text-sm
-                  sm:text-base
-                  rounded-lg
-                  hover:bg-blue-700
-                  transition
-                "
+                className="w-full sm:w-auto px-4 py-2.5 bg-blue-600 text-white text-sm sm:text-base rounded-lg hover:bg-blue-700 transition"
               >
                 Update Role
               </button>

@@ -27,7 +27,7 @@ const ProfessionalNavbar = () => {
 
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/notifications",
+          `${import.meta.env.VITE_API_URL}/notifications`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -37,11 +37,7 @@ const ProfessionalNavbar = () => {
 
         setUnreadCount(response.data.unreadCount || 0);
       } catch (error) {
-        console.error(
-          "Failed to fetch notification count:",
-          error
-        );
-
+        console.error("Failed to fetch notification count:", error);
         setUnreadCount(0);
       }
     };
@@ -55,13 +51,9 @@ const ProfessionalNavbar = () => {
     return () => clearInterval(interval);
   }, [user]);
 
-
-
   const closeMenu = () => {
     setMenuOpen(false);
   };
-
-
 
   const handleLogout = () => {
     closeMenu();
@@ -71,15 +63,8 @@ const ProfessionalNavbar = () => {
 
   return (
     <nav className="w-full bg-white shadow-sm relative z-50">
-
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
-
-    
-
         <div className="flex items-center justify-between">
-
-          {/* Logo */}
-
           <Link
             to="/professional-dashboard"
             onClick={closeMenu}
@@ -89,11 +74,7 @@ const ProfessionalNavbar = () => {
             </h1>
           </Link>
 
-
-        
-
           <div className="hidden lg:flex items-center gap-6 xl:gap-8">
-
             <Link
               to="/professional-dashboard"
               className="text-gray-700 hover:text-blue-600 transition"
@@ -114,17 +95,11 @@ const ProfessionalNavbar = () => {
             >
               Reviews
             </Link>
-
           </div>
 
-
-
           <div className="hidden lg:flex items-center gap-3">
-
             {user && (
               <>
-
-            
                 <Link
                   to="/professional-notifications"
                   className="relative flex items-center justify-center w-10 h-10 rounded-full hover:bg-gray-100 transition"
@@ -156,15 +131,10 @@ const ProfessionalNavbar = () => {
                         border-white
                       "
                     >
-                      {unreadCount > 99
-                        ? "99+"
-                        : unreadCount}
+                      {unreadCount > 99 ? "99+" : unreadCount}
                     </span>
                   )}
                 </Link>
-
-
-       
 
                 <Link
                   to="/professional-profile"
@@ -172,9 +142,6 @@ const ProfessionalNavbar = () => {
                 >
                   Profile
                 </Link>
-
-
-          
 
                 <button
                   onClick={handleLogout}
@@ -192,14 +159,9 @@ const ProfessionalNavbar = () => {
                 >
                   Logout
                 </button>
-
               </>
             )}
-
           </div>
-
-
-        
 
           <button
             onClick={() => setMenuOpen(!menuOpen)}
@@ -222,10 +184,7 @@ const ProfessionalNavbar = () => {
               className="text-xl"
             />
           </button>
-
         </div>
-
-
 
         {menuOpen && (
           <div
@@ -238,11 +197,7 @@ const ProfessionalNavbar = () => {
               animate-[slideDown_0.2s_ease-out]
             "
           >
-
             <div className="flex flex-col gap-2">
-
-              
-
               <Link
                 to="/professional-dashboard"
                 onClick={closeMenu}
@@ -258,9 +213,6 @@ const ProfessionalNavbar = () => {
               >
                 Dashboard
               </Link>
-
-
-      
 
               <Link
                 to="/professional-bookings"
@@ -278,9 +230,6 @@ const ProfessionalNavbar = () => {
                 Service Requests
               </Link>
 
-
-             
-
               <Link
                 to="/professional-reviews"
                 onClick={closeMenu}
@@ -297,12 +246,8 @@ const ProfessionalNavbar = () => {
                 Reviews
               </Link>
 
-
               {user && (
                 <div className="mt-2 pt-3 border-t border-gray-200">
-
-                  
-
                   <Link
                     to="/professional-notifications"
                     onClick={closeMenu}
@@ -323,15 +268,11 @@ const ProfessionalNavbar = () => {
 
                     {unreadCount > 0 && (
                       <span className="min-w-6 h-6 px-1 flex items-center justify-center bg-red-500 text-white text-xs font-bold rounded-full">
-                        {unreadCount > 99
-                          ? "99+"
-                          : unreadCount}
+                        {unreadCount > 99 ? "99+" : unreadCount}
                       </span>
                     )}
                   </Link>
 
-
-              
                   <Link
                     to="/professional-profile"
                     onClick={closeMenu}
@@ -347,9 +288,6 @@ const ProfessionalNavbar = () => {
                   >
                     Profile
                   </Link>
-
-
-                  
 
                   <button
                     onClick={handleLogout}
@@ -369,19 +307,12 @@ const ProfessionalNavbar = () => {
                   >
                     Logout
                   </button>
-
                 </div>
               )}
-
             </div>
-
           </div>
         )}
-
       </div>
-
-
-      
 
       <style>
         {`
@@ -398,7 +329,6 @@ const ProfessionalNavbar = () => {
           }
         `}
       </style>
-
     </nav>
   );
 };

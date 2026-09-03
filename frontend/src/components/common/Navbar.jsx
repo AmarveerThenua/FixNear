@@ -16,8 +16,6 @@ const Navbar = () => {
   const [unreadCount, setUnreadCount] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
 
-
-
   useEffect(() => {
     const fetchNotifications = async () => {
       const token = localStorage.getItem("fixnearToken");
@@ -29,7 +27,7 @@ const Navbar = () => {
 
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/notifications",
+          `${import.meta.env.VITE_API_URL}/notifications`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -39,11 +37,7 @@ const Navbar = () => {
 
         setUnreadCount(response.data.unreadCount || 0);
       } catch (error) {
-        console.error(
-          "Failed to fetch notification count:",
-          error
-        );
-
+        console.error("Failed to fetch notification count:", error);
         setUnreadCount(0);
       }
     };
@@ -57,20 +51,15 @@ const Navbar = () => {
     return () => clearInterval(interval);
   }, [user]);
 
-
-
   const closeMenu = () => {
     setMenuOpen(false);
   };
-
 
   const handleLogout = () => {
     closeMenu();
     logout();
     navigate("/login");
   };
-
-
 
   const notificationPath =
     user?.role === "professional"
@@ -79,7 +68,6 @@ const Navbar = () => {
       ? "/admin-notifications"
       : "/notifications";
 
-  
   const dashboardPath =
     user?.role === "professional"
       ? "/professional-dashboard"
@@ -89,25 +77,15 @@ const Navbar = () => {
 
   return (
     <nav className="w-full bg-white shadow-sm relative z-50">
-
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
-
-   
-
         <div className="flex items-center justify-between">
-
-
           <Link to="/" onClick={closeMenu}>
             <h1 className="text-2xl sm:text-3xl font-bold text-blue-600">
               FixNear
             </h1>
           </Link>
 
-
-    
-
           <div className="hidden lg:flex items-center gap-6 xl:gap-8">
-
             <Link
               to="/"
               className="text-gray-700 hover:text-blue-600 transition"
@@ -122,7 +100,6 @@ const Navbar = () => {
               Services
             </Link>
 
-
             {user?.role === "user" && (
               <Link
                 to="/professionals"
@@ -132,8 +109,6 @@ const Navbar = () => {
               </Link>
             )}
 
-
-
             {user?.role === "user" && (
               <Link
                 to="/become-professional"
@@ -142,18 +117,11 @@ const Navbar = () => {
                 Become a Professional
               </Link>
             )}
-
           </div>
 
-
- 
-
           <div className="hidden lg:flex items-center gap-3">
-
             {user ? (
               <>
-
-
                 <Link
                   to={notificationPath}
                   className="relative flex items-center justify-center w-10 h-10 rounded-full hover:bg-gray-100 transition"
@@ -185,14 +153,10 @@ const Navbar = () => {
                         border-white
                       "
                     >
-                      {unreadCount > 99
-                        ? "99+"
-                        : unreadCount}
+                      {unreadCount > 99 ? "99+" : unreadCount}
                     </span>
                   )}
                 </Link>
-
-
 
                 <Link
                   to={dashboardPath}
@@ -200,8 +164,6 @@ const Navbar = () => {
                 >
                   Dashboard
                 </Link>
-
-
 
                 <button
                   onClick={handleLogout}
@@ -219,20 +181,15 @@ const Navbar = () => {
                 >
                   Logout
                 </button>
-
               </>
             ) : (
               <>
-
-
                 <Link
                   to="/login"
                   className="px-4 py-2 text-blue-600 hover:text-blue-700 transition"
                 >
                   Login
                 </Link>
-
-
 
                 <Link
                   to="/register"
@@ -248,14 +205,9 @@ const Navbar = () => {
                 >
                   Register
                 </Link>
-
               </>
             )}
-
           </div>
-
-
-        
 
           <button
             onClick={() => setMenuOpen(!menuOpen)}
@@ -278,10 +230,7 @@ const Navbar = () => {
               className="text-xl"
             />
           </button>
-
         </div>
-
-
 
         {menuOpen && (
           <div
@@ -294,11 +243,7 @@ const Navbar = () => {
               animate-[slideDown_0.2s_ease-out]
             "
           >
-
             <div className="flex flex-col gap-2">
-
-            
-
               <Link
                 to="/"
                 onClick={closeMenu}
@@ -315,9 +260,6 @@ const Navbar = () => {
                 Home
               </Link>
 
-
-       
-
               <Link
                 to="/services"
                 onClick={closeMenu}
@@ -333,8 +275,6 @@ const Navbar = () => {
               >
                 Services
               </Link>
-
-
 
               {user?.role === "user" && (
                 <Link
@@ -354,9 +294,6 @@ const Navbar = () => {
                 </Link>
               )}
 
-
-         
-
               {user?.role === "user" && (
                 <Link
                   to="/become-professional"
@@ -375,14 +312,8 @@ const Navbar = () => {
                 </Link>
               )}
 
-
-              
-
               {user ? (
                 <div className="mt-2 pt-3 border-t border-gray-200">
-
-            
-
                   <Link
                     to={notificationPath}
                     onClick={closeMenu}
@@ -403,15 +334,10 @@ const Navbar = () => {
 
                     {unreadCount > 0 && (
                       <span className="min-w-6 h-6 px-1 flex items-center justify-center bg-red-500 text-white text-xs font-bold rounded-full">
-                        {unreadCount > 99
-                          ? "99+"
-                          : unreadCount}
+                        {unreadCount > 99 ? "99+" : unreadCount}
                       </span>
                     )}
                   </Link>
-
-
-     
 
                   <Link
                     to={dashboardPath}
@@ -428,9 +354,6 @@ const Navbar = () => {
                   >
                     Dashboard
                   </Link>
-
-
-      
 
                   <button
                     onClick={handleLogout}
@@ -450,13 +373,9 @@ const Navbar = () => {
                   >
                     Logout
                   </button>
-
                 </div>
               ) : (
                 <div className="mt-2 pt-3 border-t border-gray-200 flex flex-col gap-2">
-
-     
-
                   <Link
                     to="/login"
                     onClick={closeMenu}
@@ -475,9 +394,6 @@ const Navbar = () => {
                     Login
                   </Link>
 
-
-                 
-
                   <Link
                     to="/register"
                     onClick={closeMenu}
@@ -494,18 +410,12 @@ const Navbar = () => {
                   >
                     Register
                   </Link>
-
                 </div>
               )}
-
             </div>
-
           </div>
         )}
-
       </div>
-
-
 
       <style>
         {`
@@ -522,7 +432,6 @@ const Navbar = () => {
           }
         `}
       </style>
-
     </nav>
   );
 };

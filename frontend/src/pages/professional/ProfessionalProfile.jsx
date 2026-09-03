@@ -11,7 +11,7 @@ const ProfessionalProfile = () => {
     const fetchProfile = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/professionals/me",
+          `${import.meta.env.VITE_API_URL}/professionals/me`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -55,10 +55,6 @@ const ProfessionalProfile = () => {
 
   return (
     <div className="p-3 sm:p-4 md:p-6">
-      {/* =========================
-          Page Header
-      ========================= */}
-
       <div className="mb-5 sm:mb-6">
         <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">
           My Professional Profile
@@ -69,18 +65,8 @@ const ProfessionalProfile = () => {
         </p>
       </div>
 
-      {/* =========================
-          Profile Card
-      ========================= */}
-
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 sm:p-5 md:p-6 max-w-4xl">
-        {/* =========================
-            Profile Header
-        ========================= */}
-
         <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
-          {/* Profile Image */}
-
           <div className="flex-shrink-0">
             {professional.image ? (
               <img
@@ -94,8 +80,6 @@ const ProfessionalProfile = () => {
               </div>
             )}
           </div>
-
-          {/* Basic Information */}
 
           <div className="min-w-0 flex-1">
             <h2 className="text-xl sm:text-2xl font-bold text-gray-800 break-words">
@@ -113,8 +97,6 @@ const ProfessionalProfile = () => {
             <p className="text-gray-500 text-sm sm:text-base break-words">
               {professional.phone || "Phone not provided"}
             </p>
-
-            {/* Availability / Verification */}
 
             <div className="flex flex-wrap gap-2 mt-3">
               {professional.available ? (
@@ -136,13 +118,7 @@ const ProfessionalProfile = () => {
           </div>
         </div>
 
-        {/* =========================
-            Professional Information
-        ========================= */}
-
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 mt-6 sm:mt-8">
-          {/* Experience */}
-
           <div className="min-w-0">
             <p className="text-xs sm:text-sm text-gray-400">
               Experience
@@ -152,8 +128,6 @@ const ProfessionalProfile = () => {
               {professional.experience || "Not provided"}
             </p>
           </div>
-
-          {/* Price */}
 
           <div className="min-w-0">
             <p className="text-xs sm:text-sm text-gray-400">
@@ -165,8 +139,6 @@ const ProfessionalProfile = () => {
             </p>
           </div>
 
-          {/* City */}
-
           <div className="min-w-0">
             <p className="text-xs sm:text-sm text-gray-400">
               City
@@ -177,8 +149,6 @@ const ProfessionalProfile = () => {
             </p>
           </div>
 
-          {/* State */}
-
           <div className="min-w-0">
             <p className="text-xs sm:text-sm text-gray-400">
               State
@@ -188,8 +158,6 @@ const ProfessionalProfile = () => {
               {professional.state || "Not provided"}
             </p>
           </div>
-
-          {/* Pincode */}
 
           {professional.pincode && (
             <div className="min-w-0">
@@ -202,8 +170,6 @@ const ProfessionalProfile = () => {
               </p>
             </div>
           )}
-
-          {/* Location */}
 
           {professional.location && (
             <div className="min-w-0">
@@ -218,10 +184,6 @@ const ProfessionalProfile = () => {
           )}
         </div>
 
-        {/* =========================
-            Address
-        ========================= */}
-
         {professional.address && (
           <div className="mt-5 sm:mt-6">
             <p className="text-xs sm:text-sm text-gray-400">
@@ -234,10 +196,6 @@ const ProfessionalProfile = () => {
           </div>
         )}
 
-        {/* =========================
-            Description
-        ========================= */}
-
         {professional.description && (
           <div className="mt-5 sm:mt-6">
             <p className="text-xs sm:text-sm text-gray-400">
@@ -249,10 +207,6 @@ const ProfessionalProfile = () => {
             </p>
           </div>
         )}
-
-        {/* =========================
-            Skills
-        ========================= */}
 
         {professional.skills?.length > 0 && (
           <div className="mt-5 sm:mt-6">
@@ -272,10 +226,6 @@ const ProfessionalProfile = () => {
             </div>
           </div>
         )}
-
-        {/* =========================
-            Service Areas
-        ========================= */}
 
         {professional.serviceArea?.length > 0 && (
           <div className="mt-5 sm:mt-6">

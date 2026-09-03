@@ -9,15 +9,11 @@ const ProfessionalProfile = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  // =========================
-  // Fetch Professional
-  // =========================
-
   useEffect(() => {
     const fetchProfessional = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/professionals/${id}`
+          `${import.meta.env.VITE_API_URL}/professionals/${id}`
         );
 
         console.log(
@@ -28,7 +24,6 @@ const ProfessionalProfile = () => {
         setProfessional(
           response.data.professional
         );
-
       } catch (error) {
         console.error(
           "Fetch professional error:",
@@ -39,7 +34,6 @@ const ProfessionalProfile = () => {
           error.response?.data?.message ||
             "Unable to load professional."
         );
-
       } finally {
         setLoading(false);
       }
@@ -48,40 +42,24 @@ const ProfessionalProfile = () => {
     fetchProfessional();
   }, [id]);
 
-
-  // =========================
-  // Loading
-  // =========================
-
   if (loading) {
     return (
       <section className="min-h-screen bg-gray-50 flex items-center justify-center">
-
         <div className="text-center">
-
           <div className="w-10 h-10 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin mx-auto"></div>
 
           <p className="mt-4 text-gray-600">
             Loading professional...
           </p>
-
         </div>
-
       </section>
     );
   }
 
-
-  // =========================
-  // Error / Not Found
-  // =========================
-
   if (error || !professional) {
     return (
       <section className="min-h-screen bg-gray-50 flex items-center justify-center px-6">
-
         <div className="text-center">
-
           <h1 className="text-2xl font-bold text-gray-900">
             Professional Not Found
           </h1>
@@ -96,80 +74,46 @@ const ProfessionalProfile = () => {
           >
             Back to Professionals
           </Link>
-
         </div>
-
       </section>
     );
   }
 
-
   return (
     <section className="min-h-screen bg-gray-50 py-16">
-
       <div className="max-w-5xl mx-auto px-6">
-
-        {/* =========================
-            Profile Header
-        ========================= */}
-
         <div className="bg-white rounded-2xl shadow-sm p-8">
-
           <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
-
-            {/* Profile Image */}
-
             {professional.image ? (
-
               <img
                 src={professional.image}
                 alt={professional.name}
                 className="w-32 h-32 rounded-full object-cover"
               />
-
             ) : (
-
               <div className="w-32 h-32 rounded-full bg-gray-100 flex items-center justify-center">
-
-                <span className="text-5xl">
-                  👤
-                </span>
-
+                <span className="text-5xl">👤</span>
               </div>
-
             )}
 
-
-            {/* Basic Information */}
-
             <div className="text-center md:text-left flex-1">
-
               <div className="flex flex-col md:flex-row md:items-center gap-3">
-
                 <h1 className="text-3xl font-bold text-gray-900">
                   {professional.name}
                 </h1>
 
                 {professional.isVerified && (
-
                   <span className="inline-block w-fit mx-auto md:mx-0 px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-medium">
                     ✓ Verified
                   </span>
-
                 )}
-
               </div>
-
 
               <p className="mt-2 text-blue-600 font-medium">
                 {professional.profession}
               </p>
 
-
-              {/* Rating */}
-
               <div className="flex items-center justify-center md:justify-start gap-2 mt-3">
-
                 <span className="text-yellow-500">
                   ★
                 </span>
@@ -181,33 +125,17 @@ const ProfessionalProfile = () => {
                 <span className="text-gray-500">
                   ({professional.reviews} reviews)
                 </span>
-
               </div>
-
-
-              {/* Location */}
 
               <p className="mt-3 text-gray-600">
                 📍 {professional.location || professional.city}
               </p>
-
             </div>
-
           </div>
-
         </div>
 
-
-        {/* =========================
-            Quick Details
-        ========================= */}
-
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
-
-          {/* Experience */}
-
           <div className="bg-white rounded-xl p-6 shadow-sm">
-
             <p className="text-gray-500 text-sm">
               Experience
             </p>
@@ -215,14 +143,9 @@ const ProfessionalProfile = () => {
             <p className="mt-2 text-xl font-bold text-gray-900">
               {professional.experience || "Not specified"}
             </p>
-
           </div>
 
-
-          {/* Price */}
-
           <div className="bg-white rounded-xl p-6 shadow-sm">
-
             <p className="text-gray-500 text-sm">
               Starting Price
             </p>
@@ -230,14 +153,9 @@ const ProfessionalProfile = () => {
             <p className="mt-2 text-xl font-bold text-gray-900">
               ₹{professional.price}
             </p>
-
           </div>
 
-
-          {/* Availability */}
-
           <div className="bg-white rounded-xl p-6 shadow-sm">
-
             <p className="text-gray-500 text-sm">
               Availability
             </p>
@@ -253,18 +171,10 @@ const ProfessionalProfile = () => {
                 ? "Available"
                 : "Unavailable"}
             </p>
-
           </div>
-
         </div>
 
-
-        {/* =========================
-            About
-        ========================= */}
-
         <div className="bg-white rounded-2xl p-8 mt-6 shadow-sm">
-
           <h2 className="text-2xl font-bold text-gray-900">
             About Professional
           </h2>
@@ -273,57 +183,35 @@ const ProfessionalProfile = () => {
             {professional.description ||
               `${professional.name} is an experienced ${professional.profession.toLowerCase()} providing reliable and quality services.`}
           </p>
-
         </div>
 
-
-        {/* =========================
-            Skills
-        ========================= */}
-
         {professional.skills?.length > 0 && (
-
           <div className="bg-white rounded-2xl p-8 mt-6 shadow-sm">
-
             <h2 className="text-2xl font-bold text-gray-900">
               Skills
             </h2>
 
             <div className="flex flex-wrap gap-3 mt-5">
-
               {professional.skills.map(
                 (skill, index) => (
-
                   <span
                     key={index}
                     className="px-4 py-2 bg-blue-50 text-blue-700 rounded-full text-sm font-medium"
                   >
                     {skill}
                   </span>
-
                 )
               )}
-
             </div>
-
           </div>
-
         )}
 
-
-        {/* =========================
-            Address
-        ========================= */}
-
         <div className="bg-white rounded-2xl p-8 mt-6 shadow-sm">
-
           <h2 className="text-2xl font-bold text-gray-900">
             Address & Service Area
           </h2>
 
-
           <div className="mt-5 space-y-3">
-
             <p className="text-gray-600">
               <span className="font-medium text-gray-900">
                 Address:
@@ -351,119 +239,75 @@ const ProfessionalProfile = () => {
               </span>{" "}
               {professional.pincode || "Not provided"}
             </p>
-
           </div>
 
-
-          {/* Service Areas */}
-
           {professional.serviceArea?.length > 0 && (
-
             <div className="mt-6">
-
               <p className="font-medium text-gray-900 mb-3">
                 Service Areas
               </p>
 
               <div className="flex flex-wrap gap-2">
-
                 {professional.serviceArea.map(
                   (area, index) => (
-
                     <span
                       key={index}
                       className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm"
                     >
                       {area}
                     </span>
-
                   )
                 )}
-
               </div>
-
             </div>
-
           )}
-
         </div>
 
-
-        {/* =========================
-            Availability
-        ========================= */}
-
         <div className="bg-white rounded-2xl p-8 mt-6 shadow-sm">
-
           <h2 className="text-2xl font-bold text-gray-900">
             Availability
           </h2>
 
           <div className="mt-4">
-
             {professional.available ? (
-
               <span className="inline-block px-4 py-2 bg-green-100 text-green-700 rounded-full font-medium">
                 ● Available Now
               </span>
-
             ) : (
-
               <span className="inline-block px-4 py-2 bg-gray-100 text-gray-500 rounded-full font-medium">
                 ● Currently Unavailable
               </span>
-
             )}
-
           </div>
-
         </div>
 
-
-        {/* =========================
-            Book Button
-        ========================= */}
-
         <div className="mt-8">
-
           {professional.available ? (
-
             <Link
               to={`/book/${professional._id}`}
               className="block w-full py-4 text-center bg-blue-600 text-white font-semibold rounded-xl hover:bg-blue-700 transition"
             >
               Book This Professional
             </Link>
-
           ) : (
-
             <button
               disabled
               className="w-full py-4 bg-gray-300 text-gray-500 font-semibold rounded-xl cursor-not-allowed"
             >
               Currently Unavailable
             </button>
-
           )}
-
         </div>
 
-
-        {/* Back */}
-
         <div className="text-center mt-6">
-
           <Link
             to="/professionals"
             className="text-blue-600 hover:text-blue-700 font-medium"
           >
             ← Back to Professionals
           </Link>
-
         </div>
-
       </div>
-
     </section>
   );
 };

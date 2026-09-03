@@ -11,10 +11,6 @@ const BookingDetails = () => {
   const [cancelling, setCancelling] = useState(false);
   const [error, setError] = useState("");
 
-  // =========================
-  // Fetch Booking
-  // =========================
-
   useEffect(() => {
     const fetchBooking = async () => {
       try {
@@ -27,7 +23,7 @@ const BookingDetails = () => {
         }
 
         const response = await axios.get(
-          `http://localhost:5000/api/bookings/${id}`,
+          `${import.meta.env.VITE_API_URL}/bookings/${id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -59,10 +55,6 @@ const BookingDetails = () => {
     fetchBooking();
   }, [id]);
 
-  // =========================
-  // Cancel Booking
-  // =========================
-
   const handleCancel = async () => {
     const confirmed = window.confirm(
       "Are you sure you want to cancel this booking?"
@@ -86,7 +78,7 @@ const BookingDetails = () => {
       }
 
       const response = await axios.put(
-        `http://localhost:5000/api/bookings/${id}/cancel`,
+        `${import.meta.env.VITE_API_URL}/bookings/${id}/cancel`,
         {},
         {
           headers: {
@@ -116,10 +108,6 @@ const BookingDetails = () => {
     }
   };
 
-  // =========================
-  // Loading
-  // =========================
-
   if (loading) {
     return (
       <section className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
@@ -133,10 +121,6 @@ const BookingDetails = () => {
       </section>
     );
   }
-
-  // =========================
-  // Error / Not Found
-  // =========================
 
   if (error && !booking) {
     return (
@@ -167,10 +151,6 @@ const BookingDetails = () => {
 
   const professional = booking.professional;
 
-  // =========================
-  // Status Classes
-  // =========================
-
   const getStatusClass = () => {
     switch (booking.status) {
       case "pending":
@@ -194,26 +174,18 @@ const BookingDetails = () => {
   };
 
   const formattedStatus =
-    booking.status
-      ?.charAt(0)
-      .toUpperCase() +
+    booking.status?.charAt(0).toUpperCase() +
     booking.status?.slice(1);
 
   return (
     <section className="min-h-screen bg-gray-50 py-6 sm:py-8 md:py-12">
       <div className="max-w-4xl mx-auto px-3 sm:px-5 md:px-6">
-        {/* Back */}
-
         <Link
           to="/my-bookings"
           className="inline-flex items-center text-sm sm:text-base text-blue-600 hover:text-blue-700 transition"
         >
           ← Back to My Bookings
         </Link>
-
-        {/* =========================
-            Header
-        ========================= */}
 
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 mt-5 sm:mt-6">
           <div className="min-w-0">
@@ -226,18 +198,12 @@ const BookingDetails = () => {
             </p>
           </div>
 
-          {/* Status */}
-
           <span
             className={`inline-block w-fit px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold ${getStatusClass()}`}
           >
             {formattedStatus}
           </span>
         </div>
-
-        {/* =========================
-            Error
-        ========================= */}
 
         {error && (
           <div className="mt-5 sm:mt-6 p-3 sm:p-4 bg-red-50 border border-red-200 rounded-lg">
@@ -246,10 +212,6 @@ const BookingDetails = () => {
             </p>
           </div>
         )}
-
-        {/* =========================
-            Professional
-        ========================= */}
 
         <div className="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-5 md:p-6 mt-5 sm:mt-6">
           <h2 className="text-lg sm:text-xl font-bold text-gray-900 mb-4 sm:mb-5">
@@ -271,8 +233,7 @@ const BookingDetails = () => {
 
             <div className="min-w-0">
               <h3 className="text-lg sm:text-xl font-bold text-gray-900 break-words">
-                {professional?.name ||
-                  "Professional"}
+                {professional?.name || "Professional"}
               </h3>
 
               <p className="text-sm sm:text-base text-blue-600 font-medium mt-0.5 break-words">
@@ -289,18 +250,12 @@ const BookingDetails = () => {
           </div>
         </div>
 
-        {/* =========================
-            Service Details
-        ========================= */}
-
         <div className="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-5 md:p-6 mt-5 sm:mt-6">
           <h2 className="text-lg sm:text-xl font-bold text-gray-900 mb-4 sm:mb-5">
             Service Details
           </h2>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-            {/* Service */}
-
             <div className="min-w-0">
               <p className="text-xs sm:text-sm text-gray-500">
                 Service
@@ -311,8 +266,6 @@ const BookingDetails = () => {
               </p>
             </div>
 
-            {/* Price */}
-
             <div className="min-w-0">
               <p className="text-xs sm:text-sm text-gray-500">
                 Price
@@ -322,8 +275,6 @@ const BookingDetails = () => {
                 ₹{booking.price}
               </p>
             </div>
-
-            {/* Date */}
 
             <div className="min-w-0">
               <p className="text-xs sm:text-sm text-gray-500">
@@ -341,8 +292,6 @@ const BookingDetails = () => {
               </p>
             </div>
 
-            {/* Time */}
-
             <div className="min-w-0">
               <p className="text-xs sm:text-sm text-gray-500">
                 Time
@@ -354,10 +303,6 @@ const BookingDetails = () => {
             </div>
           </div>
         </div>
-
-        {/* =========================
-            Service Address
-        ========================= */}
 
         <div className="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-5 md:p-6 mt-5 sm:mt-6">
           <h2 className="text-lg sm:text-xl font-bold text-gray-900 mb-4 sm:mb-5">
@@ -376,10 +321,6 @@ const BookingDetails = () => {
           </p>
         </div>
 
-        {/* =========================
-            Problem Description
-        ========================= */}
-
         {booking.description && (
           <div className="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-5 md:p-6 mt-5 sm:mt-6">
             <h2 className="text-lg sm:text-xl font-bold text-gray-900 mb-3 sm:mb-4">
@@ -392,10 +333,6 @@ const BookingDetails = () => {
           </div>
         )}
 
-        {/* =========================
-            Actions
-        ========================= */}
-
         <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4">
           <Link
             to="/my-bookings"
@@ -403,8 +340,6 @@ const BookingDetails = () => {
           >
             Back to My Bookings
           </Link>
-
-          {/* Cancel */}
 
           {booking.status !== "cancelled" &&
             booking.status !== "completed" && (

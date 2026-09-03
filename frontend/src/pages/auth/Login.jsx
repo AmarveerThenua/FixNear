@@ -31,23 +31,18 @@ const Login = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/auth/login",
+        `${import.meta.env.VITE_API_URL}/auth/login`,
         formData
       );
 
       const loggedInUser = response.data.user;
       const token = response.data.token;
 
-      
       login(loggedInUser, token);
-      
-   
 
       if (loggedInUser?.role === "admin") {
         navigate("/admin-dashboard");
-      } else if (
-        loggedInUser?.role === "professional"
-      ) {
+      } else if (loggedInUser?.role === "professional") {
         navigate("/professional-dashboard");
       } else {
         navigate("/dashboard");
@@ -67,8 +62,6 @@ const Login = () => {
   return (
     <section className="min-h-screen bg-gray-50 flex items-center justify-center px-4 sm:px-6 py-10 sm:py-14 md:py-16">
       <div className="w-full max-w-md">
-       
-
         <div className="text-center mb-6 sm:mb-8">
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
             Welcome Back
@@ -79,11 +72,7 @@ const Login = () => {
           </p>
         </div>
 
-        
-
         <div className="bg-white p-5 sm:p-7 md:p-8 rounded-xl sm:rounded-2xl shadow-sm border border-gray-100">
-         
-
           {error && (
             <div className="mb-5 p-3 sm:p-4 bg-red-50 border border-red-200 rounded-lg">
               <p className="text-xs sm:text-sm text-red-600 wrap-break-word">
@@ -93,8 +82,6 @@ const Login = () => {
           )}
 
           <form onSubmit={handleSubmit}>
-     
-
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Email Address
@@ -112,8 +99,6 @@ const Login = () => {
               />
             </div>
 
-          
-
             <div className="mt-5">
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Password
@@ -121,11 +106,7 @@ const Login = () => {
 
               <div className="relative">
                 <input
-                  type={
-                    showPassword
-                      ? "text"
-                      : "password"
-                  }
+                  type={showPassword ? "text" : "password"}
                   name="password"
                   value={formData.password}
                   onChange={handleChange}
@@ -137,11 +118,7 @@ const Login = () => {
 
                 <button
                   type="button"
-                  onClick={() =>
-                    setShowPassword(
-                      !showPassword
-                    )
-                  }
+                  onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-2.5 sm:right-3 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center text-gray-500 hover:text-gray-700 rounded-md hover:bg-gray-50 transition"
                   aria-label={
                     showPassword
@@ -149,14 +126,10 @@ const Login = () => {
                       : "Show password"
                   }
                 >
-                  {showPassword
-                    ? "🙈"
-                    : "👁️"}
+                  {showPassword ? "🙈" : "👁️"}
                 </button>
               </div>
             </div>
-
-            
 
             <div className="flex justify-end mt-3">
               <Link
@@ -167,20 +140,14 @@ const Login = () => {
               </Link>
             </div>
 
-          
-
             <button
               type="submit"
               disabled={loading}
               className="w-full mt-5 sm:mt-6 py-2.5 sm:py-3 px-4 bg-blue-600 text-white text-sm sm:text-base font-semibold rounded-lg hover:bg-blue-700 disabled:bg-blue-300 disabled:cursor-not-allowed transition"
             >
-              {loading
-                ? "Logging in..."
-                : "Login"}
+              {loading ? "Logging in..." : "Login"}
             </button>
           </form>
-
-      
 
           <p className="text-center text-xs sm:text-sm text-gray-600 mt-5 sm:mt-6">
             Don't have an account?{" "}

@@ -10,14 +10,13 @@ const AdminNotifications = () => {
 
   const token = localStorage.getItem("fixnearToken");
 
-
   const fetchNotifications = async () => {
     try {
       setLoading(true);
       setError("");
 
       const response = await fetch(
-        "http://localhost:5000/api/notifications",
+        `${import.meta.env.VITE_API_URL}/notifications`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -46,7 +45,6 @@ const AdminNotifications = () => {
     fetchNotifications();
   }, []);
 
- 
   useEffect(() => {
     let result = [...notifications];
 
@@ -83,12 +81,10 @@ const AdminNotifications = () => {
     setFilteredNotifications(result);
   }, [notifications, filter, search]);
 
-
-
   const markAsRead = async (notificationId) => {
     try {
       const response = await fetch(
-        `http://localhost:5000/api/notifications/${notificationId}/read`,
+        `${import.meta.env.VITE_API_URL}/notifications/${notificationId}/read`,
         {
           method: "PUT",
           headers: {
@@ -121,12 +117,10 @@ const AdminNotifications = () => {
     }
   };
 
-
-
   const markAllAsRead = async () => {
     try {
       const response = await fetch(
-        "http://localhost:5000/api/notifications/read-all",
+        `${import.meta.env.VITE_API_URL}/notifications/read-all`,
         {
           method: "PUT",
           headers: {
@@ -155,7 +149,6 @@ const AdminNotifications = () => {
     }
   };
 
-
   const deleteNotification = async (notificationId) => {
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this notification?"
@@ -165,7 +158,7 @@ const AdminNotifications = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:5000/api/notifications/${notificationId}`,
+        `${import.meta.env.VITE_API_URL}/notifications/${notificationId}`,
         {
           method: "DELETE",
           headers: {
@@ -194,7 +187,6 @@ const AdminNotifications = () => {
     }
   };
 
-
   const clearReadNotifications = async () => {
     const readNotifications = notifications.filter(
       (notification) => notification.isRead
@@ -215,7 +207,7 @@ const AdminNotifications = () => {
       await Promise.all(
         readNotifications.map((notification) =>
           fetch(
-            `http://localhost:5000/api/notifications/${notification._id}`,
+            `${import.meta.env.VITE_API_URL}/notifications/${notification._id}`,
             {
               method: "DELETE",
               headers: {
@@ -231,14 +223,10 @@ const AdminNotifications = () => {
       );
     } catch (error) {
       console.error("Clear notifications error:", error);
-
       alert("Some notifications could not be deleted.");
-
       fetchNotifications();
     }
   };
-
-
 
   const getNotificationIcon = (type) => {
     switch (type) {
@@ -265,8 +253,6 @@ const AdminNotifications = () => {
     }
   };
 
- 
-
   const getNotificationColor = (type) => {
     switch (type) {
       case "new_booking":
@@ -292,7 +278,6 @@ const AdminNotifications = () => {
     }
   };
 
-
   const formatType = (type) => {
     if (!type) return "Notification";
 
@@ -306,8 +291,6 @@ const AdminNotifications = () => {
       .join(" ");
   };
 
- 
-
   const formatDate = (date) => {
     if (!date) return "N/A";
 
@@ -319,8 +302,6 @@ const AdminNotifications = () => {
       minute: "2-digit",
     });
   };
-
-
 
   const totalNotifications = notifications.length;
 
@@ -334,10 +315,7 @@ const AdminNotifications = () => {
 
   return (
     <div className="space-y-4 sm:space-y-6 min-w-0">
-
-   
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-
         <div className="min-w-0">
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">
             Admin Notifications
@@ -349,7 +327,6 @@ const AdminNotifications = () => {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 lg:flex gap-2 w-full lg:w-auto">
-
           <button
             onClick={fetchNotifications}
             className="px-4 py-2.5 bg-blue-600 text-white text-sm sm:text-base rounded-lg hover:bg-blue-700 transition"
@@ -372,15 +349,10 @@ const AdminNotifications = () => {
           >
             Clear Read
           </button>
-
         </div>
-
       </div>
 
-
-  
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
-
         <div className="bg-white rounded-xl border border-gray-200 p-4 sm:p-5">
           <p className="text-xs sm:text-sm text-gray-500">
             Total Notifications
@@ -410,15 +382,10 @@ const AdminNotifications = () => {
             {readNotifications}
           </h2>
         </div>
-
       </div>
 
-
-
       <div className="bg-white rounded-xl border border-gray-200 p-3 sm:p-4">
-
         <div className="flex flex-col md:flex-row gap-3 sm:gap-4">
-
           <input
             type="text"
             placeholder="Search notifications..."
@@ -444,13 +411,8 @@ const AdminNotifications = () => {
               Read
             </option>
           </select>
-
         </div>
-
       </div>
-
-
-    
 
       {error && (
         <div className="bg-red-50 border border-red-200 text-red-700 px-3 sm:px-4 py-3 rounded-lg text-sm sm:text-base wrap-break-word">
@@ -458,21 +420,14 @@ const AdminNotifications = () => {
         </div>
       )}
 
-
-    
-
       {loading ? (
-
         <div className="bg-white rounded-xl border border-gray-200 p-8 sm:p-10 text-center">
           <p className="text-sm sm:text-base text-gray-500">
             Loading notifications...
           </p>
         </div>
-
       ) : filteredNotifications.length === 0 ? (
-
         <div className="bg-white rounded-xl border border-gray-200 p-8 sm:p-10 text-center">
-
           <div className="text-4xl mb-3">
             🔔
           </div>
@@ -484,15 +439,10 @@ const AdminNotifications = () => {
           <p className="text-xs sm:text-sm text-gray-500 mt-1">
             You don't have any notifications matching this filter.
           </p>
-
         </div>
-
       ) : (
-
         <div className="space-y-3">
-
           {filteredNotifications.map((notification) => (
-
             <div
               key={notification._id}
               className={`bg-white rounded-xl border p-3 sm:p-4 md:p-5 transition ${
@@ -501,11 +451,7 @@ const AdminNotifications = () => {
                   : "border-blue-200 bg-blue-50/30"
               }`}
             >
-
               <div className="flex items-start gap-3 sm:gap-4">
-
-                {/* Icon */}
-
                 <div
                   className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center text-lg sm:text-xl shrink-0 ${getNotificationColor(
                     notification.type
@@ -514,17 +460,10 @@ const AdminNotifications = () => {
                   {getNotificationIcon(notification.type)}
                 </div>
 
-
-        
-
                 <div className="flex-1 min-w-0">
-
                   <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
-
                     <div className="min-w-0">
-
                       <div className="flex items-start gap-2">
-
                         <h3 className="font-semibold text-gray-800 text-sm sm:text-base wrap-break-word">
                           {notification.title}
                         </h3>
@@ -532,7 +471,6 @@ const AdminNotifications = () => {
                         {!notification.isRead && (
                           <span className="w-2 h-2 bg-blue-600 rounded-full shrink-0 mt-1.5" />
                         )}
-
                       </div>
 
                       <p className="text-[11px] sm:text-xs text-gray-400 mt-1 wrap-break-word">
@@ -540,7 +478,6 @@ const AdminNotifications = () => {
                         {" • "}
                         {formatDate(notification.createdAt)}
                       </p>
-
                     </div>
 
                     {!notification.isRead && (
@@ -548,20 +485,13 @@ const AdminNotifications = () => {
                         Unread
                       </span>
                     )}
-
                   </div>
 
-
-               
                   <p className="text-xs sm:text-sm text-gray-600 mt-3 leading-5 sm:leading-6 wrap-break-word">
                     {notification.message}
                   </p>
 
-
-                  
-
                   <div className="flex flex-wrap gap-2 mt-3 sm:mt-4">
-
                     {!notification.isRead && (
                       <button
                         onClick={() =>
@@ -590,22 +520,13 @@ const AdminNotifications = () => {
                     >
                       Delete
                     </button>
-
                   </div>
-
                 </div>
-
               </div>
-
             </div>
-
           ))}
-
         </div>
-
       )}
-
-
 
       {!loading &&
         filteredNotifications.length > 0 && (
@@ -614,7 +535,6 @@ const AdminNotifications = () => {
             {notifications.length} notifications
           </div>
         )}
-
     </div>
   );
 };

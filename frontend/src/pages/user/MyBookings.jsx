@@ -7,10 +7,6 @@ const MyBookings = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  // =========================
-  // Fetch My Bookings
-  // =========================
-
   useEffect(() => {
     const fetchBookings = async () => {
       try {
@@ -23,7 +19,7 @@ const MyBookings = () => {
         }
 
         const response = await axios.get(
-          "http://localhost:5000/api/bookings",
+          `${import.meta.env.VITE_API_URL}/bookings`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -54,10 +50,6 @@ const MyBookings = () => {
 
     fetchBookings();
   }, []);
-
-  // =========================
-  // Status Classes
-  // =========================
 
   const getStatusClass = (status) => {
     switch (status) {
@@ -92,10 +84,6 @@ const MyBookings = () => {
     );
   };
 
-  // =========================
-  // Loading
-  // =========================
-
   if (loading) {
     return (
       <section className="min-h-screen bg-gray-50 py-10 sm:py-12 md:py-16">
@@ -113,10 +101,6 @@ const MyBookings = () => {
   return (
     <section className="min-h-screen bg-gray-50 py-7 sm:py-10 md:py-12">
       <div className="max-w-6xl mx-auto px-3 sm:px-5 md:px-6">
-        {/* =========================
-            Header
-        ========================= */}
-
         <div className="mb-5 sm:mb-7 md:mb-8">
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
             My Bookings
@@ -127,10 +111,6 @@ const MyBookings = () => {
           </p>
         </div>
 
-        {/* =========================
-            Error
-        ========================= */}
-
         {error && (
           <div className="mb-5 sm:mb-6 p-3 sm:p-4 bg-red-50 border border-red-200 rounded-lg">
             <p className="text-sm sm:text-base text-red-600 break-words">
@@ -138,10 +118,6 @@ const MyBookings = () => {
             </p>
           </div>
         )}
-
-        {/* =========================
-            Empty State
-        ========================= */}
 
         {!error && bookings.length === 0 && (
           <div className="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-gray-100 p-7 sm:p-10 md:p-12 text-center">
@@ -166,10 +142,6 @@ const MyBookings = () => {
           </div>
         )}
 
-        {/* =========================
-            Booking List
-        ========================= */}
-
         {!error && bookings.length > 0 && (
           <div className="space-y-4 sm:space-y-5">
             {bookings.map((booking) => {
@@ -181,13 +153,7 @@ const MyBookings = () => {
                   key={booking._id}
                   className="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-5 md:p-6"
                 >
-                  {/* =========================
-                      Booking Header
-                  ========================= */}
-
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-5">
-                    {/* Professional */}
-
                     <div className="flex items-center gap-3 sm:gap-4 min-w-0">
                       {professional?.image ? (
                         <img
@@ -214,8 +180,6 @@ const MyBookings = () => {
                       </div>
                     </div>
 
-                    {/* Status */}
-
                     <span
                       className={`self-start sm:self-auto inline-block w-fit px-3 py-1.5 rounded-full text-xs sm:text-sm font-medium whitespace-nowrap ${getStatusClass(
                         booking.status
@@ -227,13 +191,7 @@ const MyBookings = () => {
                     </span>
                   </div>
 
-                  {/* =========================
-                      Booking Information
-                  ========================= */}
-
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-5 sm:mt-6 pt-4 sm:pt-5 border-t border-gray-100">
-                    {/* Date */}
-
                     <div className="min-w-0">
                       <p className="text-xs text-gray-500">
                         Date
@@ -253,8 +211,6 @@ const MyBookings = () => {
                       </p>
                     </div>
 
-                    {/* Time */}
-
                     <div className="min-w-0">
                       <p className="text-xs text-gray-500">
                         Time
@@ -264,8 +220,6 @@ const MyBookings = () => {
                         {booking.time}
                       </p>
                     </div>
-
-                    {/* Service */}
 
                     <div className="min-w-0">
                       <p className="text-xs text-gray-500">
@@ -277,8 +231,6 @@ const MyBookings = () => {
                       </p>
                     </div>
 
-                    {/* Price */}
-
                     <div className="min-w-0">
                       <p className="text-xs text-gray-500">
                         Price
@@ -289,10 +241,6 @@ const MyBookings = () => {
                       </p>
                     </div>
                   </div>
-
-                  {/* =========================
-                      Address
-                  ========================= */}
 
                   <div className="mt-4 sm:mt-5">
                     <p className="text-xs text-gray-500">
@@ -309,10 +257,6 @@ const MyBookings = () => {
                         : ""}
                     </p>
                   </div>
-
-                  {/* =========================
-                      View Details
-                  ========================= */}
 
                   <div className="mt-4 sm:mt-5">
                     <Link

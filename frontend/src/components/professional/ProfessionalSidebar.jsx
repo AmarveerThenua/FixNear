@@ -11,10 +11,6 @@ const ProfessionalSidebar = () => {
   const [unreadCount, setUnreadCount] = useState(0);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  // =========================
-  // Navigation Links
-  // =========================
-
   const links = [
     {
       name: "Dashboard",
@@ -43,10 +39,6 @@ const ProfessionalSidebar = () => {
     },
   ];
 
-  // =========================
-  // Fetch Notification Count
-  // =========================
-
   useEffect(() => {
     const fetchUnreadCount = async () => {
       const token = localStorage.getItem("fixnearToken");
@@ -58,7 +50,7 @@ const ProfessionalSidebar = () => {
 
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/notifications",
+          `${import.meta.env.VITE_API_URL}/notifications`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -86,24 +78,12 @@ const ProfessionalSidebar = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // =========================
-  // Close Sidebar
-  // =========================
-
   const closeSidebar = () => {
     setSidebarOpen(false);
   };
 
-  // =========================
-  // Render
-  // =========================
-
   return (
     <>
-      {/* =========================
-          Mobile Menu Button
-      ========================= */}
-
       <button
         type="button"
         onClick={() => setSidebarOpen(true)}
@@ -135,10 +115,6 @@ const ProfessionalSidebar = () => {
         />
       </button>
 
-      {/* =========================
-          Mobile Overlay
-      ========================= */}
-
       {sidebarOpen && (
         <div
           onClick={closeSidebar}
@@ -151,10 +127,6 @@ const ProfessionalSidebar = () => {
           "
         />
       )}
-
-      {/* =========================
-          Sidebar
-      ========================= */}
 
       <aside
         className={`
@@ -187,10 +159,6 @@ const ProfessionalSidebar = () => {
           lg:min-h-screen
         `}
       >
-        {/* =========================
-            Sidebar Header
-        ========================= */}
-
         <div
           className="
             px-4
@@ -216,8 +184,6 @@ const ProfessionalSidebar = () => {
             </p>
           </div>
 
-          {/* Mobile Close Button */}
-
           <button
             type="button"
             onClick={closeSidebar}
@@ -241,10 +207,6 @@ const ProfessionalSidebar = () => {
             />
           </button>
         </div>
-
-        {/* =========================
-            Navigation
-        ========================= */}
 
         <nav
           className="
@@ -285,19 +247,13 @@ const ProfessionalSidebar = () => {
                 `
               }
             >
-              {/* Icon */}
-
               <span className="w-6 text-center shrink-0">
                 {link.icon}
               </span>
 
-              {/* Name */}
-
               <span className="text-sm sm:text-base flex-1">
                 {link.name}
               </span>
-
-              {/* Notification Count */}
 
               {link.name === "Notifications" &&
                 unreadCount > 0 && (
@@ -321,9 +277,7 @@ const ProfessionalSidebar = () => {
                       shrink-0
                     "
                   >
-                    {unreadCount > 99
-                      ? "99+"
-                      : unreadCount}
+                    {unreadCount > 99 ? "99+" : unreadCount}
                   </span>
                 )}
             </NavLink>

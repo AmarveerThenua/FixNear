@@ -27,25 +27,14 @@ const BecomeProfessional = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-
-
   const handleChange = (e) => {
-    const {
-      name,
-      value,
-      type,
-      checked,
-    } = e.target;
+    const { name, value, type, checked } = e.target;
 
     setFormData({
       ...formData,
-      [name]:
-        type === "checkbox"
-          ? checked
-          : value,
+      [name]: type === "checkbox" ? checked : value,
     });
   };
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -55,42 +44,31 @@ const BecomeProfessional = () => {
     setLoading(true);
 
     try {
-    
-      const token =
-        localStorage.getItem(
-          "fixnearToken"
-        );
+      const token = localStorage.getItem("fixnearToken");
 
       if (!token) {
         setError(
           "Please login before becoming a professional."
         );
-
         setLoading(false);
         return;
       }
 
-
       const professionalData = {
         ...formData,
-
         skills: formData.skills
           .split(",")
           .map((skill) => skill.trim())
           .filter(Boolean),
-
         serviceArea: formData.serviceArea
           .split(",")
           .map((area) => area.trim())
           .filter(Boolean),
-
         price: Number(formData.price),
       };
 
-
-
       const response = await axios.post(
-        "http://localhost:5000/api/professionals",
+        `${import.meta.env.VITE_API_URL}/professionals`,
         professionalData,
         {
           headers: {
@@ -104,8 +82,6 @@ const BecomeProfessional = () => {
         response.data
       );
 
-
-
       if (response.data.token) {
         localStorage.setItem(
           "fixnearToken",
@@ -113,23 +89,16 @@ const BecomeProfessional = () => {
         );
       }
 
-
       if (response.data.user) {
         localStorage.setItem(
           "fixnearUser",
-          JSON.stringify(
-            response.data.user
-          )
+          JSON.stringify(response.data.user)
         );
       }
-
-
 
       setSuccess(
         "Professional profile created successfully! Redirecting..."
       );
-
-  
 
       setFormData({
         name: "",
@@ -149,15 +118,10 @@ const BecomeProfessional = () => {
         available: true,
       });
 
-
-
       setTimeout(() => {
-        navigate(
-          "/professional-dashboard",
-          {
-            replace: true,
-          }
-        );
+        navigate("/professional-dashboard", {
+          replace: true,
+        });
       }, 1000);
     } catch (error) {
       console.error(
@@ -177,8 +141,6 @@ const BecomeProfessional = () => {
   return (
     <section className="min-h-screen bg-gray-50 py-8 sm:py-10 md:py-12 px-4 sm:px-6">
       <div className="max-w-4xl mx-auto">
-       
-
         <div className="text-center mb-7 sm:mb-9 md:mb-10">
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900">
             Become a Professional
@@ -190,11 +152,7 @@ const BecomeProfessional = () => {
           </p>
         </div>
 
-     
-
         <div className="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-6 md:p-8 lg:p-10">
-          {/* Error */}
-
           {error && (
             <div className="mb-5 sm:mb-6 p-3 sm:p-4 bg-red-50 border border-red-200 rounded-lg">
               <p className="text-xs sm:text-sm text-red-600 break-words leading-relaxed">
@@ -202,8 +160,6 @@ const BecomeProfessional = () => {
               </p>
             </div>
           )}
-
-          {/* Success */}
 
           {success && (
             <div className="mb-5 sm:mb-6 p-3 sm:p-4 bg-green-50 border border-green-200 rounded-lg">
@@ -214,14 +170,11 @@ const BecomeProfessional = () => {
           )}
 
           <form onSubmit={handleSubmit}>
-           
-
             <h2 className="text-lg sm:text-xl font-bold text-gray-900 mb-4 sm:mb-5">
               Personal Information
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
-        
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Full Name
@@ -239,7 +192,6 @@ const BecomeProfessional = () => {
                 />
               </div>
 
-          
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Email Address
@@ -256,8 +208,6 @@ const BecomeProfessional = () => {
                   className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
                 />
               </div>
-
-            
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -278,15 +228,11 @@ const BecomeProfessional = () => {
               </div>
             </div>
 
-           
-
             <h2 className="text-lg sm:text-xl font-bold text-gray-900 mt-8 sm:mt-10 mb-4 sm:mb-5">
               Professional Information
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
-            
-
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Type of Work
@@ -302,50 +248,23 @@ const BecomeProfessional = () => {
                   <option value="">
                     Select your profession
                   </option>
-
                   <option value="Electrician">
                     Electrician
                   </option>
-
-                  <option value="Plumber">
-                    Plumber
-                  </option>
-
-                  <option value="Carpenter">
-                    Carpenter
-                  </option>
-
-                  <option value="Painter">
-                    Painter
-                  </option>
-
-                  <option value="AC Repair">
-                    AC Repair
-                  </option>
-
+                  <option value="Plumber">Plumber</option>
+                  <option value="Carpenter">Carpenter</option>
+                  <option value="Painter">Painter</option>
+                  <option value="AC Repair">AC Repair</option>
                   <option value="Appliance Repair">
                     Appliance Repair
                   </option>
-
-                  <option value="Cleaning">
-                    Cleaning
-                  </option>
-
-                  <option value="Beautician">
-                    Beautician
-                  </option>
-
-                  <option value="Mechanic">
-                    Mechanic
-                  </option>
-
-                  <option value="Other">
-                    Other
-                  </option>
+                  <option value="Cleaning">Cleaning</option>
+                  <option value="Beautician">Beautician</option>
+                  <option value="Mechanic">Mechanic</option>
+                  <option value="Other">Other</option>
                 </select>
               </div>
 
-             
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Experience
@@ -362,8 +281,6 @@ const BecomeProfessional = () => {
                 />
               </div>
             </div>
-
-         
 
             <div className="mt-4 sm:mt-5">
               <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -385,8 +302,6 @@ const BecomeProfessional = () => {
               </p>
             </div>
 
-        
-
             <div className="mt-4 sm:mt-5">
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 About Your Services
@@ -403,13 +318,10 @@ const BecomeProfessional = () => {
               />
             </div>
 
-         
-
             <h2 className="text-lg sm:text-xl font-bold text-gray-900 mt-8 sm:mt-10 mb-4 sm:mb-5">
               Address & Location
             </h2>
 
-         
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Full Address
@@ -426,10 +338,7 @@ const BecomeProfessional = () => {
               />
             </div>
 
-            
-
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-5 mt-4 sm:mt-5">
-             
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   City
@@ -446,8 +355,6 @@ const BecomeProfessional = () => {
                   className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
                 />
               </div>
-
-            
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -466,7 +373,6 @@ const BecomeProfessional = () => {
                 />
               </div>
 
-         
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Pincode
@@ -487,8 +393,6 @@ const BecomeProfessional = () => {
               </div>
             </div>
 
-            
-
             <div className="mt-4 sm:mt-5">
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Location / Area
@@ -504,8 +408,6 @@ const BecomeProfessional = () => {
                 className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
               />
             </div>
-
-       
 
             <div className="mt-4 sm:mt-5">
               <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -527,15 +429,11 @@ const BecomeProfessional = () => {
               </p>
             </div>
 
-           
-
             <h2 className="text-lg sm:text-xl font-bold text-gray-900 mt-8 sm:mt-10 mb-4 sm:mb-5">
               Service Details
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
-       
-
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Starting Price (₹)
@@ -554,8 +452,6 @@ const BecomeProfessional = () => {
                 />
               </div>
 
-      
-
               <div className="flex items-center min-h-[48px] md:mt-7">
                 <input
                   type="checkbox"
@@ -571,7 +467,6 @@ const BecomeProfessional = () => {
               </div>
             </div>
 
-        
             <button
               type="submit"
               disabled={loading}
