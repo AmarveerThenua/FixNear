@@ -100,7 +100,7 @@ const Footer = () => {
             <div className="space-y-2.5 sm:space-y-3 text-sm sm:text-base text-gray-400 wrap-break-word">
               <p>📍 Noida, India</p>
               <p>📧 support@fixnear.com</p>
-              <p>📞 +91 00000 00000</p>
+              <p>📞 +91 95483 96081</p>
             </div>
           </div>
         </div>
