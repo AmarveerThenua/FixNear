@@ -2,6 +2,22 @@ import mongoose from "mongoose";
 
 const professionalSchema = new mongoose.Schema(
   {
+    // ====================
+    // User Account
+    // ====================
+
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+      unique: true
+    },
+
+
+    // ====================
+    // Basic Information
+    // ====================
+
     name: {
       type: String,
       required: true,
@@ -24,10 +40,21 @@ const professionalSchema = new mongoose.Schema(
 
     phone: {
       type: String,
-      default: ""
+      default: "",
+      trim: true
     },
 
-    image: {
+
+    // ====================
+    // Worker Details
+    // ====================
+
+    skills: {
+      type: [String],
+      default: []
+    },
+
+    experience: {
       type: String,
       default: ""
     },
@@ -37,45 +64,111 @@ const professionalSchema = new mongoose.Schema(
       default: ""
     },
 
-    experience: {
+
+    // ====================
+    // Address
+    // ====================
+
+    address: {
       type: String,
-      default: ""
+      default: "",
+      trim: true
     },
 
-    rating: {
-      type: Number,
-      default: 0
+    city: {
+      type: String,
+      default: "",
+      trim: true
     },
 
-    reviews: {
-      type: Number,
-      default: 0
+    state: {
+      type: String,
+      default: "",
+      trim: true
     },
 
-    price: {
-      type: Number,
-      required: true
+    pincode: {
+      type: String,
+      default: "",
+      trim: true
     },
 
     location: {
       type: String,
+      default: "",
+      trim: true
+    },
+
+    serviceArea: {
+      type: [String],
+      default: []
+    },
+
+
+    // ====================
+    // Profile
+    // ====================
+
+    image: {
+      type: String,
       default: ""
     },
 
-    distance: {
+
+    // ====================
+    // Pricing
+    // ====================
+
+    price: {
       type: Number,
-      default: 0
+      required: true,
+      min: 0
     },
+
+
+    // ====================
+    // Reviews
+    // ====================
+
+    rating: {
+      type: Number,
+      default: 0,
+      min: 0,
+      max: 5
+    },
+
+    reviews: {
+      type: Number,
+      default: 0,
+      min: 0
+    },
+
+
+    // ====================
+    // Availability
+    // ====================
 
     available: {
       type: Boolean,
       default: true
+    },
+
+
+    // ====================
+    // Verification
+    // ====================
+
+    isVerified: {
+      type: Boolean,
+      default: false
     }
   },
+
   {
     timestamps: true
   }
 );
+
 
 const Professional = mongoose.model(
   "Professional",

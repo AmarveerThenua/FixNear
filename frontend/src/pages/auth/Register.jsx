@@ -1,73 +1,108 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Register = () => {
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
-    confirmPassword: ""
-  })
+    phone: "",
+    location: "",
+  });
 
-  const [showPassword, setShowPassword] = useState(false)
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
-  const [error, setError] = useState("")
+  const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
-    })
-  }
+      [e.target.name]: e.target.value,
+    });
+  };
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-    setError("")
+    setError("");
+    setSuccess("");
+    setLoading(true);
 
-    if (formData.password !== formData.confirmPassword) {
-      setError("Passwords do not match.")
-      return
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/auth/register",
+        formData
+      );
+
+      console.log(
+        "Registration Response:",
+        response.data
+      );
+
+      setSuccess("Account created successfully!");
+
+      setTimeout(() => {
+        navigate("/login");
+      }, 1500);
+    } catch (error) {
+      console.error(
+        "Registration Error:",
+        error
+      );
+
+      setError(
+        error.response?.data?.message ||
+          "Something went wrong. Please try again."
+      );
+    } finally {
+      setLoading(false);
     }
-
-    console.log("Register Data:", formData)
-
-    alert("Registration successful!")
-  }
+  };
 
   return (
-    <section className="min-h-screen bg-gray-50 flex items-center justify-center py-16 px-6">
-
+    <section className="min-h-screen bg-gray-50 flex items-center justify-center px-4 sm:px-6 py-10 sm:py-14 md:py-16">
       <div className="w-full max-w-md">
-
         {/* Heading */}
-        <div className="text-center mb-8">
 
-          <h1 className="text-3xl font-bold text-gray-900">
-            Create Your Account
+        <div className="text-center mb-6 sm:mb-8">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
+            Create Account
           </h1>
 
-          <p className="mt-2 text-gray-600">
-            Join FixNear and find trusted professionals near you.
+          <p className="mt-2 text-sm sm:text-base text-gray-600">
+            Join FixNear and find trusted professionals.
           </p>
-
         </div>
 
-        {/* Form */}
-        <div className="bg-white p-8 rounded-2xl shadow-sm">
+     
 
+        <div className="bg-white p-5 sm:p-7 md:p-8 rounded-xl sm:rounded-2xl shadow-sm border border-gray-100">
+      
           {error && (
-            <div className="mb-5 p-3 bg-red-50 border border-red-200 rounded-lg">
-              <p className="text-sm text-red-600">
+            <div className="mb-5 p-3 sm:p-4 bg-red-50 border border-red-200 rounded-lg">
+              <p className="text-xs sm:text-sm text-red-600 break-words">
                 {error}
               </p>
             </div>
           )}
 
-          <form onSubmit={handleSubmit}>
+          
 
-            {/* Name */}
+          {success && (
+            <div className="mb-5 p-3 sm:p-4 bg-green-50 border border-green-200 rounded-lg">
+              <p className="text-xs sm:text-sm text-green-600 break-words">
+                {success}
+              </p>
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit}>
+            
+
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Full Name
@@ -78,15 +113,16 @@ const Register = () => {
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
-                placeholder="Enter your name"
+                placeholder="Enter your full name"
                 required
-                className="w-full px-4 py-3 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500"
+                autoComplete="name"
+                className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
               />
             </div>
 
-            {/* Email */}
-            <div className="mt-5">
+           
 
+            <div className="mt-5">
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Email Address
               </label>
@@ -98,105 +134,116 @@ const Register = () => {
                 onChange={handleChange}
                 placeholder="Enter your email"
                 required
-                className="w-full px-4 py-3 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500"
+                autoComplete="email"
+                className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
               />
-
             </div>
 
-            {/* Password */}
-            <div className="mt-5">
+            
 
+            <div className="mt-5">
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Password
               </label>
 
               <div className="relative">
-
                 <input
-                  type={showPassword ? "text" : "password"}
+                  type={
+                    showPassword
+                      ? "text"
+                      : "password"
+                  }
                   name="password"
                   value={formData.password}
                   onChange={handleChange}
                   placeholder="Create a password"
                   required
-                  minLength="6"
-                  className="w-full px-4 py-3 pr-12 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500"
+                  autoComplete="new-password"
+                  className="w-full px-3 sm:px-4 py-2.5 sm:py-3 pr-12 text-sm sm:text-base border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
                 />
 
                 <button
                   type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                  onClick={() =>
+                    setShowPassword(
+                      !showPassword
+                    )
+                  }
+                  className="absolute right-2.5 sm:right-3 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center rounded-md text-gray-500 hover:text-gray-700 hover:bg-gray-50 transition"
+                  aria-label={
+                    showPassword
+                      ? "Hide password"
+                      : "Show password"
+                  }
                 >
                   {showPassword ? "🙈" : "👁️"}
                 </button>
-
               </div>
-
             </div>
 
-            {/* Confirm Password */}
+            
             <div className="mt-5">
-
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Confirm Password
+                Phone Number
               </label>
 
-              <div className="relative">
-
-                <input
-                  type={showConfirmPassword ? "text" : "password"}
-                  name="confirmPassword"
-                  value={formData.confirmPassword}
-                  onChange={handleChange}
-                  placeholder="Confirm your password"
-                  required
-                  minLength="6"
-                  className="w-full px-4 py-3 pr-12 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500"
-                />
-
-                <button
-                  type="button"
-                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
-                >
-                  {showConfirmPassword ? "🙈" : "👁️"}
-                </button>
-
-              </div>
-
+              <input
+                type="tel"
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+                placeholder="Enter your phone number"
+                autoComplete="tel"
+                inputMode="tel"
+                className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+              />
             </div>
 
-            {/* Submit */}
+
+            <div className="mt-5">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Location
+              </label>
+
+              <input
+                type="text"
+                name="location"
+                value={formData.location}
+                onChange={handleChange}
+                placeholder="Enter your location"
+                autoComplete="address-level2"
+                className="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+              />
+            </div>
+
+        
+
             <button
               type="submit"
-              className="w-full mt-7 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition"
+              disabled={loading}
+              className="w-full mt-5 sm:mt-6 py-2.5 sm:py-3 px-4 bg-blue-600 text-white text-sm sm:text-base font-semibold rounded-lg hover:bg-blue-700 disabled:bg-blue-300 disabled:cursor-not-allowed transition"
             >
-              Create Account
+              {loading
+                ? "Creating Account..."
+                : "Create Account"}
             </button>
-
           </form>
 
-          {/* Login */}
-          <p className="text-center text-sm text-gray-600 mt-6">
+    
 
+          <p className="text-center text-xs sm:text-sm text-gray-600 mt-5 sm:mt-6">
             Already have an account?{" "}
-
             <Link
               to="/login"
-              className="text-blue-600 font-medium hover:text-blue-700"
+              className="text-blue-600 font-medium hover:text-blue-700 transition"
             >
               Login
             </Link>
-
           </p>
-
         </div>
-
       </div>
-
     </section>
-  )
-}
+  );
+};
 
-export default Register
+export default Register;

@@ -4,7 +4,7 @@ import React, {
   useState
 } from "react";
 
-const AuthContext = createContext(null);
+const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
 
@@ -19,7 +19,9 @@ const AuthProvider = ({ children }) => {
     return null;
   });
 
-  const login = (userData) => {
+
+  // Login
+  const login = (userData, token) => {
 
     setUser(userData);
 
@@ -27,14 +29,25 @@ const AuthProvider = ({ children }) => {
       "fixnearUser",
       JSON.stringify(userData)
     );
+
+    if (token) {
+      localStorage.setItem(
+        "fixnearToken",
+        token
+      );
+    }
   };
 
+
+  // Logout
   const logout = () => {
 
     setUser(null);
 
     localStorage.removeItem("fixnearUser");
+    localStorage.removeItem("fixnearToken");
   };
+
 
   return (
     <AuthContext.Provider
@@ -49,8 +62,10 @@ const AuthProvider = ({ children }) => {
   );
 };
 
+
 export const useAuth = () => {
   return useContext(AuthContext);
 };
+
 
 export default AuthProvider;

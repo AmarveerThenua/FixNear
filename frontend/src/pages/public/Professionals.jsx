@@ -1,264 +1,291 @@
-import React, { useState } from 'react'
-import professionals from '../../data/professionals'
-import ProfessionalCard from '../../components/professionals/ProfessionalCard'
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import axios from "axios";
 
 const Professionals = () => {
+  const [professionals, setProfessionals] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  const [search, setSearch] = useState("")
-  const [service, setService] = useState("All")
-  const [rating, setRating] = useState("All")
-  const [availability, setAvailability] = useState("All")
-  const [location, setLocation] = useState("")
-  const [userLocation, setUserLocation] = useState(null)
-  const [locationLoading, setLocationLoading] = useState(false)
-  const [locationError, setLocationError] = useState("")
+  // =========================
+  // Fetch Professionals
+  // =========================
 
-  const getUserLocation = () => {
+  useEffect(() => {
+    const fetchProfessionals = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:5000/api/professionals"
+        );
 
-    if (!navigator.geolocation) {
-      setLocationError("Geolocation is not supported by your browser.")
-      return
-    }
+        console.log(
+          "Professionals:",
+          response.data
+        );
 
-    setLocationLoading(true)
-    setLocationError("")
+        setProfessionals(
+          response.data.professionals
+        );
 
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
+      } catch (error) {
+        console.error(
+          "Fetch professionals error:",
+          error
+        );
 
-        const latitude = position.coords.latitude
-        const longitude = position.coords.longitude
+        setError(
+          "Unable to load professionals."
+        );
 
-        setUserLocation({
-          latitude,
-          longitude
-        })
-
-        setLocationLoading(false)
-      },
-
-      (error) => {
-
-        setLocationLoading(false)
-
-        if (error.code === 1) {
-          setLocationError(
-            "Location permission was denied. Please allow location access."
-          )
-        } else if (error.code === 2) {
-          setLocationError(
-            "Your location could not be detected."
-          )
-        } else {
-          setLocationError(
-            "Unable to get your location."
-          )
-        }
+      } finally {
+        setLoading(false);
       }
-    )
+    };
+
+    fetchProfessionals();
+  }, []);
+
+
+  // =========================
+  // Loading
+  // =========================
+
+  if (loading) {
+    return (
+      <section className="min-h-screen bg-gray-50 py-16">
+
+        <div className="max-w-7xl mx-auto px-6">
+
+          <div className="text-center">
+
+            <p className="text-gray-600">
+              Loading professionals...
+            </p>
+
+          </div>
+
+        </div>
+
+      </section>
+    );
   }
 
-  const filteredProfessionals = professionals.filter((professional) => {
 
-    const matchesSearch =
-      professional.name.toLowerCase().includes(search.toLowerCase()) ||
-      professional.profession.toLowerCase().includes(search.toLowerCase())
+  // =========================
+  // Error
+  // =========================
 
-    const matchesService =
-      service === "All" || professional.service === service
-
-    const matchesRating =
-      rating === "All" ||
-      professional.rating >= Number(rating)
-
-    const matchesAvailability =
-      availability === "All" ||
-      (availability === "Available" && professional.available)
-
-    const matchesLocation =
-      location === "" ||
-      professional.location.toLowerCase().includes(location.toLowerCase())
-
+  if (error) {
     return (
-      matchesSearch &&
-      matchesService &&
-      matchesRating &&
-      matchesAvailability &&
-      matchesLocation
-    )
-  })
+      <section className="min-h-screen bg-gray-50 py-16">
+
+        <div className="max-w-7xl mx-auto px-6">
+
+          <div className="text-center">
+
+            <p className="text-red-600">
+              {error}
+            </p>
+
+          </div>
+
+        </div>
+
+      </section>
+    );
+  }
+
 
   return (
     <section className="min-h-screen bg-gray-50 py-16">
 
       <div className="max-w-7xl mx-auto px-6">
 
-   
-        <div className="text-center mb-10">
+        {/* =========================
+            Header
+        ========================= */}
 
-          <p className="text-blue-600 font-semibold mb-2">
-            Find Your Expert
-          </p>
+        <div className="text-center mb-12">
 
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900">
-            Find Professionals Near You
+          <h1 className="text-4xl font-bold text-gray-900">
+            Find Professionals
           </h1>
 
-          <p className="mt-4 text-gray-600 max-w-2xl mx-auto">
-            Find trusted and experienced professionals for your
-            home and everyday service needs.
+          <p className="mt-3 text-gray-600">
+            Find trusted professionals near you.
           </p>
 
         </div>
 
-    
-        <div className="max-w-2xl mx-auto mb-8">
 
-          <input
-            type="text"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="🔍 Search by name or profession..."
-            className="w-full px-5 py-4 bg-white border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 shadow-sm"
-          />
+        {/* =========================
+            No Professionals
+        ========================= */}
 
-        </div>
+        {professionals.length === 0 ? (
 
-        <div className="max-w-2xl mx-auto mb-8">
+          <div className="text-center py-20">
 
-          <div className="flex flex-col sm:flex-row gap-3">
+            <h2 className="text-2xl font-semibold text-gray-800">
+              No professionals found
+            </h2>
 
-            <input
-              type="text"
-              value={location}
-              onChange={(e) => setLocation(e.target.value)}
-              placeholder="📍 Enter your location..."
-              className="flex-1 px-5 py-3 bg-white border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500"
-            />
-
-            <button
-              type="button"
-              onClick={getUserLocation}
-              disabled={locationLoading}
-              className="px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 disabled:bg-blue-400 transition"
-            >
-              {locationLoading
-                ? "Getting Location..."
-                : "Use My Location"}
-            </button>
-
-          </div>
-
-          {/* Location Result */}
-          {userLocation && (
-            <div className="mt-4 p-4 bg-green-50 border border-green-200 rounded-xl">
-
-              <p className="text-green-700 font-medium">
-                📍 Location detected successfully
-              </p>
-
-              <p className="mt-1 text-sm text-green-600">
-                Latitude: {userLocation.latitude}
-              </p>
-
-              <p className="text-sm text-green-600">
-                Longitude: {userLocation.longitude}
-              </p>
-
-            </div>
-          )}
-
-          {/* Location Error */}
-          {locationError && (
-            <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-xl">
-
-              <p className="text-red-600 text-sm">
-                {locationError}
-              </p>
-
-            </div>
-          )}
-
-        </div>
-
-        {/* Filters */}
-        <div className="bg-white p-5 rounded-xl shadow-sm mb-10">
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-
-            <select
-              value={service}
-              onChange={(e) => setService(e.target.value)}
-              className="px-4 py-3 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <option value="All">All Services</option>
-              <option value="Plumber">Plumber</option>
-              <option value="Electrician">Electrician</option>
-              <option value="Painter">Painter</option>
-              <option value="Carpenter">Carpenter</option>
-            </select>
-
-            <select
-              value={rating}
-              onChange={(e) => setRating(e.target.value)}
-              className="px-4 py-3 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <option value="All">All Ratings</option>
-              <option value="4">4+ ⭐</option>
-              <option value="4.5">4.5+ ⭐</option>
-              <option value="4.8">4.8+ ⭐</option>
-            </select>
-
-            <select
-              value={availability}
-              onChange={(e) => setAvailability(e.target.value)}
-              className="px-4 py-3 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <option value="All">All Professionals</option>
-              <option value="Available">Available Now</option>
-            </select>
-
-          </div>
-
-        </div>
-
-        {/* Result Count */}
-        <p className="mb-5 text-gray-600">
-          <span className="font-semibold text-gray-900">
-            {filteredProfessionals.length}
-          </span>{" "}
-          professionals found
-        </p>
-
-        {/* Professionals */}
-        {filteredProfessionals.length > 0 ? (
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-
-            {filteredProfessionals.map((professional) => (
-              <ProfessionalCard
-                key={professional.id}
-                professional={professional}
-              />
-            ))}
+            <p className="mt-2 text-gray-500">
+              Professionals will appear here once they register.
+            </p>
 
           </div>
 
         ) : (
 
-          <div className="text-center py-16">
 
-            <p className="text-5xl mb-4">
-              🔍
-            </p>
+          /* =========================
+             Professional Grid
+          ========================= */
 
-            <h2 className="text-xl font-semibold text-gray-800">
-              No professionals found
-            </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
 
-            <p className="text-gray-500 mt-2">
-              Try changing your search or filters.
-            </p>
+            {professionals.map((professional) => (
+
+              <div
+                key={professional._id}
+                className="bg-white rounded-2xl shadow-sm overflow-hidden hover:shadow-md transition"
+              >
+
+                {/* Image */}
+
+                <div className="h-56 bg-gray-100">
+
+                  {professional.image ? (
+
+                    <img
+                      src={professional.image}
+                      alt={professional.name}
+                      className="w-full h-full object-cover"
+                    />
+
+                  ) : (
+
+                    <div className="w-full h-full flex items-center justify-center">
+
+                      <span className="text-5xl">
+                        👤
+                      </span>
+
+                    </div>
+
+                  )}
+
+                </div>
+
+
+                {/* Content */}
+
+                <div className="p-6">
+
+                  <div className="flex items-start justify-between gap-3">
+
+                    <div>
+
+                      <h2 className="text-xl font-bold text-gray-900">
+                        {professional.name}
+                      </h2>
+
+                      <p className="mt-1 text-blue-600 font-medium">
+                        {professional.profession}
+                      </p>
+
+                    </div>
+
+
+                    {/* Verification */}
+
+                    {professional.isVerified && (
+
+                      <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">
+                        Verified
+                      </span>
+
+                    )}
+
+                  </div>
+
+
+                  {/* Rating */}
+
+                  <div className="flex items-center gap-2 mt-4">
+
+                    <span className="text-yellow-500">
+                      ★
+                    </span>
+
+                    <span className="font-semibold">
+                      {professional.rating}
+                    </span>
+
+                    <span className="text-gray-500 text-sm">
+                      ({professional.reviews} reviews)
+                    </span>
+
+                  </div>
+
+
+                  {/* Location */}
+
+                  <p className="mt-3 text-gray-600 text-sm">
+                    📍 {professional.location || professional.city}
+                  </p>
+
+
+                  {/* Experience */}
+
+                  <p className="mt-2 text-gray-600 text-sm">
+                    🛠️ {professional.experience} experience
+                  </p>
+
+
+                  {/* Price */}
+
+                  <p className="mt-4 text-lg font-bold text-gray-900">
+                    Starting from ₹{professional.price}
+                  </p>
+
+
+                  {/* Availability */}
+
+                  <div className="mt-4">
+
+                    {professional.available ? (
+
+                      <span className="text-sm text-green-600 font-medium">
+                        ● Available Now
+                      </span>
+
+                    ) : (
+
+                      <span className="text-sm text-gray-500 font-medium">
+                        ● Currently Unavailable
+                      </span>
+
+                    )}
+
+                  </div>
+
+
+                  {/* View Profile */}
+
+                  <Link
+                    to={`/professionals/${professional._id}`}
+                    className="block w-full mt-5 py-3 text-center bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition"
+                  >
+                    View Profile
+                  </Link>
+
+                </div>
+
+              </div>
+
+            ))}
 
           </div>
 
@@ -267,7 +294,7 @@ const Professionals = () => {
       </div>
 
     </section>
-  )
-}
+  );
+};
 
-export default Professionals
+export default Professionals;

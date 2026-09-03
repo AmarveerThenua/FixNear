@@ -5,24 +5,19 @@ import UserSidebar from "../components/user/UserSidebar";
 import UserHeader from "../components/user/UserHeader";
 
 const UserLayout = () => {
-
   return (
-    <div className="min-h-screen bg-gray-50 flex">
+    <div className="min-h-screen w-full bg-gray-50 flex flex-col lg:flex-row overflow-x-hidden">
 
-      {/* Sidebar */}
       <UserSidebar />
 
-      {/* Main Content */}
-      <div className="flex-1">
+      <div className="flex-1 min-w-0 w-full">
 
         <UserHeader />
 
-        <main className="p-6">
+        <main className="w-full min-w-0 p-3 sm:p-5 md:p-6">
           <Outlet />
         </main>
-
       </div>
-
     </div>
   );
 };
