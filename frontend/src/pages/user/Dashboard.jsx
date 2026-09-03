@@ -79,8 +79,8 @@ const Dashboard = () => {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-5 md:gap-6 mt-7 sm:mt-9 md:mt-10">
-          <div className="bg-[#2563EB] text-white p-4 sm:p-5 md:p-6 rounded-xl shadow-sm border border-gray-100">
-            <p className="text-sm sm:text-base text-gray-500">
+          <div className="bg-[#2563EB]  p-4 sm:p-5 md:p-6 rounded-xl shadow-sm border border-gray-100">
+            <p className="text-sm sm:text-base text-white">
               Total Bookings
             </p>
 
@@ -89,8 +89,8 @@ const Dashboard = () => {
             </p>
           </div>
 
-          <div className="bg-[#F59E0B] text-white  p-4 sm:p-5 md:p-6 rounded-xl shadow-sm border border-gray-100">
-            <p className="text-sm sm:text-base text-gray-500">
+          <div className="bg-[#F59E0B]   p-4 sm:p-5 md:p-6 rounded-xl shadow-sm border border-gray-100">
+            <p className="text-sm sm:text-base text-white">
               Active Bookings
             </p>
 
@@ -99,8 +99,8 @@ const Dashboard = () => {
             </p>
           </div>
 
-          <div className="bg-[#16A34A] text-white  p-4 sm:p-5 md:p-6 rounded-xl shadow-sm border border-gray-100 sm:col-span-2 md:col-span-1">
-            <p className="text-sm sm:text-base text-gray-500">
+          <div className="bg-[#16A34A]  p-4 sm:p-5 md:p-6 rounded-xl shadow-sm border border-gray-100 sm:col-span-2 md:col-span-1">
+            <p className="text-sm sm:text-base text-white">
               Completed
             </p>
 
