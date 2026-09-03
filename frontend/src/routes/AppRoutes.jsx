@@ -45,15 +45,10 @@ import AdminNotifications from "../pages/admin/AdminNotifications";
 
 import ErrorPage from "../pages/ErrorPage";
 
-
 const AppRoutes = () => {
   return (
     <Routes>
-
-      {/* ================= PUBLIC ROUTES ================= */}
-
       <Route element={<PublicLayout />}>
-
         <Route
           path="/"
           element={<Home />}
@@ -83,17 +78,10 @@ const AppRoutes = () => {
           path="/book/:id"
           element={<BookService />}
         />
-
       </Route>
 
-
-      {/* ================= AUTH ROUTES ================= */}
-      {/* Only logged-out users can access these */}
-
       <Route element={<PublicRoute />}>
-
         <Route element={<PublicLayout />}>
-
           <Route
             path="/register"
             element={<Register />}
@@ -103,188 +91,122 @@ const AppRoutes = () => {
             path="/login"
             element={<Login />}
           />
-
         </Route>
-
       </Route>
 
-
-      {/* ================= PROTECTED ROUTES ================= */}
-
       <Route element={<ProtectedRoute />}>
-
-        {/* ================= USER PANEL ================= */}
-
         <Route element={<UserLayout />}>
-
-          {/* Dashboard */}
-
           <Route
             path="/dashboard"
             element={<Dashboard />}
           />
-
-          {/* My Bookings */}
 
           <Route
             path="/my-bookings"
             element={<MyBookings />}
           />
 
-          {/* Booking Details */}
-
           <Route
             path="/booking/:id"
             element={<BookingDetails />}
           />
-
-          {/* Profile */}
 
           <Route
             path="/profile"
             element={<Profile />}
           />
 
-          {/* Reviews */}
-
           <Route
             path="/reviews"
             element={<Reviews />}
           />
-
-          {/* Notifications */}
 
           <Route
             path="/notifications"
             element={<Notifications />}
           />
 
-          {/* Booking Success */}
-
           <Route
             path="/booking-success"
             element={<BookingSuccess />}
           />
-
         </Route>
 
-
-        {/* ================= BECOME PROFESSIONAL ================= */}
-
-        <Route
-          path="/become-professional"
-          element={<BecomeProfessional />}
-        />
-
-
-        {/* ================= PROFESSIONAL PANEL ================= */}
+        <Route element={<PublicLayout />}>
+          <Route
+            path="/become-professional"
+            element={<BecomeProfessional />}
+          />
+        </Route>
 
         <Route element={<ProfessionalRoute />}>
-
           <Route element={<ProfessionalLayout />}>
-
-            {/* Professional Dashboard */}
-
             <Route
               path="/professional-dashboard"
               element={<ProfessionalDashboard />}
             />
-
-            {/* Booking Requests */}
 
             <Route
               path="/professional-bookings"
               element={<ProfessionalBookings />}
             />
 
-            {/* Professional Profile */}
-
             <Route
               path="/professional-profile"
               element={<ProfessionalProfilePage />}
             />
-
-            {/* Professional Reviews */}
 
             <Route
               path="/professional-reviews"
               element={<ProfessionalReviews />}
             />
 
-            {/* Professional Notifications */}
-
             <Route
               path="/professional-notifications"
               element={<ProfessionalNotifications />}
             />
-
           </Route>
-
         </Route>
 
-
-        {/* ================= ADMIN PANEL ================= */}
-
         <Route element={<AdminRoute />}>
-
           <Route element={<AdminLayout />}>
-
-            {/* Admin Dashboard */}
-
             <Route
               path="/admin-dashboard"
               element={<AdminDashboard />}
             />
-
-            {/* Manage Users */}
 
             <Route
               path="/admin-users"
               element={<ManageUsers />}
             />
 
-            {/* Manage Professionals */}
-
             <Route
               path="/admin-professionals"
               element={<ManageProfessionals />}
             />
-
-            {/* Manage Bookings */}
 
             <Route
               path="/admin-bookings"
               element={<ManageBookings />}
             />
 
-            {/* Manage Reviews */}
-
             <Route
               path="/admin-reviews"
               element={<ManageReviews />}
             />
 
-            {/* Admin Notifications */}
-
             <Route
               path="/admin-notifications"
               element={<AdminNotifications />}
             />
-
           </Route>
-
         </Route>
-
       </Route>
-
-
-      {/* ================= 404 ERROR PAGE ================= */}
 
       <Route
         path="*"
         element={<ErrorPage />}
       />
-
     </Routes>
   );
 };

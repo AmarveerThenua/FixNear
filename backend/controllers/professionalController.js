@@ -1,12 +1,6 @@
 import jwt from "jsonwebtoken";
-
 import Professional from "../models/Professional.js";
 import User from "../models/User.js";
-
-
-// ==================================================
-// CREATE PROFESSIONAL
-// ==================================================
 
 export const createProfessional = async (req, res) => {
   try {
@@ -29,10 +23,6 @@ export const createProfessional = async (req, res) => {
       available,
     } = req.body;
 
-    // ====================
-    // Check Authentication
-    // ====================
-
     if (!req.user || !req.user.id) {
       return res.status(401).json({
         message: "Authentication required",
@@ -40,10 +30,6 @@ export const createProfessional = async (req, res) => {
     }
 
     const userId = req.user.id;
-
-    // ====================
-    // Find User
-    // ====================
 
     const user = await User.findById(userId);
 
@@ -53,36 +39,21 @@ export const createProfessional = async (req, res) => {
       });
     }
 
-    // ====================
-    // Prevent Admin
-    // ====================
-
     if (user.role === "admin") {
       return res.status(403).json({
-        message:
-          "Admin account cannot become a professional",
+        message: "Admin account cannot become a professional",
       });
     }
 
-    // ====================
-    // Prevent Duplicate
-    // ====================
-
-    const existingProfessional =
-      await Professional.findOne({
-        user: userId,
-      });
+    const existingProfessional = await Professional.findOne({
+      user: userId,
+    });
 
     if (existingProfessional) {
       return res.status(400).json({
-        message:
-          "You already have a professional profile",
+        message: "You already have a professional profile",
       });
     }
-
-    // ====================
-    // Required Fields
-    // ====================
 
     if (
       !name ||
@@ -96,82 +67,49 @@ export const createProfessional = async (req, res) => {
       price === undefined
     ) {
       return res.status(400).json({
-        message:
-          "Please provide all required professional details",
+        message: "Please provide all required professional details",
       });
     }
 
-    // ====================
-    // Check Email
-    // ====================
+    const normalizedEmail = email.toLowerCase().trim();
 
-    const existingEmail =
-      await Professional.findOne({
-        email: email.toLowerCase(),
-      });
+    const existingEmail = await Professional.findOne({
+      email: normalizedEmail,
+    });
 
-    if (existingEmail) {
+    if (
+      existingEmail &&
+      existingEmail.user.toString() !== userId.toString()
+    ) {
       return res.status(400).json({
-        message:
-          "Professional already exists with this email",
+        message: "This email is already registered to another professional",
       });
     }
 
-    // ====================
-    // Create Professional
-    // ====================
-
-    const professional =
-      await Professional.create({
-        user: userId,
-
-        name,
-        profession,
-        email: email.toLowerCase(),
-        phone,
-
-        skills: skills || [],
-
-        experience: experience || "",
-
-        description: description || "",
-
-        address,
-        city,
-        state,
-        pincode,
-
-        location: location || city,
-
-        serviceArea: serviceArea || [],
-
-        price,
-
-        image: image || "",
-
-        available:
-          available !== undefined
-            ? available
-            : true,
-
-        // New professionals need admin verification
-        isVerified: false,
-      });
-
-    // ====================
-    // CHANGE USER ROLE
-    // ====================
+    const professional = await Professional.create({
+      user: userId,
+      name,
+      profession,
+      email: normalizedEmail,
+      phone,
+      skills: skills || [],
+      experience: experience || "",
+      description: description || "",
+      address,
+      city,
+      state,
+      pincode,
+      location: location || city,
+      serviceArea: serviceArea || [],
+      price,
+      image: image || "",
+      available: available !== undefined ? available : true,
+      isVerified: false,
+    });
 
     user.role = "professional";
 
     await user.save();
-
-    // ====================
-    // Create New JWT
-    // ====================
-    // The old token contains role: "user".
-    // Therefore we create a new token containing
-    // role: "professional".
 
     const newToken = jwt.sign(
       {
@@ -184,16 +122,9 @@ export const createProfessional = async (req, res) => {
       }
     );
 
-    // ====================
-    // Response
-    // ====================
-
     res.status(201).json({
-      message:
-        "Professional profile created successfully",
-
+      message: "Professional profile created successfully",
       token: newToken,
-
       user: {
         id: user._id,
         name: user.name,
@@ -202,7 +133,6 @@ export const createProfessional = async (req, res) => {
         location: user.location,
         role: user.role,
       },
-
       professional: {
         id: professional._id,
         user: professional.user,
@@ -227,12 +157,8 @@ export const createProfessional = async (req, res) => {
         isVerified: professional.isVerified,
       },
     });
-
   } catch (error) {
-    console.error(
-      "Create professional error:",
-      error
-    );
+    console.error("Create professional error:", error);
 
     res.status(500).json({
       message: "Server error",
@@ -240,31 +166,17 @@ export const createProfessional = async (req, res) => {
   }
 };
 
-
-// ==================================================
-// GET ALL PROFESSIONALS
-// ==================================================
-
-export const getProfessionals = async (
-  req,
-  res
-) => {
+export const getProfessionals = async (req, res) => {
   try {
-    const professionals =
-      await Professional.find()
-        .sort({
-          createdAt: -1,
-        });
+    const professionals = await Professional.find().sort({
+      createdAt: -1,
+    });
 
     res.status(200).json({
       professionals,
     });
-
   } catch (error) {
-    console.error(
-      "Get professionals error:",
-      error
-    );
+    console.error("Get professionals error:", error);
 
     res.status(500).json({
       message: "Server error",
@@ -272,20 +184,9 @@ export const getProfessionals = async (
   }
 };
 
-
-// ==================================================
-// GET SINGLE PROFESSIONAL
-// ==================================================
-
-export const getProfessionalById = async (
-  req,
-  res
-) => {
+export const getProfessionalById = async (req, res) => {
   try {
-    const professional =
-      await Professional.findById(
-        req.params.id
-      );
+    const professional = await Professional.findById(req.params.id);
 
     if (!professional) {
       return res.status(404).json({
@@ -296,12 +197,8 @@ export const getProfessionalById = async (
     res.status(200).json({
       professional,
     });
-
   } catch (error) {
-    console.error(
-      "Get professional error:",
-      error
-    );
+    console.error("Get professional error:", error);
 
     res.status(500).json({
       message: "Server error",
@@ -309,326 +206,219 @@ export const getProfessionalById = async (
   }
 };
 
+export const getMyProfessionalProfile = async (req, res) => {
+  try {
+    const userId = req.user.id;
 
-// ==================================================
-// GET MY PROFESSIONAL PROFILE
-// ==================================================
+    const professional = await Professional.findOne({
+      user: userId,
+    });
 
-export const getMyProfessionalProfile =
-  async (req, res) => {
-    try {
-      const userId = req.user.id;
-
-      const professional =
-        await Professional.findOne({
-          user: userId,
-        });
-
-      if (!professional) {
-        return res.status(404).json({
-          message:
-            "Professional profile not found",
-        });
-      }
-
-      res.status(200).json({
-        professional,
-      });
-
-    } catch (error) {
-      console.error(
-        "Get my professional profile error:",
-        error
-      );
-
-      res.status(500).json({
-        message: "Server error",
+    if (!professional) {
+      return res.status(404).json({
+        message: "Professional profile not found",
       });
     }
-  };
 
+    res.status(200).json({
+      professional,
+    });
+  } catch (error) {
+    console.error("Get my professional profile error:", error);
 
-// ==================================================
-// ADMIN PROFESSIONAL MANAGEMENT
-// ==================================================
+    res.status(500).json({
+      message: "Server error",
+    });
+  }
+};
 
-
-// ====================
-// Admin - Get All Professionals
-// ====================
-
-export const getAllProfessionalsAdmin =
-  async (req, res) => {
-    try {
-      const professionals =
-        await Professional.find()
-          .populate(
-            "user",
-            "name email phone role"
-          )
-          .sort({
-            createdAt: -1,
-          });
-
-      res.status(200).json({
-        success: true,
-        count: professionals.length,
-        professionals,
+export const getAllProfessionalsAdmin = async (req, res) => {
+  try {
+    const professionals = await Professional.find()
+      .populate("user", "name email phone role")
+      .sort({
+        createdAt: -1,
       });
 
-    } catch (error) {
-      console.error(
-        "Admin get professionals error:",
-        error
-      );
+    res.status(200).json({
+      success: true,
+      count: professionals.length,
+      professionals,
+    });
+  } catch (error) {
+    console.error("Admin get professionals error:", error);
 
-      res.status(500).json({
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch professionals",
+    });
+  }
+};
+
+export const getProfessionalAdminById = async (req, res) => {
+  try {
+    const professional = await Professional.findById(
+      req.params.id
+    ).populate("user", "name email phone role");
+
+    if (!professional) {
+      return res.status(404).json({
         success: false,
-        message:
-          "Failed to fetch professionals",
+        message: "Professional not found",
       });
     }
-  };
 
+    res.status(200).json({
+      success: true,
+      professional,
+    });
+  } catch (error) {
+    console.error("Admin get professional error:", error);
 
-// ====================
-// Admin - Get Professional By ID
-// ====================
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch professional",
+    });
+  }
+};
 
-export const getProfessionalAdminById =
-  async (req, res) => {
-    try {
-      const professional =
-        await Professional.findById(
-          req.params.id
-        ).populate(
-          "user",
-          "name email phone role"
-        );
+export const verifyProfessional = async (req, res) => {
+  try {
+    const professional = await Professional.findById(
+      req.params.id
+    );
 
-      if (!professional) {
-        return res.status(404).json({
-          success: false,
-          message:
-            "Professional not found",
-        });
-      }
-
-      res.status(200).json({
-        success: true,
-        professional,
-      });
-
-    } catch (error) {
-      console.error(
-        "Admin get professional error:",
-        error
-      );
-
-      res.status(500).json({
+    if (!professional) {
+      return res.status(404).json({
         success: false,
-        message:
-          "Failed to fetch professional",
+        message: "Professional not found",
       });
     }
-  };
 
+    professional.isVerified = true;
 
-// ====================
-// Admin - Verify Professional
-// ====================
+    await professional.save();
 
-export const verifyProfessional =
-  async (req, res) => {
-    try {
-      const professional =
-        await Professional.findById(
-          req.params.id
-        );
+    res.status(200).json({
+      success: true,
+      message: "Professional verified successfully",
+      professional,
+    });
+  } catch (error) {
+    console.error("Verify professional error:", error);
 
-      if (!professional) {
-        return res.status(404).json({
-          success: false,
-          message:
-            "Professional not found",
-        });
-      }
+    res.status(500).json({
+      success: false,
+      message: "Failed to verify professional",
+    });
+  }
+};
 
-      professional.isVerified = true;
+export const unverifyProfessional = async (req, res) => {
+  try {
+    const professional = await Professional.findById(
+      req.params.id
+    );
 
-      await professional.save();
-
-      res.status(200).json({
-        success: true,
-        message:
-          "Professional verified successfully",
-        professional,
-      });
-
-    } catch (error) {
-      console.error(
-        "Verify professional error:",
-        error
-      );
-
-      res.status(500).json({
+    if (!professional) {
+      return res.status(404).json({
         success: false,
-        message:
-          "Failed to verify professional",
+        message: "Professional not found",
       });
     }
-  };
 
+    professional.isVerified = false;
 
-// ====================
-// Admin - Unverify Professional
-// ====================
+    await professional.save();
 
-export const unverifyProfessional =
-  async (req, res) => {
-    try {
-      const professional =
-        await Professional.findById(
-          req.params.id
-        );
+    res.status(200).json({
+      success: true,
+      message: "Professional verification removed",
+      professional,
+    });
+  } catch (error) {
+    console.error("Unverify professional error:", error);
 
-      if (!professional) {
-        return res.status(404).json({
-          success: false,
-          message:
-            "Professional not found",
-        });
-      }
+    res.status(500).json({
+      success: false,
+      message: "Failed to update verification",
+    });
+  }
+};
 
-      professional.isVerified = false;
+export const toggleProfessionalAvailability = async (
+  req,
+  res
+) => {
+  try {
+    const professional = await Professional.findById(
+      req.params.id
+    );
 
-      await professional.save();
-
-      res.status(200).json({
-        success: true,
-        message:
-          "Professional verification removed",
-        professional,
-      });
-
-    } catch (error) {
-      console.error(
-        "Unverify professional error:",
-        error
-      );
-
-      res.status(500).json({
+    if (!professional) {
+      return res.status(404).json({
         success: false,
-        message:
-          "Failed to update verification",
+        message: "Professional not found",
       });
     }
-  };
 
+    professional.available = !professional.available;
 
-// ====================
-// Admin - Toggle Availability
-// ====================
+    await professional.save();
 
-export const toggleProfessionalAvailability =
-  async (req, res) => {
-    try {
-      const professional =
-        await Professional.findById(
-          req.params.id
-        );
+    res.status(200).json({
+      success: true,
+      message: professional.available
+        ? "Professional is now available"
+        : "Professional is now unavailable",
+      professional,
+    });
+  } catch (error) {
+    console.error(
+      "Toggle professional availability error:",
+      error
+    );
 
-      if (!professional) {
-        return res.status(404).json({
-          success: false,
-          message:
-            "Professional not found",
-        });
-      }
+    res.status(500).json({
+      success: false,
+      message: "Failed to update availability",
+    });
+  }
+};
 
-      professional.available =
-        !professional.available;
+export const deleteProfessional = async (req, res) => {
+  try {
+    const professional = await Professional.findById(
+      req.params.id
+    );
 
-      await professional.save();
-
-      res.status(200).json({
-        success: true,
-        message: professional.available
-          ? "Professional is now available"
-          : "Professional is now unavailable",
-        professional,
-      });
-
-    } catch (error) {
-      console.error(
-        "Toggle professional availability error:",
-        error
-      );
-
-      res.status(500).json({
+    if (!professional) {
+      return res.status(404).json({
         success: false,
-        message:
-          "Failed to update availability",
+        message: "Professional not found",
       });
     }
-  };
 
+    const userId = professional.user;
 
-// ====================
-// Admin - Delete Professional
-// ====================
+    await Professional.findByIdAndDelete(req.params.id);
 
-export const deleteProfessional =
-  async (req, res) => {
-    try {
-      const professional =
-        await Professional.findById(
-          req.params.id
-        );
-
-      if (!professional) {
-        return res.status(404).json({
-          success: false,
-          message:
-            "Professional not found",
-        });
-      }
-
-      const userId =
-        professional.user;
-
-      // Delete professional profile
-      await Professional.findByIdAndDelete(
-        req.params.id
-      );
-
-      // Change associated account back
-      // to normal user
-      if (userId) {
-        await User.findByIdAndUpdate(
-          userId,
-          {
-            role: "user",
-          }
-        );
-      }
-
-      res.status(200).json({
-        success: true,
-        message:
-          "Professional deleted successfully",
-      });
-
-    } catch (error) {
-      console.error(
-        "Delete professional error:",
-        error
-      );
-
-      res.status(500).json({
-        success: false,
-        message:
-          "Failed to delete professional",
+    if (userId) {
+      await User.findByIdAndUpdate(userId, {
+        role: "user",
       });
     }
-  };
+
+    res.status(200).json({
+      success: true,
+      message: "Professional deleted successfully",
+    });
+  } catch (error) {
+    console.error("Delete professional error:", error);
+
+    res.status(500).json({
+      success: false,
+      message: "Failed to delete professional",
+    });
+  }
+};
