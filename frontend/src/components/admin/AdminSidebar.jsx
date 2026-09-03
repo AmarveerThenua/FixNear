@@ -44,17 +44,9 @@ const AdminSidebar = () => {
     },
   ];
 
-  // =========================
-  // Close Sidebar
-  // =========================
-
   const closeSidebar = () => {
     setSidebarOpen(false);
   };
-
-  // =========================
-  // Logout
-  // =========================
 
   const handleLogout = () => {
     localStorage.removeItem("fixnearToken");
@@ -67,44 +59,42 @@ const AdminSidebar = () => {
 
   return (
     <>
-      {/* =========================
-          Mobile Menu Button
-      ========================= */}
-
-      <button
-        type="button"
-        onClick={() => setSidebarOpen(true)}
-        className="
-          lg:hidden
-          fixed
-          top-4
-          left-4
-          z-[60]
-          w-10
-          h-10
-          flex
-          items-center
-          justify-center
-          bg-white
-          text-gray-700
-          rounded-lg
-          shadow-md
-          border
-          border-gray-200
-          hover:bg-gray-50
-          transition
-        "
-        aria-label="Open admin sidebar"
-      >
-        <FontAwesomeIcon
-          icon={faBars}
-          className="text-lg"
-        />
-      </button>
-
-      {/* =========================
-          Mobile Overlay
-      ========================= */}
+      {!sidebarOpen && (
+        <button
+          type="button"
+          onClick={() => setSidebarOpen(true)}
+          className="
+            lg:hidden
+            fixed
+            top-[58px]
+            sm:top-[68px]
+            left-2
+            sm:left-3
+            z-[60]
+            w-9
+            h-9
+            sm:w-10
+            sm:h-10
+            flex
+            items-center
+            justify-center
+            bg-white
+            text-gray-700
+            rounded-lg
+            shadow-md
+            border
+            border-gray-200
+            hover:bg-gray-50
+            transition
+          "
+          aria-label="Open admin sidebar"
+        >
+          <FontAwesomeIcon
+            icon={faBars}
+            className="text-base sm:text-lg"
+          />
+        </button>
+      )}
 
       {sidebarOpen && (
         <div
@@ -112,27 +102,31 @@ const AdminSidebar = () => {
           className="
             lg:hidden
             fixed
-            inset-0
+            top-[58px]
+            sm:top-[68px]
+            bottom-0
+            left-0
+            right-0
             z-40
             bg-black/40
           "
         />
       )}
 
-      {/* =========================
-          Sidebar
-      ========================= */}
-
       <aside
         className={`
           fixed
           lg:static
-          top-0
+          top-[58px]
+          sm:top-[68px]
+          lg:top-auto
           left-0
           z-50
-          h-screen
+          h-[calc(100vh-58px)]
+          sm:h-[calc(100vh-68px)]
           lg:h-screen
-          w-60
+          w-56
+          sm:w-60
           lg:w-64
           bg-white
           border-r
@@ -155,16 +149,13 @@ const AdminSidebar = () => {
           lg:top-0
         `}
       >
-        {/* =========================
-            Sidebar Header
-        ========================= */}
-
         <div
           className="
-            px-4
+            px-3
             sm:px-5
             lg:px-6
-            py-4
+            py-3
+            sm:py-4
             lg:py-6
             border-b
             border-gray-200
@@ -174,55 +165,57 @@ const AdminSidebar = () => {
             justify-between
           "
         >
-          <div>
-            <h1 className="text-xl sm:text-2xl font-bold text-blue-600">
+          <div className="min-w-0">
+            <h1 className="text-lg sm:text-2xl font-bold text-blue-600">
               FixNear
             </h1>
 
-            <p className="text-xs sm:text-sm text-gray-500 mt-1">
+            <p className="text-[10px] sm:text-sm text-gray-500 mt-0.5 sm:mt-1">
               Admin Panel
             </p>
           </div>
 
-          {/* Mobile Close Button */}
-
-          <button
-            type="button"
-            onClick={closeSidebar}
-            className="
-              lg:hidden
-              w-9
-              h-9
-              flex
-              items-center
-              justify-center
-              rounded-lg
-              text-gray-600
-              hover:bg-gray-100
-              transition
-            "
-            aria-label="Close admin sidebar"
-          >
-            <FontAwesomeIcon
-              icon={faXmark}
-              className="text-xl"
-            />
-          </button>
+          {sidebarOpen && (
+            <button
+              type="button"
+              onClick={closeSidebar}
+              className="
+                lg:hidden
+                w-8
+                h-8
+                sm:w-9
+                sm:h-9
+                flex
+                items-center
+                justify-center
+                rounded-lg
+                text-gray-600
+                hover:bg-gray-100
+                transition
+                shrink-0
+              "
+              aria-label="Close admin sidebar"
+            >
+              <FontAwesomeIcon
+                icon={faXmark}
+                className="text-lg sm:text-xl"
+              />
+            </button>
+          )}
         </div>
-
-        {/* =========================
-            Navigation
-        ========================= */}
 
         <nav
           className="
-            px-3
-            sm:px-4
-            py-3
+            px-2
+            sm:px-3
+            lg:px-4
+            py-2
+            sm:py-3
             lg:py-4
             flex
             flex-col
-            gap-2
+            gap-1.5
+            sm:gap-2
             overflow-y-auto
             min-w-0
             w-full
@@ -238,11 +231,14 @@ const AdminSidebar = () => {
                 `
                   flex
                   items-center
-                  gap-3
-                  px-3
-                  sm:px-4
-                  py-2.5
-                  sm:py-3
+                  gap-2
+                  sm:gap-3
+                  px-2.5
+                  sm:px-3
+                  lg:px-4
+                  py-2
+                  sm:py-2.5
+                  lg:py-3
                   rounded-lg
                   transition-all
                   duration-200
@@ -256,38 +252,34 @@ const AdminSidebar = () => {
                 `
               }
             >
-              <span className="w-6 text-center shrink-0 text-base sm:text-lg">
+              <span className="w-5 sm:w-6 text-center shrink-0 text-sm sm:text-base lg:text-lg">
                 {item.icon}
               </span>
 
-              <span className="text-sm sm:text-base flex-1">
+              <span className="text-[10px] sm:text-sm lg:text-base flex-1 truncate">
                 {item.name}
               </span>
             </NavLink>
           ))}
         </nav>
 
-        {/* =========================
-            Admin Profile + Logout
-        ========================= */}
-
         <div
           className="
-            px-3
-            sm:px-4
-            pb-3
-            sm:pb-4
+            px-2
+            sm:px-3
+            lg:px-4
+            pb-2
+            sm:pb-3
+            lg:pb-4
             shrink-0
           "
         >
-          <div className="border-t border-gray-200 pt-3 sm:pt-4">
-            {/* Admin Info */}
-
-            <div className="flex items-center gap-3 px-3 py-3">
+          <div className="border-t border-gray-200 pt-2 sm:pt-3 lg:pt-4">
+            <div className="flex items-center gap-2 sm:gap-3 px-2 sm:px-3 py-2 sm:py-3">
               <div
                 className="
-                  w-9
-                  h-9
+                  w-8
+                  h-8
                   sm:w-10
                   sm:h-10
                   bg-blue-100
@@ -295,7 +287,7 @@ const AdminSidebar = () => {
                   flex
                   items-center
                   justify-center
-                  text-base
+                  text-sm
                   sm:text-lg
                   shrink-0
                 "
@@ -304,17 +296,15 @@ const AdminSidebar = () => {
               </div>
 
               <div className="min-w-0">
-                <p className="text-sm font-semibold text-gray-800 truncate">
+                <p className="text-[10px] sm:text-sm font-semibold text-gray-800 truncate">
                   Administrator
                 </p>
 
-                <p className="text-xs text-gray-500">
+                <p className="text-[9px] sm:text-xs text-gray-500">
                   Admin
                 </p>
               </div>
             </div>
-
-            {/* Logout */}
 
             <button
               type="button"
@@ -323,12 +313,16 @@ const AdminSidebar = () => {
                 w-full
                 flex
                 items-center
-                gap-3
-                px-3
-                sm:px-4
-                py-2.5
-                sm:py-3
-                mt-2
+                gap-2
+                sm:gap-3
+                px-2
+                sm:px-3
+                lg:px-4
+                py-2
+                sm:py-2.5
+                lg:py-3
+                mt-1
+                sm:mt-2
                 rounded-lg
                 text-red-600
                 hover:bg-red-50
@@ -337,11 +331,11 @@ const AdminSidebar = () => {
                 whitespace-nowrap
               "
             >
-              <span className="w-6 text-center shrink-0">
+              <span className="w-5 sm:w-6 text-center shrink-0 text-sm sm:text-base">
                 🚪
               </span>
 
-              <span className="text-sm sm:text-base">
+              <span className="text-[10px] sm:text-sm lg:text-base">
                 Logout
               </span>
             </button>

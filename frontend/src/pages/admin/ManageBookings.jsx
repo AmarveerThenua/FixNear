@@ -321,7 +321,7 @@ const ManageBookings = () => {
       </div>
 
       {error && (
-        <div className="bg-red-50 border border-red-200 text-red-700 px-3 py-2.5 rounded-lg text-xs sm:text-sm break-words">
+        <div className="bg-red-50 border border-red-200 text-red-700 px-3 py-2.5 rounded-lg text-xs sm:text-sm wrap-break-word">
           {error}
         </div>
       )}
@@ -467,7 +467,7 @@ const ManageBookings = () => {
 
           <div className="hidden lg:block bg-white rounded-xl border border-gray-200 overflow-hidden">
             <div className="overflow-x-auto">
-              <table className="w-full min-w-[950px]">
+              <table className="w-full min-w-237.5">
                 <thead className="bg-gray-50 border-b border-gray-200">
                   <tr>
                     <th className="text-left px-5 py-4 text-xs font-semibold text-gray-500 uppercase">
@@ -665,7 +665,7 @@ const ManageBookings = () => {
                     Service
                   </p>
 
-                  <h3 className="text-sm sm:text-lg font-bold text-gray-800 break-words">
+                  <h3 className="text-sm sm:text-lg font-bold text-gray-800 wrap-break-word">
                     {selectedBooking.service}
                   </h3>
                 </div>
@@ -685,7 +685,7 @@ const ManageBookings = () => {
                     Customer
                   </h3>
 
-                  <p className="text-xs sm:text-sm text-gray-700 break-words">
+                  <p className="text-xs sm:text-sm text-gray-700 wrap-break-word">
                     <span className="font-medium">Name:</span>{" "}
                     {selectedBooking.user?.name || "N/A"}
                   </p>
@@ -695,7 +695,7 @@ const ManageBookings = () => {
                     {selectedBooking.user?.email || "N/A"}
                   </p>
 
-                  <p className="text-xs sm:text-sm text-gray-700 mt-1.5 break-words">
+                  <p className="text-xs sm:text-sm text-gray-700 mt-1.5 wrap-break-word">
                     <span className="font-medium">Phone:</span>{" "}
                     {selectedBooking.user?.phone || "N/A"}
                   </p>
@@ -706,17 +706,17 @@ const ManageBookings = () => {
                     Professional
                   </h3>
 
-                  <p className="text-xs sm:text-sm text-gray-700 break-words">
+                  <p className="text-xs sm:text-sm text-gray-700 wrap-break-word">
                     <span className="font-medium">Name:</span>{" "}
                     {selectedBooking.professional?.name || "N/A"}
                   </p>
 
-                  <p className="text-xs sm:text-sm text-gray-700 mt-1.5 break-words">
+                  <p className="text-xs sm:text-sm text-gray-700 mt-1.5 wrap-break-word">
                     <span className="font-medium">Profession:</span>{" "}
                     {selectedBooking.professional?.profession || "N/A"}
                   </p>
 
-                  <p className="text-xs sm:text-sm text-gray-700 mt-1.5 break-words">
+                  <p className="text-xs sm:text-sm text-gray-700 mt-1.5 wrap-break-word">
                     <span className="font-medium">Phone:</span>{" "}
                     {selectedBooking.professional?.phone || "N/A"}
                   </p>
@@ -764,7 +764,7 @@ const ManageBookings = () => {
                       Created
                     </p>
 
-                    <p className="text-xs sm:text-sm font-medium text-gray-800 mt-1 break-words">
+                    <p className="text-xs sm:text-sm font-medium text-gray-800 mt-1 wrap-break-word">
                       {formatCreatedDate(
                         selectedBooking.createdAt
                       )}
@@ -778,11 +778,11 @@ const ManageBookings = () => {
                   Service Address
                 </h3>
 
-                <p className="text-xs sm:text-sm text-gray-700 break-words">
+                <p className="text-xs sm:text-sm text-gray-700 wrap-break-word">
                   {selectedBooking.address || "N/A"}
                 </p>
 
-                <p className="text-xs sm:text-sm text-gray-500 mt-1 break-words">
+                <p className="text-xs sm:text-sm text-gray-500 mt-1 wrap-break-word">
                   {selectedBooking.city || ""}
                   {selectedBooking.city && selectedBooking.pincode
                     ? ", "
@@ -797,7 +797,7 @@ const ManageBookings = () => {
                     Description
                   </h3>
 
-                  <p className="text-xs sm:text-sm text-gray-700 whitespace-pre-wrap break-words leading-5">
+                  <p className="text-xs sm:text-sm text-gray-700 whitespace-pre-wrap wrap-break-word leading-5">
                     {selectedBooking.description}
                   </p>
                 </div>

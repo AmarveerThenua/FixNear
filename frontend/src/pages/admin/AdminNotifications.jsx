@@ -445,7 +445,7 @@ const AdminNotifications = () => {
       </div>
 
       {error && (
-        <div className="bg-red-50 border border-red-200 text-red-700 px-3 py-2.5 rounded-lg text-xs sm:text-sm break-words">
+        <div className="bg-red-50 border border-red-200 text-red-700 px-3 py-2.5 rounded-lg text-xs sm:text-sm wrap-break-word">
           {error}
         </div>
       )}
@@ -517,7 +517,7 @@ const AdminNotifications = () => {
                     )}
                   </div>
 
-                  <p className="text-[10px] sm:text-sm text-gray-600 mt-2 sm:mt-3 leading-4 sm:leading-6 break-words">
+                  <p className="text-[10px] sm:text-sm text-gray-600 mt-2 sm:mt-3 leading-4 sm:leading-6 wrap-break-word">
                     {notification.message}
                   </p>
 

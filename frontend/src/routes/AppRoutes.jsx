@@ -3,14 +3,20 @@ import { Routes, Route } from "react-router-dom";
 import Home from "../pages/public/Home";
 import Services from "../pages/public/Services";
 import ServiceDetails from "../pages/public/ServiceDetails";
-import Professionals from "../pages/public/Professionals";
-import ProfessionalProfile from "../pages/public/ProfessionalProfile";
-import BookService from "../pages/public/BookService";
 
 import Register from "../pages/auth/Register";
 import Login from "../pages/auth/Login";
 
 import Dashboard from "../pages/user/Dashboard";
+import UserProfessionals from "../pages/user/Professionals";
+import UserProfessionalProfile from "../pages/user/ProfessionalProfile";
+import UserBookService from "../pages/user/BookService";
+import MyBookings from "../pages/user/MyBookings";
+import BookingDetails from "../pages/user/BookingDetails";
+import Profile from "../pages/user/Profile";
+import Reviews from "../pages/user/Reviews";
+import Notifications from "../pages/user/Notifications";
+import BookingSuccess from "../pages/user/BookingSuccess";
 
 import PublicLayout from "../layouts/PublicLayout";
 import UserLayout from "../layouts/UserLayout";
@@ -21,13 +27,6 @@ import ProtectedRoute from "../components/common/ProtectedRoute";
 import PublicRoute from "../components/common/PublicRoute";
 import ProfessionalRoute from "../components/common/ProfessionalRoute";
 import AdminRoute from "../components/common/AdminRoute";
-
-import MyBookings from "../pages/user/MyBookings";
-import BookingDetails from "../pages/user/BookingDetails";
-import Profile from "../pages/user/Profile";
-import Reviews from "../pages/user/Reviews";
-import Notifications from "../pages/user/Notifications";
-import BookingSuccess from "../pages/user/BookingSuccess";
 
 import BecomeProfessional from "../pages/professional/BecomeProfessional";
 import ProfessionalDashboard from "../pages/professional/ProfessionalDashboard";
@@ -64,21 +63,6 @@ const AppRoutes = () => {
           path="/services/:id"
           element={<ServiceDetails />}
         />
-
-        <Route
-          path="/professionals"
-          element={<Professionals />}
-        />
-
-        <Route
-          path="/professionals/:id"
-          element={<ProfessionalProfile />}
-        />
-
-        <Route
-          path="/book/:id"
-          element={<BookService />}
-        />
       </Route>
 
       <Route element={<PublicRoute />}>
@@ -100,6 +84,21 @@ const AppRoutes = () => {
           <Route
             path="/dashboard"
             element={<Dashboard />}
+          />
+
+          <Route
+            path="/professionals"
+            element={<UserProfessionals />}
+          />
+
+          <Route
+            path="/professionals/:id"
+            element={<UserProfessionalProfile />}
+          />
+
+          <Route
+            path="/book/:id"
+            element={<UserBookService />}
           />
 
           <Route

@@ -340,7 +340,7 @@ const ManageReviews = () => {
       </div>
 
       {error && (
-        <div className="bg-red-50 border border-red-200 text-red-700 px-3 py-2.5 rounded-lg text-xs sm:text-sm break-words">
+        <div className="bg-red-50 border border-red-200 text-red-700 px-3 py-2.5 rounded-lg text-xs sm:text-sm wrap-break-word">
           {error}
         </div>
       )}
@@ -416,7 +416,7 @@ const ManageReviews = () => {
                     Review
                   </p>
 
-                  <p className="text-xs text-gray-700 mt-0.5 leading-4 break-words">
+                  <p className="text-xs text-gray-700 mt-0.5 leading-4 wrap-break-word">
                     {review.comment || "No comment"}
                   </p>
                 </div>
@@ -634,7 +634,7 @@ const ManageReviews = () => {
                 </h3>
 
                 <div className="space-y-1.5">
-                  <p className="text-xs sm:text-sm text-gray-700 break-words">
+                  <p className="text-xs sm:text-sm text-gray-700 wrap-break-word">
                     <span className="font-medium">Name:</span>{" "}
                     {selectedReview.user?.name || "N/A"}
                   </p>
@@ -644,7 +644,7 @@ const ManageReviews = () => {
                     {selectedReview.user?.email || "N/A"}
                   </p>
 
-                  <p className="text-xs sm:text-sm text-gray-700 break-words">
+                  <p className="text-xs sm:text-sm text-gray-700 wrap-break-word">
                     <span className="font-medium">Phone:</span>{" "}
                     {selectedReview.user?.phone || "N/A"}
                   </p>
@@ -657,17 +657,17 @@ const ManageReviews = () => {
                 </h3>
 
                 <div className="space-y-1.5">
-                  <p className="text-xs sm:text-sm text-gray-700 break-words">
+                  <p className="text-xs sm:text-sm text-gray-700 wrap-break-word">
                     <span className="font-medium">Name:</span>{" "}
                     {selectedReview.professional?.name || "N/A"}
                   </p>
 
-                  <p className="text-xs sm:text-sm text-gray-700 break-words">
+                  <p className="text-xs sm:text-sm text-gray-700 wrap-break-word">
                     <span className="font-medium">Profession:</span>{" "}
                     {selectedReview.professional?.profession || "N/A"}
                   </p>
 
-                  <p className="text-xs sm:text-sm text-gray-700 break-words">
+                  <p className="text-xs sm:text-sm text-gray-700 wrap-break-word">
                     <span className="font-medium">Phone:</span>{" "}
                     {selectedReview.professional?.phone || "N/A"}
                   </p>
@@ -679,7 +679,7 @@ const ManageReviews = () => {
                   Customer Review
                 </h3>
 
-                <p className="text-xs sm:text-sm text-gray-700 leading-5 sm:leading-6 whitespace-pre-wrap break-words">
+                <p className="text-xs sm:text-sm text-gray-700 leading-5 sm:leading-6 whitespace-pre-wrap wrap-break-word">
                   {selectedReview.comment || "No comment"}
                 </p>
               </div>
@@ -691,7 +691,7 @@ const ManageReviews = () => {
                   </h3>
 
                   <div className="space-y-1.5">
-                    <p className="text-xs sm:text-sm text-gray-700 break-words">
+                    <p className="text-xs sm:text-sm text-gray-700 wrap-break-word">
                       <span className="font-medium">Service:</span>{" "}
                       {selectedReview.booking?.service || "N/A"}
                     </p>
