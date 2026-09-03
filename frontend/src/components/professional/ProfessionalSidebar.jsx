@@ -28,6 +28,11 @@ const ProfessionalSidebar = () => {
       icon: "👤",
     },
     {
+      name: "Edit Profile",
+      path: "/professional-profile/edit",
+      icon: "✏️",
+    },
+    {
       name: "Reviews",
       path: "/professional-reviews",
       icon: "⭐",
@@ -60,11 +65,7 @@ const ProfessionalSidebar = () => {
 
         setUnreadCount(response.data.unreadCount || 0);
       } catch (error) {
-        console.error(
-          "Failed to fetch notification count:",
-          error
-        );
-
+        console.error("Failed to fetch notification count:", error);
         setUnreadCount(0);
       }
     };

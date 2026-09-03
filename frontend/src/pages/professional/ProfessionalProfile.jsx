@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const ProfessionalProfile = () => {
+  const navigate = useNavigate();
+
   const [professional, setProfessional] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -30,13 +33,17 @@ const ProfessionalProfile = () => {
       }
     };
 
-    fetchProfile();
-  }, [token]);
+    if (token) {
+      fetchProfile();
+    } else {
+      navigate("/login");
+    }
+  }, [token, navigate]);
 
   if (loading) {
     return (
       <div className="p-4 sm:p-6 flex justify-center items-center min-h-[240px] sm:min-h-[300px]">
-        <div className="w-9 h-9 sm:w-10 sm:h-10 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
+        <div className="w-9 h-9 sm:w-10 sm:h-10 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin" />
       </div>
     );
   }
@@ -55,14 +62,24 @@ const ProfessionalProfile = () => {
 
   return (
     <div className="p-3 sm:p-4 md:p-6">
-      <div className="mb-5 sm:mb-6">
-        <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">
-          My Professional Profile
-        </h1>
+      <div className="mb-5 sm:mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">
+            My Professional Profile
+          </h1>
 
-        <p className="text-sm sm:text-base text-gray-500 mt-1">
-          View your professional account information.
-        </p>
+          <p className="text-sm sm:text-base text-gray-500 mt-1">
+            View your professional account information.
+          </p>
+        </div>
+
+        <button
+          type="button"
+          onClick={() => navigate("/professional-profile/edit")}
+          className="w-full sm:w-auto px-5 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium text-sm sm:text-base"
+        >
+          Edit Profile
+        </button>
       </div>
 
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 sm:p-5 md:p-6 max-w-4xl">

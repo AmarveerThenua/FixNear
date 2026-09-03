@@ -82,7 +82,8 @@ export const createProfessional = async (req, res) => {
       existingEmail.user.toString() !== userId.toString()
     ) {
       return res.status(400).json({
-        message: "This email is already registered to another professional",
+        message:
+          "This email is already registered to another professional",
       });
     }
 
@@ -103,7 +104,8 @@ export const createProfessional = async (req, res) => {
       serviceArea: serviceArea || [],
       price,
       image: image || "",
-      available: available !== undefined ? available : true,
+      available:
+        available !== undefined ? available : true,
       isVerified: false,
     });
 
@@ -225,6 +227,130 @@ export const getMyProfessionalProfile = async (req, res) => {
     });
   } catch (error) {
     console.error("Get my professional profile error:", error);
+
+    res.status(500).json({
+      message: "Server error",
+    });
+  }
+};
+
+export const updateMyProfessionalProfile = async (
+  req,
+  res
+) => {
+  try {
+    const userId = req.user.id;
+
+    const professional = await Professional.findOne({
+      user: userId,
+    });
+
+    if (!professional) {
+      return res.status(404).json({
+        message: "Professional profile not found",
+      });
+    }
+
+    const {
+      name,
+      profession,
+      phone,
+      skills,
+      experience,
+      description,
+      address,
+      city,
+      state,
+      pincode,
+      location,
+      serviceArea,
+      price,
+      available,
+      image,
+    } = req.body;
+
+    if (
+      !name ||
+      !profession ||
+      !phone ||
+      !address ||
+      !city ||
+      !state ||
+      !pincode ||
+      price === undefined
+    ) {
+      return res.status(400).json({
+        message: "Please provide all required professional details",
+      });
+    }
+
+    if (Number(price) < 0 || Number.isNaN(Number(price))) {
+      return res.status(400).json({
+        message: "Please provide a valid price",
+      });
+    }
+
+    professional.name = name.trim();
+    professional.profession = profession.trim();
+    professional.phone = phone.trim();
+
+    professional.skills = Array.isArray(skills)
+      ? skills
+      : typeof skills === "string"
+      ? skills
+          .split(",")
+          .map((skill) => skill.trim())
+          .filter(Boolean)
+      : [];
+
+    professional.experience = experience || "";
+    professional.description = description || "";
+    professional.address = address.trim();
+    professional.city = city.trim();
+    professional.state = state.trim();
+    professional.pincode = pincode.trim();
+    professional.location = location?.trim() || city.trim();
+
+    professional.serviceArea = Array.isArray(serviceArea)
+      ? serviceArea
+      : typeof serviceArea === "string"
+      ? serviceArea
+          .split(",")
+          .map((area) => area.trim())
+          .filter(Boolean)
+      : [];
+
+    professional.price = Number(price);
+
+    if (available !== undefined) {
+      professional.available = Boolean(available);
+    }
+
+    if (image !== undefined) {
+      professional.image = image;
+    }
+
+    await professional.save();
+
+    const user = await User.findById(userId);
+
+    if (user) {
+      user.name = professional.name;
+      user.phone = professional.phone;
+      user.location = professional.location;
+
+      await user.save();
+    }
+
+    res.status(200).json({
+      message: "Professional profile updated successfully",
+      professional,
+    });
+  } catch (error) {
+    console.error(
+      "Update professional profile error:",
+      error
+    );
 
     res.status(500).json({
       message: "Server error",

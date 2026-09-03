@@ -33,6 +33,7 @@ import BecomeProfessional from "../pages/professional/BecomeProfessional";
 import ProfessionalDashboard from "../pages/professional/ProfessionalDashboard";
 import ProfessionalBookings from "../pages/professional/ProfessionalBookings";
 import ProfessionalProfilePage from "../pages/professional/ProfessionalProfile";
+import EditProfessionalProfile from "../pages/professional/EditProfessionalProfile";
 import ProfessionalReviews from "../pages/professional/ProfessionalReviews";
 import ProfessionalNotifications from "../pages/professional/ProfessionalNotifications";
 
@@ -154,6 +155,11 @@ const AppRoutes = () => {
             <Route
               path="/professional-profile"
               element={<ProfessionalProfilePage />}
+            />
+
+            <Route
+              path="/professional-profile/edit"
+              element={<EditProfessionalProfile />}
             />
 
             <Route
