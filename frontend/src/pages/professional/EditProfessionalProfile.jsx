@@ -168,24 +168,30 @@ const EditProfessionalProfile = () => {
     }
   };
 
+  const inputClass =
+    "w-full h-9 sm:h-10 lg:h-11 px-2.5 sm:px-3 lg:px-4 text-[10px] sm:text-xs lg:text-sm border border-gray-200 rounded-md sm:rounded-lg outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500";
+
+  const labelClass =
+    "block text-[9px] sm:text-xs lg:text-sm font-medium text-gray-700 mb-1 sm:mb-1.5";
+
   if (loading) {
     return (
       <div className="min-h-[300px] flex items-center justify-center">
-        <div className="w-10 h-10 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin" />
+        <div className="w-8 h-8 sm:w-10 sm:h-10 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin" />
       </div>
     );
   }
 
   return (
-    <div className="p-3 sm:p-4 md:p-6">
-      <div className="max-w-4xl">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
-          <div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">
+    <div className="p-2 sm:p-3 md:p-5 lg:p-6">
+      <div className="max-w-5xl mx-auto">
+        <div className="flex items-center justify-between gap-2 mb-3 sm:mb-5 lg:mb-6">
+          <div className="min-w-0">
+            <h1 className="text-base sm:text-xl md:text-2xl lg:text-3xl font-bold text-gray-800 truncate">
               Edit Professional Profile
             </h1>
 
-            <p className="text-sm sm:text-base text-gray-500 mt-1">
+            <p className="text-[8px] sm:text-xs lg:text-sm text-gray-500 mt-0.5 truncate">
               Update your professional information.
             </p>
           </div>
@@ -193,23 +199,23 @@ const EditProfessionalProfile = () => {
           <button
             type="button"
             onClick={() => navigate("/professional-profile")}
-            className="w-full sm:w-auto px-4 py-2.5 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition text-sm font-medium"
+            className="shrink-0 px-2.5 sm:px-4 lg:px-5 py-1.5 sm:py-2.5 bg-gray-100 text-gray-700 rounded-md sm:rounded-lg hover:bg-gray-200 transition text-[9px] sm:text-xs lg:text-sm font-medium"
           >
-            Back to Profile
+            Back
           </button>
         </div>
 
         {error && (
-          <div className="mb-5 p-4 bg-red-50 border border-red-200 rounded-lg">
-            <p className="text-sm text-red-600 break-words">
+          <div className="mb-2.5 sm:mb-4 p-2 sm:p-3 bg-red-50 border border-red-200 rounded-md sm:rounded-lg">
+            <p className="text-[9px] sm:text-xs lg:text-sm text-red-600 break-words">
               {error}
             </p>
           </div>
         )}
 
         {success && (
-          <div className="mb-5 p-4 bg-green-50 border border-green-200 rounded-lg">
-            <p className="text-sm text-green-600 break-words">
+          <div className="mb-2.5 sm:mb-4 p-2 sm:p-3 bg-green-50 border border-green-200 rounded-md sm:rounded-lg">
+            <p className="text-[9px] sm:text-xs lg:text-sm text-green-600 break-words">
               {success}
             </p>
           </div>
@@ -217,50 +223,37 @@ const EditProfessionalProfile = () => {
 
         <form
           onSubmit={handleSubmit}
-          className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 sm:p-6 md:p-8"
+          className="bg-white rounded-lg sm:rounded-xl shadow-sm border border-gray-100 p-2.5 sm:p-4 md:p-5 lg:p-8"
         >
-          <h2 className="text-lg sm:text-xl font-bold text-gray-800 mb-5">
+          <h2 className="text-sm sm:text-base lg:text-xl font-bold text-gray-800 mb-2.5 sm:mb-4">
             Personal Information
           </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-2 sm:gap-3 lg:gap-5">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Full Name
-              </label>
-
+              <label className={labelClass}>Full Name</label>
               <input
                 type="text"
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
                 required
-                className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className={inputClass}
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Email Address
-              </label>
-
+              <label className={labelClass}>Email Address</label>
               <input
                 type="email"
                 value={formData.email}
                 disabled
-                className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-200 rounded-lg bg-gray-100 text-gray-500 cursor-not-allowed"
+                className={`${inputClass} bg-gray-100 text-gray-500 cursor-not-allowed`}
               />
-
-              <p className="text-xs text-gray-500 mt-1">
-                Email cannot be changed.
-              </p>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Phone Number
-              </label>
-
+              <label className={labelClass}>Phone Number</label>
               <input
                 type="tel"
                 name="phone"
@@ -268,29 +261,27 @@ const EditProfessionalProfile = () => {
                 onChange={handleChange}
                 required
                 inputMode="tel"
-                className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className={inputClass}
               />
             </div>
           </div>
 
-          <h2 className="text-lg sm:text-xl font-bold text-gray-800 mt-8 mb-5">
+          <h2 className="text-sm sm:text-base lg:text-xl font-bold text-gray-800 mt-4 sm:mt-6 lg:mt-8 mb-2.5 sm:mb-4">
             Professional Information
           </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-2 sm:gap-3 lg:gap-5">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Type of Work
-              </label>
+              <label className={labelClass}>Type of Work</label>
 
               <select
                 name="profession"
                 value={formData.profession}
                 onChange={handleChange}
                 required
-                className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+                className={`${inputClass} bg-white`}
               >
-                <option value="">Select your profession</option>
+                <option value="">Select profession</option>
                 <option value="Electrician">Electrician</option>
                 <option value="Plumber">Plumber</option>
                 <option value="Carpenter">Carpenter</option>
@@ -307,9 +298,7 @@ const EditProfessionalProfile = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Experience
-              </label>
+              <label className={labelClass}>Experience</label>
 
               <input
                 type="text"
@@ -318,158 +307,12 @@ const EditProfessionalProfile = () => {
                 onChange={handleChange}
                 placeholder="e.g. 5 years"
                 required
-                className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              />
-            </div>
-          </div>
-
-          <div className="mt-5">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Skills
-            </label>
-
-            <input
-              type="text"
-              name="skills"
-              value={formData.skills}
-              onChange={handleChange}
-              placeholder="AC Installation, AC Repair, Servicing"
-              required
-              className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            />
-
-            <p className="text-xs text-gray-500 mt-2">
-              Separate multiple skills with commas.
-            </p>
-          </div>
-
-          <div className="mt-5">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              About Your Services
-            </label>
-
-            <textarea
-              name="description"
-              value={formData.description}
-              onChange={handleChange}
-              rows="4"
-              required
-              className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none"
-            />
-          </div>
-
-          <h2 className="text-lg sm:text-xl font-bold text-gray-800 mt-8 mb-5">
-            Address & Location
-          </h2>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Full Address
-            </label>
-
-            <textarea
-              name="address"
-              value={formData.address}
-              onChange={handleChange}
-              rows="3"
-              required
-              className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none"
-            />
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-5 mt-5">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                City
-              </label>
-
-              <input
-                type="text"
-                name="city"
-                value={formData.city}
-                onChange={handleChange}
-                required
-                className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className={inputClass}
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                State
-              </label>
-
-              <input
-                type="text"
-                name="state"
-                value={formData.state}
-                onChange={handleChange}
-                required
-                className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Pincode
-              </label>
-
-              <input
-                type="text"
-                name="pincode"
-                value={formData.pincode}
-                onChange={handleChange}
-                required
-                maxLength="6"
-                inputMode="numeric"
-                className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              />
-            </div>
-          </div>
-
-          <div className="mt-5">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Location / Area
-            </label>
-
-            <input
-              type="text"
-              name="location"
-              value={formData.location}
-              onChange={handleChange}
-              required
-              className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            />
-          </div>
-
-          <div className="mt-5">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Service Areas
-            </label>
-
-            <input
-              type="text"
-              name="serviceArea"
-              value={formData.serviceArea}
-              onChange={handleChange}
-              required
-              placeholder="Sector 62, Sector 63, Sector 61"
-              className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            />
-
-            <p className="text-xs text-gray-500 mt-2">
-              Separate multiple areas with commas.
-            </p>
-          </div>
-
-          <h2 className="text-lg sm:text-xl font-bold text-gray-800 mt-8 mb-5">
-            Service Details
-          </h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Starting Price (₹)
-              </label>
+              <label className={labelClass}>Starting Price</label>
 
               <input
                 type="number"
@@ -479,39 +322,163 @@ const EditProfessionalProfile = () => {
                 min="0"
                 required
                 inputMode="numeric"
-                className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className={inputClass}
+              />
+            </div>
+          </div>
+
+          <div className="mt-2 sm:mt-4">
+            <label className={labelClass}>Skills</label>
+
+            <input
+              type="text"
+              name="skills"
+              value={formData.skills}
+              onChange={handleChange}
+              placeholder="AC Installation, AC Repair, Servicing"
+              required
+              className={inputClass}
+            />
+
+            <p className="text-[8px] sm:text-[10px] lg:text-xs text-gray-500 mt-1">
+              Separate multiple skills with commas.
+            </p>
+          </div>
+
+          <div className="mt-2 sm:mt-4">
+            <label className={labelClass}>About Your Services</label>
+
+            <textarea
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              rows="2"
+              required
+              className="w-full h-12 sm:h-16 lg:h-20 px-2.5 sm:px-3 lg:px-4 py-2 text-[10px] sm:text-xs lg:text-sm border border-gray-200 rounded-md sm:rounded-lg outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none"
+            />
+          </div>
+
+          <h2 className="text-sm sm:text-base lg:text-xl font-bold text-gray-800 mt-4 sm:mt-6 lg:mt-8 mb-2.5 sm:mb-4">
+            Address & Location
+          </h2>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3 lg:gap-5">
+            <div className="col-span-2 md:col-span-2">
+              <label className={labelClass}>Full Address</label>
+
+              <input
+                type="text"
+                name="address"
+                value={formData.address}
+                onChange={handleChange}
+                required
+                className={inputClass}
               />
             </div>
 
-            <div className="flex items-center min-h-[48px] md:mt-7">
+            <div>
+              <label className={labelClass}>City</label>
+
+              <input
+                type="text"
+                name="city"
+                value={formData.city}
+                onChange={handleChange}
+                required
+                className={inputClass}
+              />
+            </div>
+
+            <div>
+              <label className={labelClass}>State</label>
+
+              <input
+                type="text"
+                name="state"
+                value={formData.state}
+                onChange={handleChange}
+                required
+                className={inputClass}
+              />
+            </div>
+
+            <div>
+              <label className={labelClass}>Pincode</label>
+
+              <input
+                type="text"
+                name="pincode"
+                value={formData.pincode}
+                onChange={handleChange}
+                required
+                maxLength="6"
+                inputMode="numeric"
+                className={inputClass}
+              />
+            </div>
+
+            <div>
+              <label className={labelClass}>Location / Area</label>
+
+              <input
+                type="text"
+                name="location"
+                value={formData.location}
+                onChange={handleChange}
+                required
+                className={inputClass}
+              />
+            </div>
+          </div>
+
+          <div className="mt-2 sm:mt-4">
+            <label className={labelClass}>Service Areas</label>
+
+            <input
+              type="text"
+              name="serviceArea"
+              value={formData.serviceArea}
+              onChange={handleChange}
+              required
+              placeholder="Sector 62, Sector 63, Sector 61"
+              className={inputClass}
+            />
+
+            <p className="text-[8px] sm:text-[10px] lg:text-xs text-gray-500 mt-1">
+              Separate multiple areas with commas.
+            </p>
+          </div>
+
+          <div className="mt-3 sm:mt-5 flex items-center justify-between gap-3">
+            <label className="flex items-center gap-1.5 sm:gap-2 cursor-pointer min-w-0">
               <input
                 type="checkbox"
                 name="available"
                 checked={formData.available}
                 onChange={handleChange}
-                className="w-5 h-5 accent-blue-600 cursor-pointer"
+                className="w-3.5 h-3.5 sm:w-4 sm:h-4 accent-blue-600 cursor-pointer shrink-0"
               />
 
-              <label className="ml-3 text-sm sm:text-base text-gray-700 cursor-pointer">
-                I am currently available for work
-              </label>
-            </div>
+              <span className="text-[9px] sm:text-xs lg:text-sm text-gray-700 truncate">
+                Currently available for work
+              </span>
+            </label>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-3 mt-8">
+          <div className="grid grid-cols-2 gap-2 sm:gap-3 mt-3 sm:mt-5 lg:mt-7">
             <button
               type="submit"
               disabled={saving}
-              className="flex-1 py-3 px-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 disabled:bg-blue-300 disabled:cursor-not-allowed transition"
+              className="py-2 sm:py-2.5 lg:py-3 px-2 sm:px-4 bg-blue-600 text-white text-[9px] sm:text-xs lg:text-sm font-semibold rounded-md sm:rounded-lg hover:bg-blue-700 disabled:bg-blue-300 disabled:cursor-not-allowed transition"
             >
-              {saving ? "Saving Changes..." : "Save Changes"}
+              {saving ? "Saving..." : "Save Changes"}
             </button>
 
             <button
               type="button"
               onClick={() => navigate("/professional-profile")}
               disabled={saving}
-              className="flex-1 py-3 px-4 bg-gray-100 text-gray-700 font-semibold rounded-lg hover:bg-gray-200 disabled:cursor-not-allowed transition"
+              className="py-2 sm:py-2.5 lg:py-3 px-2 sm:px-4 bg-gray-100 text-gray-700 text-[9px] sm:text-xs lg:text-sm font-semibold rounded-md sm:rounded-lg hover:bg-gray-200 disabled:cursor-not-allowed transition"
             >
               Cancel
             </button>

@@ -103,11 +103,15 @@ const UserSidebar = () => {
           className="
             lg:hidden
             fixed
-            top-4
-            left-4
-            z-[60]
-            w-10
-            h-10
+            top-13
+            sm:top-17
+            left-2
+            sm:left-3
+            z-60
+            w-9
+            h-9
+            sm:w-10
+            sm:h-10
             flex
             items-center
             justify-center
@@ -124,7 +128,7 @@ const UserSidebar = () => {
         >
           <FontAwesomeIcon
             icon={faBars}
-            className="text-lg"
+            className="text-base sm:text-lg"
           />
         </button>
       )}
@@ -135,7 +139,11 @@ const UserSidebar = () => {
           className="
             lg:hidden
             fixed
-            inset-0
+            top-14.5
+            sm:top-17
+            bottom-0
+            left-0
+            right-0
             z-40
             bg-black/40
           "
@@ -146,12 +154,16 @@ const UserSidebar = () => {
         className={`
           fixed
           lg:static
-          top-0
+          top-[58px]
+          sm:top-[68px]
+          lg:top-auto
           left-0
           z-50
-          h-screen
+          h-[calc(100vh-58px)]
+          sm:h-[calc(100vh-68px)]
           lg:h-auto
-          w-60
+          w-56
+          sm:w-60
           lg:w-64
           bg-white
           border-r
@@ -175,10 +187,11 @@ const UserSidebar = () => {
       >
         <div
           className="
-            px-4
+            px-3
             sm:px-5
             lg:px-6
-            py-4
+            py-3
+            sm:py-4
             lg:py-6
             border-b
             border-gray-200
@@ -188,12 +201,12 @@ const UserSidebar = () => {
             justify-between
           "
         >
-          <div>
-            <h1 className="text-xl sm:text-2xl font-bold text-blue-600">
+          <div className="min-w-0">
+            <h1 className="text-lg sm:text-2xl font-bold text-blue-600">
               FixNear
             </h1>
 
-            <p className="text-xs sm:text-sm text-gray-500 mt-1">
+            <p className="text-[9px] sm:text-xs lg:text-sm text-gray-500 mt-0.5 sm:mt-1 truncate">
               {isProfessional
                 ? "Professional Panel"
                 : "User Panel"}
@@ -201,13 +214,15 @@ const UserSidebar = () => {
           </div>
 
           {sidebarOpen && (
-            <button
+            <button 
               type="button"
               onClick={closeSidebar}
               className="
                 lg:hidden
-                w-9
-                h-9
+                w-8
+                h-8
+                sm:w-9
+                sm:h-9
                 flex
                 items-center
                 justify-center
@@ -215,12 +230,13 @@ const UserSidebar = () => {
                 text-gray-600
                 hover:bg-gray-100
                 transition
+                shrink-0
               "
               aria-label="Close sidebar"
-            >
+            > 
               <FontAwesomeIcon
                 icon={faXmark}
-                className="text-xl"
+                className="text-lg sm:text-xl"
               />
             </button>
           )}
@@ -228,11 +244,13 @@ const UserSidebar = () => {
 
         <nav
           className="
-            p-3
-            sm:p-4
+            p-2
+            sm:p-3
+            lg:p-4
             flex
             flex-col
-            gap-2
+            gap-1.5
+            sm:gap-2
             overflow-y-auto
             min-w-0
             w-full
@@ -248,11 +266,14 @@ const UserSidebar = () => {
                 `
                   flex
                   items-center
-                  gap-3
-                  px-3
-                  sm:px-4
-                  py-2.5
-                  sm:py-3
+                  gap-2
+                  sm:gap-3
+                  px-2.5
+                  sm:px-3
+                  lg:px-4
+                  py-2
+                  sm:py-2.5
+                  lg:py-3
                   rounded-lg
                   transition
                   w-full
@@ -264,11 +285,11 @@ const UserSidebar = () => {
                 `
               }
             >
-              <span className="w-6 text-center shrink-0">
+              <span className="w-5 sm:w-6 text-center shrink-0 text-sm sm:text-base">
                 {item.icon}
               </span>
 
-              <span className="text-sm sm:text-base flex-1">
+              <span className="text-[10px] sm:text-sm lg:text-base flex-1 truncate">
                 {item.name}
               </span>
 
@@ -276,19 +297,18 @@ const UserSidebar = () => {
                 unreadCount > 0 && (
                   <span
                     className="
-                      min-w-5
-                      sm:min-w-5.5
-                      h-5
-                      sm:h-5.5
+                      min-w-4
+                      sm:min-w-5
+                      h-4
+                      sm:h-5
                       px-1
-                      sm:px-1.5
                       flex
                       items-center
                       justify-center
                       bg-red-500
                       text-white
-                      text-[10px]
-                      sm:text-xs
+                      text-[8px]
+                      sm:text-[10px]
                       font-bold
                       rounded-full
                       shrink-0

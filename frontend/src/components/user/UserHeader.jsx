@@ -8,53 +8,46 @@ const UserHeader = () => {
     <header
       className="
         w-full
-        min-h-16
+        min-h-14
+        sm:min-h-16
         bg-white
         border-b
         border-gray-200
         flex
-        flex-col
-        sm:flex-row
-        items-start
-        sm:items-center
+        items-center
         justify-between
-        gap-3
-        px-4
+        gap-2
+        px-2.5
         sm:px-6
-        py-3
+        py-2
         sm:py-0
       "
     >
-
-
-      <div className="min-w-0">
-        <h2 className="text-base sm:text-lg font-semibold text-gray-800">
+      <div className="min-w-0 shrink-0">
+        <h2 className="text-sm sm:text-lg font-semibold text-gray-800 whitespace-nowrap">
           User Dashboard
         </h2>
       </div>
 
-
-
       <div
         className="
-          w-full
-          sm:w-auto
           flex
           items-center
-          justify-between
-          sm:justify-end
-          gap-3
+          justify-end
+          gap-2
           sm:gap-4
           min-w-0
         "
       >
-        <div className="text-left sm:text-right min-w-0 flex-1 sm:flex-none">
+        <div className="text-right min-w-0">
           <p
             className="
-              text-sm
+              text-[10px]
+              sm:text-sm
               font-semibold
               text-gray-800
               truncate
+              max-w-24
               sm:max-w-55
             "
           >
@@ -63,6 +56,8 @@ const UserHeader = () => {
 
           <p
             className="
+              hidden
+              sm:block
               text-xs
               text-gray-500
               truncate
@@ -78,17 +73,20 @@ const UserHeader = () => {
           onClick={logout}
           className="
             shrink-0
-            px-3
+            px-2.5
             sm:px-4
-            py-2
-            text-xs
+            py-1.5
+            sm:py-2
+            text-[10px]
             sm:text-sm
             text-red-600
             border
             border-red-200
-            rounded-lg
+            rounded-md
+            sm:rounded-lg
             hover:bg-red-50
             transition
+            whitespace-nowrap
           "
         >
           Logout

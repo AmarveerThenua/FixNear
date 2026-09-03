@@ -104,10 +104,7 @@ const AdminNotifications = () => {
       setNotifications((prev) =>
         prev.map((notification) =>
           notification._id === notificationId
-            ? {
-                ...notification,
-                isRead: true,
-              }
+            ? { ...notification, isRead: true }
             : notification
         )
       );
@@ -232,22 +229,16 @@ const AdminNotifications = () => {
     switch (type) {
       case "new_booking":
         return "📋";
-
       case "booking_accepted":
         return "✅";
-
       case "booking_rejected":
         return "❌";
-
       case "booking_completed":
         return "🎉";
-
       case "booking_cancelled":
         return "🚫";
-
       case "new_review":
         return "⭐";
-
       default:
         return "🔔";
     }
@@ -257,22 +248,16 @@ const AdminNotifications = () => {
     switch (type) {
       case "new_booking":
         return "bg-blue-100 text-blue-600";
-
       case "booking_accepted":
         return "bg-green-100 text-green-600";
-
       case "booking_rejected":
         return "bg-red-100 text-red-600";
-
       case "booking_completed":
         return "bg-green-100 text-green-600";
-
       case "booking_cancelled":
         return "bg-orange-100 text-orange-600";
-
       case "new_review":
         return "bg-yellow-100 text-yellow-600";
-
       default:
         return "bg-gray-100 text-gray-600";
     }
@@ -285,8 +270,7 @@ const AdminNotifications = () => {
       .split("_")
       .map(
         (word) =>
-          word.charAt(0).toUpperCase() +
-          word.slice(1)
+          word.charAt(0).toUpperCase() + word.slice(1)
       )
       .join(" ");
   };
@@ -314,146 +298,192 @@ const AdminNotifications = () => {
   ).length;
 
   return (
-    <div className="space-y-4 sm:space-y-6 min-w-0">
-      <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+    <div className="space-y-3 sm:space-y-6 min-w-0">
+      <div className="flex items-center justify-between gap-2">
         <div className="min-w-0">
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">
+          <h1 className="text-lg sm:text-3xl font-bold text-gray-800 truncate">
             Admin Notifications
           </h1>
 
-          <p className="text-sm sm:text-base text-gray-500 mt-1">
+          <p className="text-[10px] sm:text-base text-gray-500 mt-0.5 sm:mt-1 truncate">
             View and manage your FixNear notifications.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 lg:flex gap-2 w-full lg:w-auto">
-          <button
-            onClick={fetchNotifications}
-            className="px-4 py-2.5 bg-blue-600 text-white text-sm sm:text-base rounded-lg hover:bg-blue-700 transition"
-          >
-            Refresh
-          </button>
-
-          <button
-            onClick={markAllAsRead}
-            disabled={unreadNotifications === 0}
-            className="px-4 py-2.5 bg-green-600 text-white text-sm sm:text-base rounded-lg hover:bg-green-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            Mark All Read
-          </button>
-
-          <button
-            onClick={clearReadNotifications}
-            disabled={readNotifications === 0}
-            className="px-4 py-2.5 bg-gray-800 text-white text-sm sm:text-base rounded-lg hover:bg-gray-900 transition disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            Clear Read
-          </button>
-        </div>
+        <button
+          type="button"
+          onClick={fetchNotifications}
+          className="shrink-0 px-2.5 sm:px-4 py-1.5 sm:py-2.5 bg-blue-600 text-white text-[10px] sm:text-sm rounded-lg hover:bg-blue-700 transition"
+        >
+          🔄 <span className="hidden sm:inline">Refresh</span>
+        </button>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
-        <div className="bg-white rounded-xl border border-gray-200 p-4 sm:p-5">
-          <p className="text-xs sm:text-sm text-gray-500">
-            Total Notifications
+      <div className="grid grid-cols-3 gap-2 sm:gap-4">
+        <div className="bg-white rounded-lg sm:rounded-xl border border-gray-200 p-2.5 sm:p-5">
+          <p className="text-[9px] sm:text-sm text-gray-500 leading-tight">
+            Total
           </p>
 
-          <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 mt-2">
+          <h2 className="text-lg sm:text-3xl font-bold text-gray-800 mt-1 sm:mt-2">
             {totalNotifications}
           </h2>
         </div>
 
-        <div className="bg-white rounded-xl border border-gray-200 p-4 sm:p-5">
-          <p className="text-xs sm:text-sm text-gray-500">
+        <div className="bg-white rounded-lg sm:rounded-xl border border-gray-200 p-2.5 sm:p-5">
+          <p className="text-[9px] sm:text-sm text-gray-500 leading-tight">
             Unread
           </p>
 
-          <h2 className="text-2xl sm:text-3xl font-bold text-blue-600 mt-2">
+          <h2 className="text-lg sm:text-3xl font-bold text-blue-600 mt-1 sm:mt-2">
             {unreadNotifications}
           </h2>
         </div>
 
-        <div className="bg-white rounded-xl border border-gray-200 p-4 sm:p-5">
-          <p className="text-xs sm:text-sm text-gray-500">
+        <div className="bg-white rounded-lg sm:rounded-xl border border-gray-200 p-2.5 sm:p-5">
+          <p className="text-[9px] sm:text-sm text-gray-500 leading-tight">
             Read
           </p>
 
-          <h2 className="text-2xl sm:text-3xl font-bold text-green-600 mt-2">
+          <h2 className="text-lg sm:text-3xl font-bold text-green-600 mt-1 sm:mt-2">
             {readNotifications}
           </h2>
         </div>
       </div>
 
-      <div className="bg-white rounded-xl border border-gray-200 p-3 sm:p-4">
-        <div className="flex flex-col md:flex-row gap-3 sm:gap-4">
+      <div className="bg-white rounded-lg sm:rounded-xl border border-gray-200 p-2.5 sm:p-4">
+        <div className="flex flex-col sm:flex-row gap-2">
           <input
             type="text"
             placeholder="Search notifications..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full flex-1 px-3 sm:px-4 py-2.5 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base"
+            className="
+              w-full
+              flex-1
+              px-3
+              py-2
+              border
+              border-gray-300
+              rounded-lg
+              outline-none
+              focus:ring-2
+              focus:ring-blue-500
+              text-xs
+              sm:text-sm
+            "
           />
 
           <select
             value={filter}
             onChange={(e) => setFilter(e.target.value)}
-            className="w-full md:w-auto px-3 sm:px-4 py-2.5 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base bg-white"
+            className="
+              w-full
+              sm:w-auto
+              px-3
+              py-2
+              border
+              border-gray-300
+              rounded-lg
+              outline-none
+              focus:ring-2
+              focus:ring-blue-500
+              text-xs
+              sm:text-sm
+              bg-white
+            "
           >
-            <option value="all">
-              All Notifications
-            </option>
-
-            <option value="unread">
-              Unread
-            </option>
-
-            <option value="read">
-              Read
-            </option>
+            <option value="all">All Notifications</option>
+            <option value="unread">Unread</option>
+            <option value="read">Read</option>
           </select>
         </div>
       </div>
 
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+        <button
+          type="button"
+          onClick={markAllAsRead}
+          disabled={unreadNotifications === 0}
+          className="
+            px-3
+            py-2
+            bg-green-600
+            text-white
+            text-xs
+            rounded-lg
+            hover:bg-green-700
+            transition
+            disabled:opacity-50
+            disabled:cursor-not-allowed
+          "
+        >
+          Mark All Read
+        </button>
+
+        <button
+          type="button"
+          onClick={clearReadNotifications}
+          disabled={readNotifications === 0}
+          className="
+            px-3
+            py-2
+            bg-gray-800
+            text-white
+            text-xs
+            rounded-lg
+            hover:bg-gray-900
+            transition
+            disabled:opacity-50
+            disabled:cursor-not-allowed
+          "
+        >
+          Clear Read
+        </button>
+
+        <div className="hidden sm:block" />
+      </div>
+
       {error && (
-        <div className="bg-red-50 border border-red-200 text-red-700 px-3 sm:px-4 py-3 rounded-lg text-sm sm:text-base wrap-break-word">
+        <div className="bg-red-50 border border-red-200 text-red-700 px-3 py-2.5 rounded-lg text-xs sm:text-sm break-words">
           {error}
         </div>
       )}
 
       {loading ? (
-        <div className="bg-white rounded-xl border border-gray-200 p-8 sm:p-10 text-center">
-          <p className="text-sm sm:text-base text-gray-500">
+        <div className="bg-white rounded-lg sm:rounded-xl border border-gray-200 p-6 sm:p-10 text-center">
+          <p className="text-xs sm:text-base text-gray-500">
             Loading notifications...
           </p>
         </div>
       ) : filteredNotifications.length === 0 ? (
-        <div className="bg-white rounded-xl border border-gray-200 p-8 sm:p-10 text-center">
-          <div className="text-4xl mb-3">
+        <div className="bg-white rounded-lg sm:rounded-xl border border-gray-200 p-6 sm:p-10 text-center">
+          <div className="text-3xl sm:text-4xl mb-2 sm:mb-3">
             🔔
           </div>
 
-          <h3 className="text-base sm:text-lg font-semibold text-gray-800">
+          <h3 className="text-sm sm:text-lg font-semibold text-gray-800">
             No notifications found
           </h3>
 
-          <p className="text-xs sm:text-sm text-gray-500 mt-1">
+          <p className="text-[10px] sm:text-sm text-gray-500 mt-1">
             You don't have any notifications matching this filter.
           </p>
         </div>
       ) : (
-        <div className="space-y-3">
+        <div className="space-y-2 sm:space-y-3">
           {filteredNotifications.map((notification) => (
             <div
               key={notification._id}
-              className={`bg-white rounded-xl border p-3 sm:p-4 md:p-5 transition ${
+              className={`bg-white rounded-lg sm:rounded-xl border p-2.5 sm:p-5 transition ${
                 notification.isRead
                   ? "border-gray-200"
                   : "border-blue-200 bg-blue-50/30"
               }`}
             >
-              <div className="flex items-start gap-3 sm:gap-4">
+              <div className="flex items-start gap-2.5 sm:gap-4">
                 <div
-                  className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center text-lg sm:text-xl shrink-0 ${getNotificationColor(
+                  className={`w-8 h-8 sm:w-12 sm:h-12 rounded-full flex items-center justify-center text-sm sm:text-xl shrink-0 ${getNotificationColor(
                     notification.type
                   )}`}
                 >
@@ -461,19 +491,19 @@ const AdminNotifications = () => {
                 </div>
 
                 <div className="flex-1 min-w-0">
-                  <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
+                  <div className="flex items-start justify-between gap-2">
                     <div className="min-w-0">
-                      <div className="flex items-start gap-2">
-                        <h3 className="font-semibold text-gray-800 text-sm sm:text-base wrap-break-word">
+                      <div className="flex items-start gap-1.5">
+                        <h3 className="font-semibold text-gray-800 text-xs sm:text-base break-words">
                           {notification.title}
                         </h3>
 
                         {!notification.isRead && (
-                          <span className="w-2 h-2 bg-blue-600 rounded-full shrink-0 mt-1.5" />
+                          <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-blue-600 rounded-full shrink-0 mt-1.5" />
                         )}
                       </div>
 
-                      <p className="text-[11px] sm:text-xs text-gray-400 mt-1 wrap-break-word">
+                      <p className="text-[9px] sm:text-xs text-gray-400 mt-0.5 sm:mt-1 break-words">
                         {formatType(notification.type)}
                         {" • "}
                         {formatDate(notification.createdAt)}
@@ -481,30 +511,31 @@ const AdminNotifications = () => {
                     </div>
 
                     {!notification.isRead && (
-                      <span className="text-[11px] sm:text-xs font-medium text-blue-600 bg-blue-100 px-2 py-1 rounded-full w-fit shrink-0">
+                      <span className="text-[8px] sm:text-xs font-medium text-blue-600 bg-blue-100 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full shrink-0">
                         Unread
                       </span>
                     )}
                   </div>
 
-                  <p className="text-xs sm:text-sm text-gray-600 mt-3 leading-5 sm:leading-6 wrap-break-word">
+                  <p className="text-[10px] sm:text-sm text-gray-600 mt-2 sm:mt-3 leading-4 sm:leading-6 break-words">
                     {notification.message}
                   </p>
 
-                  <div className="flex flex-wrap gap-2 mt-3 sm:mt-4">
+                  <div className="flex flex-wrap gap-1.5 sm:gap-2 mt-2.5 sm:mt-4">
                     {!notification.isRead && (
                       <button
+                        type="button"
                         onClick={() =>
                           markAsRead(notification._id)
                         }
-                        className="px-2.5 sm:px-3 py-1.5 text-[11px] sm:text-xs font-medium text-green-600 bg-green-50 rounded-lg hover:bg-green-100 transition"
+                        className="px-2 sm:px-3 py-1 sm:py-1.5 text-[9px] sm:text-xs font-medium text-green-600 bg-green-50 rounded-md sm:rounded-lg hover:bg-green-100 transition"
                       >
                         Mark as Read
                       </button>
                     )}
 
                     {notification.booking && (
-                      <span className="max-w-full px-2.5 sm:px-3 py-1.5 text-[11px] sm:text-xs text-gray-500 bg-gray-100 rounded-lg break-all">
+                      <span className="max-w-full px-2 sm:px-3 py-1 sm:py-1.5 text-[9px] sm:text-xs text-gray-500 bg-gray-100 rounded-md sm:rounded-lg break-all">
                         Booking:{" "}
                         {typeof notification.booking === "object"
                           ? notification.booking._id
@@ -513,10 +544,11 @@ const AdminNotifications = () => {
                     )}
 
                     <button
+                      type="button"
                       onClick={() =>
                         deleteNotification(notification._id)
                       }
-                      className="px-2.5 sm:px-3 py-1.5 text-[11px] sm:text-xs font-medium text-red-600 bg-red-50 rounded-lg hover:bg-red-100 transition"
+                      className="px-2 sm:px-3 py-1 sm:py-1.5 text-[9px] sm:text-xs font-medium text-red-600 bg-red-50 rounded-md sm:rounded-lg hover:bg-red-100 transition"
                     >
                       Delete
                     </button>
@@ -528,13 +560,12 @@ const AdminNotifications = () => {
         </div>
       )}
 
-      {!loading &&
-        filteredNotifications.length > 0 && (
-          <div className="text-xs sm:text-sm text-gray-500 text-center px-2">
-            Showing {filteredNotifications.length} of{" "}
-            {notifications.length} notifications
-          </div>
-        )}
+      {!loading && filteredNotifications.length > 0 && (
+        <div className="text-[10px] sm:text-sm text-gray-500 text-center px-2">
+          Showing {filteredNotifications.length} of{" "}
+          {notifications.length} notifications
+        </div>
+      )}
     </div>
   );
 };
