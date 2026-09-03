@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import ServiceCard from "../services/ServiceCard";
 import services from "../../data/services";
 
 const PopularServices = () => {
+  const [showAll, setShowAll] = useState(false);
+
+  const visibleServices = showAll ? services : services.slice(0, 6);
+
   return (
     <section className="py-8 sm:py-12 lg:py-20 bg-white">
       <div className="max-w-7xl mx-auto px-2.5 sm:px-5 lg:px-8">
@@ -22,13 +26,25 @@ const PopularServices = () => {
         </div>
 
         <div className="grid grid-cols-3 gap-2 sm:gap-3 md:gap-4 lg:gap-6">
-          {services.map((service) => (
+          {visibleServices.map((service) => (
             <ServiceCard
               key={service.id}
               service={service}
             />
           ))}
         </div>
+
+        {services.length > 6 && (
+          <div className="flex justify-center mt-6 sm:mt-8 lg:mt-10">
+            <button
+              type="button"
+              onClick={() => setShowAll(!showAll)}
+              className="px-5 sm:px-6 py-2 sm:py-2.5 bg-blue-600 text-white text-xs sm:text-sm font-semibold rounded-lg hover:bg-blue-700 transition"
+            >
+              {showAll ? "Show Less" : "Read More"}
+            </button>
+          </div>
+        )}
       </div>
     </section>
   );

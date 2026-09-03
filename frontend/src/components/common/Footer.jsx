@@ -4,28 +4,28 @@ import { Link } from "react-router-dom";
 const Footer = () => {
   return (
     <footer className="bg-gray-900 text-gray-300">
-      <div className="max-w-7xl mx-auto px-3 sm:px-5 lg:px-6 py-5 sm:py-6 lg:py-7">
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
+      <div className="max-w-7xl mx-auto px-2.5 sm:px-5 lg:px-6 py-3 sm:py-5 lg:py-7">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-5 lg:gap-8">
           <div className="col-span-2 sm:col-span-1">
             <Link
               to="/"
-              className="inline-block text-lg sm:text-xl lg:text-2xl font-bold text-white"
+              className="inline-block text-base sm:text-xl lg:text-2xl font-bold text-white"
             >
               FixNear
             </Link>
 
-            <p className="mt-2 text-[10px] sm:text-xs lg:text-sm leading-relaxed text-gray-400 max-w-xs">
+            <p className="mt-1 sm:mt-2 text-[8px] sm:text-xs lg:text-sm leading-relaxed text-gray-400 max-w-xs">
               Find trusted professionals near you for all your home and
               everyday service needs.
             </p>
           </div>
 
           <div>
-            <h3 className="text-white font-semibold text-xs sm:text-sm lg:text-base mb-2">
+            <h3 className="text-white font-semibold text-[9px] sm:text-sm lg:text-base mb-1 sm:mb-2">
               Quick Links
             </h3>
 
-            <div className="space-y-1 text-[10px] sm:text-xs lg:text-sm">
+            <div className="space-y-0.5 sm:space-y-1 text-[8px] sm:text-xs lg:text-sm">
               <Link to="/" className="block hover:text-white transition">
                 Home
               </Link>
@@ -54,11 +54,11 @@ const Footer = () => {
           </div>
 
           <div>
-            <h3 className="text-white font-semibold text-xs sm:text-sm lg:text-base mb-2">
+            <h3 className="text-white font-semibold text-[9px] sm:text-sm lg:text-base mb-1 sm:mb-2">
               For Professionals
             </h3>
 
-            <div className="space-y-1 text-[10px] sm:text-xs lg:text-sm">
+            <div className="space-y-0.5 sm:space-y-1 text-[8px] sm:text-xs lg:text-sm">
               <Link
                 to="/become-professional"
                 className="block hover:text-white transition"
@@ -83,11 +83,11 @@ const Footer = () => {
           </div>
 
           <div>
-            <h3 className="text-white font-semibold text-xs sm:text-sm lg:text-base mb-2">
+            <h3 className="text-white font-semibold text-[9px] sm:text-sm lg:text-base mb-1 sm:mb-2">
               Contact Us
             </h3>
 
-            <div className="space-y-1 text-[10px] sm:text-xs lg:text-sm text-gray-400 break-words">
+            <div className="space-y-0.5 sm:space-y-1 text-[8px] sm:text-xs lg:text-sm text-gray-400 break-words">
               <p>📍 Noida, India</p>
               <p>📧 support@fixnear.com</p>
               <p>📞 +91 95483 96081</p>
@@ -95,12 +95,12 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="border-t border-gray-800 mt-4 sm:mt-5 pt-3 sm:pt-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-center sm:text-left">
-          <p className="text-[9px] sm:text-xs text-gray-500">
+        <div className="border-t border-gray-800 mt-2.5 sm:mt-5 pt-2 sm:pt-4 flex flex-col sm:flex-row items-center justify-between gap-1.5 sm:gap-2 text-center sm:text-left">
+          <p className="text-[7px] sm:text-xs text-gray-500">
             © 2026 FixNear. All rights reserved.
           </p>
 
-          <div className="flex items-center gap-3 sm:gap-5 text-[9px] sm:text-xs">
+          <div className="flex items-center gap-2 sm:gap-5 text-[7px] sm:text-xs">
             <Link
               to="/privacy"
               className="hover:text-white transition"
