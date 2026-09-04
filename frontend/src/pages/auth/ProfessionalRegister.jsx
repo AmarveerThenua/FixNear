@@ -187,7 +187,7 @@ const ProfessionalRegister = () => {
                       showPassword ? "Hide password" : "Show password"
                     }
                   >
-                    {showPassword ? "🙈" : "👁️"}
+                    {showPassword ? "🫣" : "🙈"}
                   </button>
                 </div>
               </div>

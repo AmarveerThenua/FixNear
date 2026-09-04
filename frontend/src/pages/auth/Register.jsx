@@ -150,7 +150,8 @@ const Register = () => {
                       : "Show password"
                   }
                 >
-                  {showPassword ? "🙈" : "👁️"}
+                  {showPassword ? "🫣" : "🙈"}
+                     
                 </button>
               </div>
             </div>

@@ -221,9 +221,11 @@ const BookingDetails = () => {
                 </p>
 
                 {professional?.phone && (
+                  <a href="">
                   <p className="mt-0.5 text-[9px] sm:text-xs lg:text-sm text-gray-500 truncate">
                     📞 {professional.phone}
                   </p>
+                  </a>
                 )}
               </div>
             </div>

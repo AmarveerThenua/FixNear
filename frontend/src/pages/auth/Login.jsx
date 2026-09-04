@@ -126,7 +126,8 @@ const Login = () => {
                       : "Show password"
                   }
                 >
-                  {showPassword ? "🙈" : "👁️"}
+                  {showPassword ? "🫣" : "🙈"}
+               
                 </button>
               </div>
             </div>
