@@ -37,7 +37,7 @@ const BookingDetails = () => {
 
         setError(
           error.response?.data?.message ||
-            "Unable to load booking."
+          "Unable to load booking."
         );
       } finally {
         setLoading(false);
@@ -83,7 +83,7 @@ const BookingDetails = () => {
 
       setError(
         error.response?.data?.message ||
-          "Unable to cancel booking."
+        "Unable to cancel booking."
       );
     } finally {
       setCancelling(false);
@@ -221,10 +221,11 @@ const BookingDetails = () => {
                 </p>
 
                 {professional?.phone && (
-                  <a href="">
-                  <p className="mt-0.5 text-[9px] sm:text-xs lg:text-sm text-gray-500 truncate">
+                  <a
+                    href={`tel:${professional.phone}`}
+                    className="mt-0.5 text-[9px] sm:text-xs lg:text-sm text-blue-600 hover:text-blue-700 font-medium truncate block"
+                  >
                     📞 {professional.phone}
-                  </p>
                   </a>
                 )}
               </div>

@@ -45,7 +45,7 @@ const ProfessionalBookings = () => {
 
       setError(
         error.response?.data?.message ||
-          "Unable to load booking requests."
+        "Unable to load booking requests."
       );
     } finally {
       setLoading(false);
@@ -89,7 +89,7 @@ const ProfessionalBookings = () => {
 
       setError(
         error.response?.data?.message ||
-          "Unable to update booking status."
+        "Unable to update booking status."
       );
     } finally {
       setActionLoading("");
@@ -278,9 +278,18 @@ const ProfessionalBookings = () => {
                         Phone
                       </p>
 
-                      <p className="text-[9px] sm:text-xs lg:text-sm font-semibold text-gray-900 truncate">
-                        {booking.user?.phone || "Not available"}
-                      </p>
+                      {booking.user?.phone ? (
+                        <a
+                          href={`tel:${booking.user.phone}`}
+                          className="text-[9px] sm:text-xs lg:text-sm font-semibold text-blue-600 hover:text-blue-700 truncate block"
+                        >
+                          📞 {booking.user.phone}
+                        </a>
+                      ) : (
+                        <p className="text-[9px] sm:text-xs lg:text-sm font-semibold text-gray-900 truncate">
+                          Not available
+                        </p>
+                      )}
                     </div>
 
                     <div className="p-2 sm:p-3 lg:p-4 bg-gray-50 rounded-md sm:rounded-xl min-w-0">
@@ -336,7 +345,7 @@ const ProfessionalBookings = () => {
                         className="flex-1 px-2 sm:px-5 py-2 sm:py-3 bg-green-600 text-white text-[9px] sm:text-sm font-semibold rounded-lg sm:rounded-xl hover:bg-green-700 disabled:bg-green-300 disabled:cursor-not-allowed transition"
                       >
                         {actionLoading ===
-                        `${booking._id}-confirmed`
+                          `${booking._id}-confirmed`
                           ? "Accepting..."
                           : "Accept Booking"}
                       </button>
@@ -353,7 +362,7 @@ const ProfessionalBookings = () => {
                         className="flex-1 px-2 sm:px-5 py-2 sm:py-3 bg-red-600 text-white text-[9px] sm:text-sm font-semibold rounded-lg sm:rounded-xl hover:bg-red-700 disabled:bg-red-300 disabled:cursor-not-allowed transition"
                       >
                         {actionLoading ===
-                        `${booking._id}-cancelled`
+                          `${booking._id}-cancelled`
                           ? "Rejecting..."
                           : "Reject Booking"}
                       </button>
@@ -374,7 +383,7 @@ const ProfessionalBookings = () => {
                         className="w-full px-3 sm:px-5 py-2 sm:py-3 bg-blue-600 text-white text-[9px] sm:text-sm font-semibold rounded-lg sm:rounded-xl hover:bg-blue-700 disabled:bg-blue-300 disabled:cursor-not-allowed transition"
                       >
                         {actionLoading ===
-                        `${booking._id}-completed`
+                          `${booking._id}-completed`
                           ? "Completing..."
                           : "Mark Service as Completed"}
                       </button>
