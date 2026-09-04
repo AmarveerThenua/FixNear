@@ -1,15 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
+import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBars,
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
+import { getHelpSocket } from "../../services/helpSocket";
 
 const AdminSidebar = () => {
   const navigate = useNavigate();
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [helpUnreadCount, setHelpUnreadCount] = useState(0);
 
   const navItems = [
     {
@@ -42,7 +45,87 @@ const AdminSidebar = () => {
       path: "/admin-notifications",
       icon: "🔔",
     },
+    {
+      name: "Help & Support",
+      path: "/admin-help",
+      icon: "💬",
+    },
   ];
+
+  useEffect(() => {
+    const token = localStorage.getItem("fixnearToken");
+
+    if (!token) {
+      setHelpUnreadCount(0);
+      return;
+    }
+
+    const fetchHelpUnreadCount = async () => {
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_URL}/help/admin`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        const conversations = response.data?.conversations || [];
+
+        const totalUnread = conversations.reduce(
+          (total, conversation) =>
+            total + (conversation.unreadForAdmin || 0),
+          0
+        );
+
+        setHelpUnreadCount(totalUnread);
+      } catch (error) {
+        setHelpUnreadCount(0);
+      }
+    };
+
+    fetchHelpUnreadCount();
+
+    const socket = getHelpSocket();
+
+    if (!socket) {
+      return;
+    }
+
+    socket.emit("join-admin-room");
+
+    const handleNewHelpMessage = (data) => {
+      if (
+        data?.senderRole === "user" ||
+        data?.senderRole === "professional"
+      ) {
+        setHelpUnreadCount((count) => count + 1);
+      }
+    };
+
+    const handleHelpUnreadUpdated = () => {
+      fetchHelpUnreadCount();
+    };
+
+    socket.on("new-help-message", handleNewHelpMessage);
+    socket.on("help-message", handleNewHelpMessage);
+
+    window.addEventListener(
+      "help-unread-updated",
+      handleHelpUnreadUpdated
+    );
+
+    return () => {
+      socket.off("new-help-message", handleNewHelpMessage);
+      socket.off("help-message", handleNewHelpMessage);
+
+      window.removeEventListener(
+        "help-unread-updated",
+        handleHelpUnreadUpdated
+      );
+    };
+  }, []);
 
   const closeSidebar = () => {
     setSidebarOpen(false);
@@ -259,6 +342,33 @@ const AdminSidebar = () => {
               <span className="text-[10px] sm:text-sm lg:text-base flex-1 truncate">
                 {item.name}
               </span>
+
+              {item.name === "Help & Support" &&
+                helpUnreadCount > 0 && (
+                  <span
+                    className="
+                      min-w-4
+                      sm:min-w-5
+                      h-4
+                      sm:h-5
+                      px-1
+                      flex
+                      items-center
+                      justify-center
+                      bg-red-500
+                      text-white
+                      text-[8px]
+                      sm:text-[10px]
+                      font-bold
+                      rounded-full
+                      shrink-0
+                    "
+                  >
+                    {helpUnreadCount > 99
+                      ? "99+"
+                      : helpUnreadCount}
+                  </span>
+                )}
             </NavLink>
           ))}
         </nav>

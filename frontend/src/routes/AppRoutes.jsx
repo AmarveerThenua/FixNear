@@ -18,6 +18,7 @@ import Profile from "../pages/user/Profile";
 import Reviews from "../pages/user/Reviews";
 import Notifications from "../pages/user/Notifications";
 import BookingSuccess from "../pages/user/BookingSuccess";
+import HelpSupport from "../pages/user/HelpSupport";
 
 import PublicLayout from "../layouts/PublicLayout";
 import UserLayout from "../layouts/UserLayout";
@@ -42,6 +43,7 @@ import ManageProfessionals from "../pages/admin/ManageProfessionals";
 import ManageBookings from "../pages/admin/ManageBookings";
 import ManageReviews from "../pages/admin/ManageReviews";
 import AdminNotifications from "../pages/admin/AdminNotifications";
+import AdminHelp from "../pages/admin/AdminHelp";
 
 import ErrorPage from "../pages/ErrorPage";
 
@@ -80,6 +82,7 @@ const AppRoutes = () => {
           <Route path="/reviews" element={<Reviews />} />
           <Route path="/notifications" element={<Notifications />} />
           <Route path="/booking-success" element={<BookingSuccess />} />
+          <Route path="/help" element={<HelpSupport />} />
         </Route>
       </Route>
 
@@ -109,6 +112,10 @@ const AppRoutes = () => {
             path="/professional-notifications"
             element={<ProfessionalNotifications />}
           />
+          <Route
+            path="/professional-help"
+            element={<HelpSupport />}
+          />
         </Route>
       </Route>
 
@@ -126,6 +133,7 @@ const AppRoutes = () => {
             path="/admin-notifications"
             element={<AdminNotifications />}
           />
+          <Route path="/admin-help" element={<AdminHelp />} />
         </Route>
       </Route>
 

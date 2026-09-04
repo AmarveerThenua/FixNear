@@ -6,9 +6,11 @@ import {
   faBars,
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
+import { getHelpSocket } from "../../services/helpSocket";
 
 const ProfessionalSidebar = () => {
   const [unreadCount, setUnreadCount] = useState(0);
+  const [helpUnreadCount, setHelpUnreadCount] = useState(0);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const links = [
@@ -42,6 +44,11 @@ const ProfessionalSidebar = () => {
       path: "/professional-notifications",
       icon: "🔔",
     },
+    {
+      name: "Help & Support",
+      path: "/professional-help",
+      icon: "💬",
+    },
   ];
 
   useEffect(() => {
@@ -65,7 +72,6 @@ const ProfessionalSidebar = () => {
 
         setUnreadCount(response.data.unreadCount || 0);
       } catch (error) {
-        console.error("Failed to fetch notification count:", error);
         setUnreadCount(0);
       }
     };
@@ -75,6 +81,83 @@ const ProfessionalSidebar = () => {
     const interval = setInterval(fetchUnreadCount, 10000);
 
     return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    const token = localStorage.getItem("fixnearToken");
+
+    if (!token) {
+      setHelpUnreadCount(0);
+      return;
+    }
+
+    const fetchHelpUnreadCount = async () => {
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_URL}/help/me`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        setHelpUnreadCount(
+          response.data?.conversation?.unreadForUser || 0
+        );
+      } catch (error) {
+        setHelpUnreadCount(0);
+      }
+    };
+
+    fetchHelpUnreadCount();
+
+    const socket = getHelpSocket();
+
+    if (!socket) {
+      return;
+    }
+
+    const userId = localStorage.getItem("fixnearUser");
+
+    if (userId) {
+      try {
+        const parsedUser = JSON.parse(userId);
+        const id = parsedUser?._id || parsedUser?.id;
+
+        if (id) {
+          socket.emit("join-user-room", id);
+        }
+      } catch (error) {
+        return;
+      }
+    }
+
+    const handleHelpMessage = (data) => {
+      if (data?.senderRole === "admin") {
+        setHelpUnreadCount((count) => count + 1);
+      }
+    };
+
+    const handleHelpUnreadUpdated = () => {
+      fetchHelpUnreadCount();
+    };
+
+    socket.on("help-message", handleHelpMessage);
+    socket.on("new-help-message", handleHelpMessage);
+    window.addEventListener(
+      "help-unread-updated",
+      handleHelpUnreadUpdated
+    );
+
+    return () => {
+      socket.off("help-message", handleHelpMessage);
+      socket.off("new-help-message", handleHelpMessage);
+      window.removeEventListener(
+        "help-unread-updated",
+        handleHelpUnreadUpdated
+      );
+    };
   }, []);
 
   const closeSidebar = () => {
@@ -299,6 +382,33 @@ const ProfessionalSidebar = () => {
                     "
                   >
                     {unreadCount > 99 ? "99+" : unreadCount}
+                  </span>
+                )}
+
+              {link.name === "Help & Support" &&
+                helpUnreadCount > 0 && (
+                  <span
+                    className="
+                      min-w-4
+                      sm:min-w-5
+                      h-4
+                      sm:h-5
+                      px-1
+                      flex
+                      items-center
+                      justify-center
+                      bg-red-500
+                      text-white
+                      text-[8px]
+                      sm:text-[10px]
+                      font-bold
+                      rounded-full
+                      shrink-0
+                    "
+                  >
+                    {helpUnreadCount > 99
+                      ? "99+"
+                      : helpUnreadCount}
                   </span>
                 )}
             </NavLink>

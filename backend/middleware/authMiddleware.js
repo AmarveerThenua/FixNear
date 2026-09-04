@@ -1,17 +1,10 @@
 import jwt from "jsonwebtoken";
 
-// ====================
-// Protect Route
-// ====================
-
 export const protect = (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
 
-    if (
-      !authHeader ||
-      !authHeader.startsWith("Bearer ")
-    ) {
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
       return res.status(401).json({
         message: "Not authorized. Please login.",
       });
@@ -24,25 +17,21 @@ export const protect = (req, res, next) => {
       process.env.JWT_SECRET
     );
 
+    if (!decoded?.id || !decoded?.role) {
+      return res.status(401).json({
+        message: "Invalid authentication token.",
+      });
+    }
+
     req.user = decoded;
 
     next();
   } catch (error) {
-    console.error(
-      "Authentication error:",
-      error.message
-    );
-
     return res.status(401).json({
       message: "Invalid or expired token",
     });
   }
 };
-
-
-// ====================
-// Admin Only
-// ====================
 
 export const adminOnly = (req, res, next) => {
   if (!req.user) {
@@ -54,6 +43,30 @@ export const adminOnly = (req, res, next) => {
   if (req.user.role !== "admin") {
     return res.status(403).json({
       message: "Access denied. Admin only.",
+    });
+  }
+
+  next();
+};
+
+export const userOrProfessionalOnly = (
+  req,
+  res,
+  next
+) => {
+  if (!req.user) {
+    return res.status(401).json({
+      message: "Not authorized. Please login.",
+    });
+  }
+
+  if (
+    req.user.role !== "user" &&
+    req.user.role !== "professional"
+  ) {
+    return res.status(403).json({
+      message:
+        "Access denied. Users and professionals only.",
     });
   }
 

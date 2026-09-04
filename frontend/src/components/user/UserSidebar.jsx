@@ -7,11 +7,13 @@ import {
   faBars,
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
+import { getHelpSocket } from "../../services/helpSocket";
 
 const UserSidebar = () => {
   const { user } = useAuth();
 
   const [unreadCount, setUnreadCount] = useState(0);
+  const [helpUnreadCount, setHelpUnreadCount] = useState(0);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const isProfessional = user?.role === "professional";
@@ -37,11 +39,6 @@ const UserSidebar = () => {
 
         setUnreadCount(response.data.unreadCount || 0);
       } catch (error) {
-        console.error(
-          "Failed to fetch notification count:",
-          error
-        );
-
         setUnreadCount(0);
       }
     };
@@ -53,9 +50,81 @@ const UserSidebar = () => {
     return () => clearInterval(interval);
   }, [user]);
 
+  useEffect(() => {
+    const token = localStorage.getItem("fixnearToken");
+
+    if (!token) {
+      setHelpUnreadCount(0);
+      return;
+    }
+
+    const fetchHelpUnreadCount = async () => {
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_URL}/help/me`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        setHelpUnreadCount(
+          response.data?.conversation?.unreadForUser || 0
+        );
+      } catch (error) {
+        setHelpUnreadCount(0);
+      }
+    };
+
+    fetchHelpUnreadCount();
+
+    const socket = getHelpSocket();
+
+    if (!socket) {
+      return;
+    }
+
+    const userId = user?._id || user?.id;
+
+    if (userId) {
+      socket.emit("join-user-room", userId);
+    }
+
+    const handleHelpMessage = (data) => {
+      if (data?.senderRole === "admin") {
+        setHelpUnreadCount((count) => count + 1);
+      }
+    };
+
+    const handleHelpUnreadUpdated = () => {
+      fetchHelpUnreadCount();
+    };
+
+    socket.on("help-message", handleHelpMessage);
+    socket.on("new-help-message", handleHelpMessage);
+    window.addEventListener(
+      "help-unread-updated",
+      handleHelpUnreadUpdated
+    );
+
+    return () => {
+      socket.off("help-message", handleHelpMessage);
+      socket.off("new-help-message", handleHelpMessage);
+      window.removeEventListener(
+        "help-unread-updated",
+        handleHelpUnreadUpdated
+      );
+    };
+  }, [user]);
+
   const dashboardPath = isProfessional
     ? "/professional-dashboard"
     : "/dashboard";
+
+  const helpPath = isProfessional
+    ? "/professional-help"
+    : "/help";
 
   const navItems = [
     {
@@ -82,6 +151,11 @@ const UserSidebar = () => {
       name: "Notifications",
       path: "/notifications",
       icon: "🔔",
+    },
+    {
+      name: "Help & Support",
+      path: helpPath,
+      icon: "💬",
     },
     {
       name: "Profile",
@@ -214,7 +288,7 @@ const UserSidebar = () => {
           </div>
 
           {sidebarOpen && (
-            <button 
+            <button
               type="button"
               onClick={closeSidebar}
               className="
@@ -233,7 +307,7 @@ const UserSidebar = () => {
                 shrink-0
               "
               aria-label="Close sidebar"
-            > 
+            >
               <FontAwesomeIcon
                 icon={faXmark}
                 className="text-lg sm:text-xl"
@@ -314,9 +388,34 @@ const UserSidebar = () => {
                       shrink-0
                     "
                   >
-                    {unreadCount > 99
+                    {unreadCount > 99 ? "99+" : unreadCount}
+                  </span>
+                )}
+
+              {item.name === "Help & Support" &&
+                helpUnreadCount > 0 && (
+                  <span
+                    className="
+                      min-w-4
+                      sm:min-w-5
+                      h-4
+                      sm:h-5
+                      px-1
+                      flex
+                      items-center
+                      justify-center
+                      bg-red-500
+                      text-white
+                      text-[8px]
+                      sm:text-[10px]
+                      font-bold
+                      rounded-full
+                      shrink-0
+                    "
+                  >
+                    {helpUnreadCount > 99
                       ? "99+"
-                      : unreadCount}
+                      : helpUnreadCount}
                   </span>
                 )}
             </NavLink>
