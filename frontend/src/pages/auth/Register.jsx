@@ -38,8 +38,6 @@ const Register = () => {
         formData
       );
 
-      console.log("Registration Response:", response.data);
-
       setSuccess("Account created successfully!");
 
       setTimeout(() => {
@@ -62,7 +60,7 @@ const Register = () => {
       <div className="w-full max-w-md">
         <div className="text-center mb-6 sm:mb-8">
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
-            Create Account
+            Create User Account
           </h1>
 
           <p className="mt-2 text-sm sm:text-base text-gray-600">
@@ -135,16 +133,21 @@ const Register = () => {
                   onChange={handleChange}
                   placeholder="Create a password"
                   required
+                  minLength="6"
                   autoComplete="new-password"
                   className="w-full px-3 sm:px-4 py-2.5 sm:py-3 pr-12 text-sm sm:text-base border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
                 />
 
                 <button
                   type="button"
-                  onClick={() => setShowPassword(!showPassword)}
+                  onClick={() =>
+                    setShowPassword(!showPassword)
+                  }
                   className="absolute right-2.5 sm:right-3 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center rounded-md text-gray-500 hover:text-gray-700 hover:bg-gray-50 transition"
                   aria-label={
-                    showPassword ? "Hide password" : "Show password"
+                    showPassword
+                      ? "Hide password"
+                      : "Show password"
                   }
                 >
                   {showPassword ? "🙈" : "👁️"}
@@ -190,19 +193,36 @@ const Register = () => {
               disabled={loading}
               className="w-full mt-5 sm:mt-6 py-2.5 sm:py-3 px-4 bg-blue-600 text-white text-sm sm:text-base font-semibold rounded-lg hover:bg-blue-700 disabled:bg-blue-300 disabled:cursor-not-allowed transition"
             >
-              {loading ? "Creating Account..." : "Create Account"}
+              {loading
+                ? "Creating Account..."
+                : "Create User Account"}
             </button>
           </form>
 
-          <p className="text-center text-xs sm:text-sm text-gray-600 mt-5 sm:mt-6">
-            Already have an account?{" "}
-            <Link
-              to="/login"
-              className="text-blue-600 font-medium hover:text-blue-700 transition"
-            >
-              Login
-            </Link>
-          </p>
+          <div className="text-center mt-5 sm:mt-6 space-y-3">
+            <p className="text-xs sm:text-sm text-gray-600">
+              Already have an account?{" "}
+              <Link
+                to="/login"
+                className="text-blue-600 font-medium hover:text-blue-700 transition"
+              >
+                Login
+              </Link>
+            </p>
+
+            <div className="border-t border-gray-100 pt-4">
+              <p className="text-xs sm:text-sm text-gray-500 mb-2">
+                Are you a service professional?
+              </p>
+
+              <Link
+                to="/professional-register"
+                className="inline-block text-blue-600 font-semibold hover:text-blue-700 transition"
+              >
+                Register as a Professional →
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
     </section>

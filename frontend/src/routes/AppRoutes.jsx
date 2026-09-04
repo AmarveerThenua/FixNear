@@ -5,6 +5,7 @@ import Services from "../pages/public/Services";
 import ServiceDetails from "../pages/public/ServiceDetails";
 
 import Register from "../pages/auth/Register";
+import ProfessionalRegister from "../pages/auth/ProfessionalRegister";
 import Login from "../pages/auth/Login";
 
 import Dashboard from "../pages/user/Dashboard";
@@ -28,7 +29,6 @@ import PublicRoute from "../components/common/PublicRoute";
 import ProfessionalRoute from "../components/common/ProfessionalRoute";
 import AdminRoute from "../components/common/AdminRoute";
 
-import BecomeProfessional from "../pages/professional/BecomeProfessional";
 import ProfessionalDashboard from "../pages/professional/ProfessionalDashboard";
 import ProfessionalBookings from "../pages/professional/ProfessionalBookings";
 import ProfessionalProfilePage from "../pages/professional/ProfessionalProfile";
@@ -70,6 +70,11 @@ const AppRoutes = () => {
           <Route
             path="/register"
             element={<Register />}
+          />
+
+          <Route
+            path="/professional-register"
+            element={<ProfessionalRegister />}
           />
 
           <Route
@@ -129,13 +134,6 @@ const AppRoutes = () => {
           <Route
             path="/booking-success"
             element={<BookingSuccess />}
-          />
-        </Route>
-
-        <Route element={<PublicLayout />}>
-          <Route
-            path="/become-professional"
-            element={<BecomeProfessional />}
           />
         </Route>
 
