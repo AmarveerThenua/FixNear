@@ -65,10 +65,7 @@ const ProfessionalRegister = () => {
       );
 
       if (response.data.token) {
-        localStorage.setItem(
-          "fixnearToken",
-          response.data.token
-        );
+        localStorage.setItem("fixnearToken", response.data.token);
       }
 
       if (response.data.user) {
@@ -88,10 +85,7 @@ const ProfessionalRegister = () => {
         });
       }, 1000);
     } catch (error) {
-      console.error(
-        "Professional registration error:",
-        error
-      );
+      console.error("Professional registration error:", error);
 
       setError(
         error.response?.data?.message ||
@@ -103,58 +97,53 @@ const ProfessionalRegister = () => {
   };
 
   const inputClass =
-    "w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition";
+    "w-full px-2.5 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm border border-gray-200 rounded-md outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition";
 
   const labelClass =
-    "block text-sm font-medium text-gray-700 mb-2";
+    "block text-[11px] sm:text-xs font-medium text-gray-700 mb-1";
 
   return (
-    <section className="min-h-screen bg-gray-50 py-8 sm:py-10 px-4">
-      <div className="max-w-5xl mx-auto">
-        <div className="text-center mb-6 sm:mb-8">
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
+    <section className="min-h-screen bg-gray-50 py-3 sm:py-5 md:py-6 px-2.5 sm:px-4">
+      <div className="max-w-6xl mx-auto">
+        <div className="text-center mb-3 sm:mb-5">
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900">
             Professional Registration
           </h1>
 
-          <p className="mt-2 text-sm sm:text-base text-gray-600">
+          <p className="mt-1 text-[11px] sm:text-xs md:text-sm text-gray-600">
             Join FixNear and offer your services to customers near you.
           </p>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5 sm:p-7 md:p-8">
+        <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-3 sm:p-4 md:p-5">
           {error && (
-            <div className="mb-5 p-3 sm:p-4 bg-red-50 border border-red-200 rounded-lg">
-              <p className="text-sm text-red-600 break-words">
-                {error}
-              </p>
+            <div className="mb-3 p-2.5 bg-red-50 border border-red-200 rounded-md">
+              <p className="text-xs text-red-600 break-words">{error}</p>
             </div>
           )}
 
           {success && (
-            <div className="mb-5 p-3 sm:p-4 bg-green-50 border border-green-200 rounded-lg">
-              <p className="text-sm text-green-600 break-words">
+            <div className="mb-3 p-2.5 bg-green-50 border border-green-200 rounded-md">
+              <p className="text-xs text-green-600 break-words">
                 {success}
               </p>
             </div>
           )}
 
           <form onSubmit={handleSubmit}>
-            <h2 className="text-lg sm:text-xl font-bold text-gray-900 mb-5">
+            <h2 className="text-sm sm:text-base font-bold text-gray-900 mb-2.5">
               Account Information
             </h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-3">
               <div>
-                <label className={labelClass}>
-                  Full Name
-                </label>
-
+                <label className={labelClass}>Full Name</label>
                 <input
                   type="text"
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
-                  placeholder="Enter your full name"
+                  placeholder="Full name"
                   required
                   autoComplete="name"
                   className={inputClass}
@@ -162,16 +151,13 @@ const ProfessionalRegister = () => {
               </div>
 
               <div>
-                <label className={labelClass}>
-                  Email Address
-                </label>
-
+                <label className={labelClass}>Email Address</label>
                 <input
                   type="email"
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
-                  placeholder="Enter your email"
+                  placeholder="Email"
                   required
                   autoComplete="email"
                   className={inputClass}
@@ -179,33 +165,26 @@ const ProfessionalRegister = () => {
               </div>
 
               <div>
-                <label className={labelClass}>
-                  Password
-                </label>
-
+                <label className={labelClass}>Password</label>
                 <div className="relative">
                   <input
                     type={showPassword ? "text" : "password"}
                     name="password"
                     value={formData.password}
                     onChange={handleChange}
-                    placeholder="Create a password"
+                    placeholder="Password"
                     required
                     minLength="6"
                     autoComplete="new-password"
-                    className={`${inputClass} pr-12`}
+                    className={`${inputClass} pr-9`}
                   />
 
                   <button
                     type="button"
-                    onClick={() =>
-                      setShowPassword(!showPassword)
-                    }
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-1.5 top-1/2 -translate-y-1/2 w-7 h-7 flex items-center justify-center text-gray-500 hover:text-gray-700"
                     aria-label={
-                      showPassword
-                        ? "Hide password"
-                        : "Show password"
+                      showPassword ? "Hide password" : "Show password"
                     }
                   >
                     {showPassword ? "🙈" : "👁️"}
@@ -214,16 +193,13 @@ const ProfessionalRegister = () => {
               </div>
 
               <div>
-                <label className={labelClass}>
-                  Phone Number
-                </label>
-
+                <label className={labelClass}>Phone Number</label>
                 <input
                   type="tel"
                   name="phone"
                   value={formData.phone}
                   onChange={handleChange}
-                  placeholder="Enter your phone number"
+                  placeholder="Phone number"
                   required
                   autoComplete="tel"
                   inputMode="tel"
@@ -232,16 +208,13 @@ const ProfessionalRegister = () => {
               </div>
             </div>
 
-            <h2 className="text-lg sm:text-xl font-bold text-gray-900 mt-8 mb-5">
+            <h2 className="text-sm sm:text-base font-bold text-gray-900 mt-4 mb-2.5">
               Professional Information
             </h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-3">
               <div>
-                <label className={labelClass}>
-                  Type of Work
-                </label>
-
+                <label className={labelClass}>Type of Work</label>
                 <select
                   name="profession"
                   value={formData.profession}
@@ -249,37 +222,24 @@ const ProfessionalRegister = () => {
                   required
                   className={`${inputClass} bg-white`}
                 >
-                  <option value="">
-                    Select your profession
-                  </option>
-                  <option value="Electrician">
-                    Electrician
-                  </option>
+                  <option value="">Select profession</option>
+                  <option value="Electrician">Electrician</option>
                   <option value="Plumber">Plumber</option>
-                  <option value="Carpenter">
-                    Carpenter
-                  </option>
+                  <option value="Carpenter">Carpenter</option>
                   <option value="Painter">Painter</option>
-                  <option value="AC Repair">
-                    AC Repair
-                  </option>
+                  <option value="AC Repair">AC Repair</option>
                   <option value="Appliance Repair">
                     Appliance Repair
                   </option>
                   <option value="Cleaning">Cleaning</option>
-                  <option value="Beautician">
-                    Beautician
-                  </option>
+                  <option value="Beautician">Beautician</option>
                   <option value="Mechanic">Mechanic</option>
                   <option value="Other">Other</option>
                 </select>
               </div>
 
               <div>
-                <label className={labelClass}>
-                  Experience
-                </label>
-
+                <label className={labelClass}>Experience</label>
                 <input
                   type="text"
                   name="experience"
@@ -291,11 +251,8 @@ const ProfessionalRegister = () => {
                 />
               </div>
 
-              <div className="md:col-span-2">
-                <label className={labelClass}>
-                  Skills
-                </label>
-
+              <div className="col-span-2">
+                <label className={labelClass}>Skills</label>
                 <input
                   type="text"
                   name="skills"
@@ -305,39 +262,31 @@ const ProfessionalRegister = () => {
                   required
                   className={inputClass}
                 />
-
-                <p className="text-xs text-gray-500 mt-2">
-                  Separate multiple skills with commas.
-                </p>
               </div>
 
-              <div className="md:col-span-2">
+              <div className="col-span-2 md:col-span-4">
                 <label className={labelClass}>
                   About Your Services
                 </label>
-
                 <textarea
                   name="description"
                   value={formData.description}
                   onChange={handleChange}
                   placeholder="Describe your experience and services..."
-                  rows="4"
+                  rows="2"
                   required
                   className={`${inputClass} resize-none`}
                 />
               </div>
             </div>
 
-            <h2 className="text-lg sm:text-xl font-bold text-gray-900 mt-8 mb-5">
+            <h2 className="text-sm sm:text-base font-bold text-gray-900 mt-4 mb-2.5">
               Address & Location
             </h2>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-5">
-              <div className="sm:col-span-2 md:col-span-3">
-                <label className={labelClass}>
-                  Full Address
-                </label>
-
+            <div className="grid grid-cols-2 md:grid-cols-6 gap-2.5 sm:gap-3">
+              <div className="col-span-2 md:col-span-6">
+                <label className={labelClass}>Full Address</label>
                 <textarea
                   name="address"
                   value={formData.address}
@@ -345,16 +294,13 @@ const ProfessionalRegister = () => {
                   placeholder="House/Flat, Street, Sector"
                   required
                   autoComplete="street-address"
-                  rows="3"
+                  rows="2"
                   className={`${inputClass} resize-none`}
                 />
               </div>
 
               <div>
-                <label className={labelClass}>
-                  City
-                </label>
-
+                <label className={labelClass}>City</label>
                 <input
                   type="text"
                   name="city"
@@ -368,10 +314,7 @@ const ProfessionalRegister = () => {
               </div>
 
               <div>
-                <label className={labelClass}>
-                  State
-                </label>
-
+                <label className={labelClass}>State</label>
                 <input
                   type="text"
                   name="state"
@@ -385,10 +328,7 @@ const ProfessionalRegister = () => {
               </div>
 
               <div>
-                <label className={labelClass}>
-                  Pincode
-                </label>
-
+                <label className={labelClass}>Pincode</label>
                 <input
                   type="text"
                   name="pincode"
@@ -404,10 +344,7 @@ const ProfessionalRegister = () => {
               </div>
 
               <div>
-                <label className={labelClass}>
-                  Location / Area
-                </label>
-
+                <label className={labelClass}>Location / Area</label>
                 <input
                   type="text"
                   name="location"
@@ -419,37 +356,29 @@ const ProfessionalRegister = () => {
                 />
               </div>
 
-              <div className="sm:col-span-2">
-                <label className={labelClass}>
-                  Service Areas
-                </label>
-
+              <div className="col-span-2 md:col-span-2">
+                <label className={labelClass}>Service Areas</label>
                 <input
                   type="text"
                   name="serviceArea"
                   value={formData.serviceArea}
                   onChange={handleChange}
-                  placeholder="Sector 62, Sector 63, Sector 61"
+                  placeholder="Sector 62, 63, 61"
                   required
                   className={inputClass}
                 />
-
-                <p className="text-xs text-gray-500 mt-2">
-                  Separate multiple areas with commas.
-                </p>
               </div>
             </div>
 
-            <h2 className="text-lg sm:text-xl font-bold text-gray-900 mt-8 mb-5">
+            <h2 className="text-sm sm:text-base font-bold text-gray-900 mt-4 mb-2.5">
               Service Details
             </h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-3 items-end">
               <div>
                 <label className={labelClass}>
                   Starting Price (₹)
                 </label>
-
                 <input
                   type="number"
                   name="price"
@@ -463,34 +392,36 @@ const ProfessionalRegister = () => {
                 />
               </div>
 
-              <div className="flex items-center">
+              <div className="flex items-center h-8 sm:h-9">
                 <input
                   type="checkbox"
                   name="available"
                   checked={formData.available}
                   onChange={handleChange}
-                  className="w-5 h-5 accent-blue-600 cursor-pointer"
+                  className="w-4 h-4 accent-blue-600 cursor-pointer"
                 />
 
-                <label className="ml-3 text-sm text-gray-700 cursor-pointer">
-                  I am currently available for work
+                <label className="ml-2 text-[11px] sm:text-xs text-gray-700 cursor-pointer">
+                  Available for work
                 </label>
               </div>
-            </div>
 
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full mt-8 py-3 px-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 disabled:bg-blue-300 disabled:cursor-not-allowed transition"
-            >
-              {loading
-                ? "Creating Professional Account..."
-                : "Create Professional Account"}
-            </button>
+              <div className="col-span-2">
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full py-1.5 sm:py-2 px-3 bg-blue-600 text-white text-xs sm:text-sm font-semibold rounded-md hover:bg-blue-700 disabled:bg-blue-300 disabled:cursor-not-allowed transition"
+                >
+                  {loading
+                    ? "Creating Account..."
+                    : "Create Professional Account"}
+                </button>
+              </div>
+            </div>
           </form>
 
-          <div className="text-center mt-6 space-y-2">
-            <p className="text-sm text-gray-600">
+          <div className="text-center mt-3 sm:mt-4 space-y-1">
+            <p className="text-[10px] sm:text-xs text-gray-600">
               Already have an account?{" "}
               <Link
                 to="/login"
@@ -500,7 +431,7 @@ const ProfessionalRegister = () => {
               </Link>
             </p>
 
-            <p className="text-sm text-gray-600">
+            <p className="text-[10px] sm:text-xs text-gray-600">
               Want to create a customer account?{" "}
               <Link
                 to="/register"

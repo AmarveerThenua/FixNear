@@ -283,6 +283,7 @@ const stateCities = {
     "Firozabad",
     "Ghaziabad",
     "Gorakhpur",
+    "Hathras",
     "Jhansi",
     "Kanpur",
     "Lucknow",

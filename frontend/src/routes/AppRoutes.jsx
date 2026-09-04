@@ -49,167 +49,87 @@ const AppRoutes = () => {
   return (
     <Routes>
       <Route element={<PublicLayout />}>
-        <Route
-          path="/"
-          element={<Home />}
-        />
-
-        <Route
-          path="/services"
-          element={<Services />}
-        />
-
-        <Route
-          path="/services/:id"
-          element={<ServiceDetails />}
-        />
+        <Route path="/" element={<Home />} />
+        <Route path="/services" element={<Services />} />
+        <Route path="/services/:id" element={<ServiceDetails />} />
       </Route>
 
       <Route element={<PublicRoute />}>
         <Route element={<PublicLayout />}>
-          <Route
-            path="/register"
-            element={<Register />}
-          />
-
+          <Route path="/register" element={<Register />} />
           <Route
             path="/professional-register"
             element={<ProfessionalRegister />}
           />
-
-          <Route
-            path="/login"
-            element={<Login />}
-          />
+          <Route path="/login" element={<Login />} />
         </Route>
       </Route>
 
       <Route element={<ProtectedRoute />}>
         <Route element={<UserLayout />}>
-          <Route
-            path="/dashboard"
-            element={<Dashboard />}
-          />
-
-          <Route
-            path="/professionals"
-            element={<UserProfessionals />}
-          />
-
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/professionals" element={<UserProfessionals />} />
           <Route
             path="/professionals/:id"
             element={<UserProfessionalProfile />}
           />
-
-          <Route
-            path="/book/:id"
-            element={<UserBookService />}
-          />
-
-          <Route
-            path="/my-bookings"
-            element={<MyBookings />}
-          />
-
-          <Route
-            path="/booking/:id"
-            element={<BookingDetails />}
-          />
-
-          <Route
-            path="/profile"
-            element={<Profile />}
-          />
-
-          <Route
-            path="/reviews"
-            element={<Reviews />}
-          />
-
-          <Route
-            path="/notifications"
-            element={<Notifications />}
-          />
-
-          <Route
-            path="/booking-success"
-            element={<BookingSuccess />}
-          />
-        </Route>
-
-        <Route element={<ProfessionalRoute />}>
-          <Route element={<ProfessionalLayout />}>
-            <Route
-              path="/professional-dashboard"
-              element={<ProfessionalDashboard />}
-            />
-
-            <Route
-              path="/professional-bookings"
-              element={<ProfessionalBookings />}
-            />
-
-            <Route
-              path="/professional-profile"
-              element={<ProfessionalProfilePage />}
-            />
-
-            <Route
-              path="/professional-profile/edit"
-              element={<EditProfessionalProfile />}
-            />
-
-            <Route
-              path="/professional-reviews"
-              element={<ProfessionalReviews />}
-            />
-
-            <Route
-              path="/professional-notifications"
-              element={<ProfessionalNotifications />}
-            />
-          </Route>
-        </Route>
-
-        <Route element={<AdminRoute />}>
-          <Route element={<AdminLayout />}>
-            <Route
-              path="/admin-dashboard"
-              element={<AdminDashboard />}
-            />
-
-            <Route
-              path="/admin-users"
-              element={<ManageUsers />}
-            />
-
-            <Route
-              path="/admin-professionals"
-              element={<ManageProfessionals />}
-            />
-
-            <Route
-              path="/admin-bookings"
-              element={<ManageBookings />}
-            />
-
-            <Route
-              path="/admin-reviews"
-              element={<ManageReviews />}
-            />
-
-            <Route
-              path="/admin-notifications"
-              element={<AdminNotifications />}
-            />
-          </Route>
+          <Route path="/book/:id" element={<UserBookService />} />
+          <Route path="/my-bookings" element={<MyBookings />} />
+          <Route path="/booking/:id" element={<BookingDetails />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/reviews" element={<Reviews />} />
+          <Route path="/notifications" element={<Notifications />} />
+          <Route path="/booking-success" element={<BookingSuccess />} />
         </Route>
       </Route>
 
-      <Route
-        path="*"
-        element={<ErrorPage />}
-      />
+      <Route element={<ProfessionalRoute />}>
+        <Route element={<ProfessionalLayout />}>
+          <Route
+            path="/professional-dashboard"
+            element={<ProfessionalDashboard />}
+          />
+          <Route
+            path="/professional-bookings"
+            element={<ProfessionalBookings />}
+          />
+          <Route
+            path="/professional-profile"
+            element={<ProfessionalProfilePage />}
+          />
+          <Route
+            path="/professional-profile/edit"
+            element={<EditProfessionalProfile />}
+          />
+          <Route
+            path="/professional-reviews"
+            element={<ProfessionalReviews />}
+          />
+          <Route
+            path="/professional-notifications"
+            element={<ProfessionalNotifications />}
+          />
+        </Route>
+      </Route>
+
+      <Route element={<AdminRoute />}>
+        <Route element={<AdminLayout />}>
+          <Route path="/admin-dashboard" element={<AdminDashboard />} />
+          <Route path="/admin-users" element={<ManageUsers />} />
+          <Route
+            path="/admin-professionals"
+            element={<ManageProfessionals />}
+          />
+          <Route path="/admin-bookings" element={<ManageBookings />} />
+          <Route path="/admin-reviews" element={<ManageReviews />} />
+          <Route
+            path="/admin-notifications"
+            element={<AdminNotifications />}
+          />
+        </Route>
+      </Route>
+
+      <Route path="*" element={<ErrorPage />} />
     </Routes>
   );
 };

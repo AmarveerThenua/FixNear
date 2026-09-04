@@ -3,13 +3,18 @@ import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 
 const ProtectedRoute = () => {
-
-  const auth = useAuth();
-
-  const user = auth?.user;
+  const { user } = useAuth();
 
   if (!user) {
     return <Navigate to="/login" replace />;
+  }
+
+  if (user.role === "admin") {
+    return <Navigate to="/admin-dashboard" replace />;
+  }
+
+  if (user.role === "professional") {
+    return <Navigate to="/professional-dashboard" replace />;
   }
 
   return <Outlet />;
