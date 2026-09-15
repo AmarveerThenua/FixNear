@@ -4,6 +4,7 @@ import { useAuth } from "../../context/AuthContext";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell } from "@fortawesome/free-solid-svg-icons";
+import Logo from '../../assets/FixNearLogo.png'
 
 const Navbar = () => {
   const { user, logout } = useAuth();
@@ -68,9 +69,7 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-3 sm:px-5 lg:px-6">
         <div className="flex items-center justify-between gap-2 py-2.5 sm:py-3 lg:py-4">
           <Link to="/" className="shrink-0">
-            <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-blue-600">
-              FixNear
-            </h1>
+            <img className="h-10" src={Logo} alt="FixNear" />
           </Link>
 
           <div className="flex items-center gap-1 sm:gap-2 lg:gap-3 shrink-0">

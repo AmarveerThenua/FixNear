@@ -33,7 +33,7 @@ const Register = () => {
     setLoading(true);
 
     try {
-      const response = await axios.post(
+      await axios.post(
         `${import.meta.env.VITE_API_URL}/auth/register`,
         formData
       );
@@ -58,7 +58,7 @@ const Register = () => {
   return (
     <section className="min-h-screen bg-gray-50 flex items-center justify-center px-4 sm:px-6 py-10 sm:py-14 md:py-16">
       <div className="w-full max-w-md">
-        <div className="text-center mb-6 sm:mb-8">
+        <div className="text-center mb-5 sm:mb-7">
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
             Create User Account
           </h1>
@@ -66,6 +66,32 @@ const Register = () => {
           <p className="mt-2 text-sm sm:text-base text-gray-600">
             Join FixNear and find trusted professionals.
           </p>
+        </div>
+
+        <div className="mb-5 bg-blue-50 border border-blue-200 rounded-xl p-4 sm:p-5">
+          <div className="flex items-start gap-3">
+            <div className="w-10 h-10 sm:w-11 sm:h-11 bg-blue-600 text-white rounded-lg flex items-center justify-center text-lg sm:text-xl shrink-0">
+              🛠️
+            </div>
+
+            <div className="flex-1 min-w-0">
+              <p className="text-sm sm:text-base font-semibold text-gray-900">
+                Are you a service professional?
+              </p>
+
+              <p className="text-xs sm:text-sm text-gray-600 mt-1">
+                Join FixNear and offer your services to customers near you.
+              </p>
+
+              <Link
+                to="/professional-register"
+                className="inline-flex items-center mt-3 px-4 py-2 bg-blue-600 text-white text-xs sm:text-sm font-semibold rounded-lg hover:bg-blue-700 transition shadow-sm"
+              >
+                Register as a Professional
+                <span className="ml-1.5">→</span>
+              </Link>
+            </div>
+          </div>
         </div>
 
         <div className="bg-white p-5 sm:p-7 md:p-8 rounded-xl sm:rounded-2xl shadow-sm border border-gray-100">
@@ -140,18 +166,13 @@ const Register = () => {
 
                 <button
                   type="button"
-                  onClick={() =>
-                    setShowPassword(!showPassword)
-                  }
+                  onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-2.5 sm:right-3 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center rounded-md text-gray-500 hover:text-gray-700 hover:bg-gray-50 transition"
                   aria-label={
-                    showPassword
-                      ? "Hide password"
-                      : "Show password"
+                    showPassword ? "Hide password" : "Show password"
                   }
                 >
                   {showPassword ? "🫣" : "🙈"}
-                     
                 </button>
               </div>
             </div>
@@ -194,13 +215,11 @@ const Register = () => {
               disabled={loading}
               className="w-full mt-5 sm:mt-6 py-2.5 sm:py-3 px-4 bg-blue-600 text-white text-sm sm:text-base font-semibold rounded-lg hover:bg-blue-700 disabled:bg-blue-300 disabled:cursor-not-allowed transition"
             >
-              {loading
-                ? "Creating Account..."
-                : "Create User Account"}
+              {loading ? "Creating Account..." : "Create User Account"}
             </button>
           </form>
 
-          <div className="text-center mt-5 sm:mt-6 space-y-3">
+          <div className="text-center mt-5 sm:mt-6">
             <p className="text-xs sm:text-sm text-gray-600">
               Already have an account?{" "}
               <Link
@@ -210,19 +229,6 @@ const Register = () => {
                 Login
               </Link>
             </p>
-
-            <div className="border-t border-gray-100 pt-4">
-              <p className="text-xs sm:text-sm text-gray-500 mb-2">
-                Are you a service professional?
-              </p>
-
-              <Link
-                to="/professional-register"
-                className="inline-block text-blue-600 font-semibold hover:text-blue-700 transition"
-              >
-                Register as a Professional →
-              </Link>
-            </div>
           </div>
         </div>
       </div>
