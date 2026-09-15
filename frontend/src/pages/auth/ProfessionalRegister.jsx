@@ -1,6 +1,11 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faEye,
+  faEyeSlash,
+} from "@fortawesome/free-solid-svg-icons";
 
 const ProfessionalRegister = () => {
   const navigate = useNavigate();
@@ -166,6 +171,7 @@ const ProfessionalRegister = () => {
 
               <div>
                 <label className={labelClass}>Password</label>
+
                 <div className="relative">
                   <input
                     type={showPassword ? "text" : "password"}
@@ -182,12 +188,14 @@ const ProfessionalRegister = () => {
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-1.5 top-1/2 -translate-y-1/2 w-7 h-7 flex items-center justify-center text-gray-500 hover:text-gray-700"
+                    className="absolute right-1.5 top-1/2 -translate-y-1/2 w-7 h-7 flex items-center justify-center text-gray-500 hover:text-gray-700 rounded-md hover:bg-gray-50 transition"
                     aria-label={
                       showPassword ? "Hide password" : "Show password"
                     }
                   >
-                    {showPassword ? "🫣" : "🙈"}
+                    <FontAwesomeIcon
+                      icon={showPassword ? faEyeSlash : faEye}
+                    />
                   </button>
                 </div>
               </div>

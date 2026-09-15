@@ -7,9 +7,11 @@ import {
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { getHelpSocket } from "../../services/helpSocket";
+import { useAuth } from "../../context/AuthContext";
 
 const AdminSidebar = () => {
   const navigate = useNavigate();
+  const { logout } = useAuth();
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [helpUnreadCount, setHelpUnreadCount] = useState(0);
@@ -80,7 +82,7 @@ const AdminSidebar = () => {
         );
 
         setHelpUnreadCount(totalUnread);
-      } catch (error) {
+      } catch {
         setHelpUnreadCount(0);
       }
     };
@@ -132,12 +134,10 @@ const AdminSidebar = () => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("fixnearToken");
-    localStorage.removeItem("fixnearUser");
-
+    logout();
+    setHelpUnreadCount(0);
     closeSidebar();
-
-    navigate("/login");
+    navigate("/login", { replace: true });
   };
 
   return (

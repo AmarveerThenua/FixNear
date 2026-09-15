@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faEye,
+  faEyeSlash,
+  faWrench,
+} from "@fortawesome/free-solid-svg-icons";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -71,7 +77,7 @@ const Register = () => {
         <div className="mb-5 bg-blue-50 border border-blue-200 rounded-xl p-4 sm:p-5">
           <div className="flex items-start gap-3">
             <div className="w-10 h-10 sm:w-11 sm:h-11 bg-blue-600 text-white rounded-lg flex items-center justify-center text-lg sm:text-xl shrink-0">
-              🛠️
+              <FontAwesomeIcon icon={faWrench} />
             </div>
 
             <div className="flex-1 min-w-0">
@@ -172,7 +178,9 @@ const Register = () => {
                     showPassword ? "Hide password" : "Show password"
                   }
                 >
-                  {showPassword ? "🫣" : "🙈"}
+                  <FontAwesomeIcon
+                    icon={showPassword ? faEyeSlash : faEye}
+                  />
                 </button>
               </div>
             </div>

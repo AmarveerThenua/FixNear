@@ -1,6 +1,11 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faEye,
+  faEyeSlash,
+} from "@fortawesome/free-solid-svg-icons";
 import { useAuth } from "../../context/AuthContext";
 
 const Login = () => {
@@ -113,7 +118,7 @@ const Login = () => {
                   placeholder="Enter your password"
                   required
                   autoComplete="current-password"
-                  className="w-full px-3 sm:px-4 py-2.5 sm:py-3 pr-12 text-sm sm:text-base border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                  className="w-full px-3  sm:px-4 py-2.5 sm:py-3 pr-12 text-sm sm:text-base border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
                 />
 
                 <button
@@ -121,13 +126,13 @@ const Login = () => {
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-2.5 sm:right-3 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center text-gray-500 hover:text-gray-700 rounded-md hover:bg-gray-50 transition"
                   aria-label={
-                    showPassword
-                      ? "Hide password"
-                      : "Show password"
+                    showPassword ? "Hide password" : "Show password"
                   }
                 >
-                  {showPassword ? "🫣" : "🙈"}
-               
+  
+                  <FontAwesomeIcon
+                    icon={showPassword ? faEyeSlash : faEye}
+                  />
                 </button>
               </div>
             </div>

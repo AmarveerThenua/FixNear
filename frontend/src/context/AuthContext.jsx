@@ -1,28 +1,28 @@
 import React, {
   createContext,
   useContext,
-  useState
+  useState,
 } from "react";
 
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
-
   const [user, setUser] = useState(() => {
-
     const savedUser = localStorage.getItem("fixnearUser");
 
     if (savedUser) {
-      return JSON.parse(savedUser);
+      try {
+        return JSON.parse(savedUser);
+      } catch {
+        localStorage.removeItem("fixnearUser");
+        return null;
+      }
     }
 
     return null;
   });
 
-
-  // Login
   const login = (userData, token) => {
-
     setUser(userData);
 
     localStorage.setItem(
@@ -31,30 +31,22 @@ const AuthProvider = ({ children }) => {
     );
 
     if (token) {
-      localStorage.setItem(
-        "fixnearToken",
-        token
-      );
+      localStorage.setItem("fixnearToken", token);
     }
   };
 
-
-  // Logout
   const logout = () => {
-
-    setUser(null);
-
     localStorage.removeItem("fixnearUser");
     localStorage.removeItem("fixnearToken");
+    setUser(null);
   };
-
 
   return (
     <AuthContext.Provider
       value={{
         user,
         login,
-        logout
+        logout,
       }}
     >
       {children}
@@ -62,10 +54,8 @@ const AuthProvider = ({ children }) => {
   );
 };
 
-
 export const useAuth = () => {
   return useContext(AuthContext);
 };
-
 
 export default AuthProvider;
