@@ -90,40 +90,46 @@ const Navbar = () => {
         ? "/admin-dashboard"
         : "/dashboard";
 
+  const iconButtonClass =
+    "flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 md:w-9 md:h-9 rounded-lg text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition-all";
+
+  const desktopLinkClass =
+    "group flex items-center gap-1.5 px-2 sm:px-2.5 lg:px-3 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm lg:text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-all whitespace-nowrap";
+
   return (
     <nav className="w-full bg-white border-b border-gray-100 shadow-sm relative z-50">
-      <div className="max-w-7xl mx-auto px-3 sm:px-5 lg:px-6">
-        <div className="flex items-center justify-between gap-4 py-2.5 sm:py-3 lg:py-4">
+      <div className="max-w-7xl mx-auto px-2.5 sm:px-4 lg:px-6">
+        <div className="flex items-center justify-between gap-2 py-2 sm:py-2.5 lg:py-3">
           <Link
             to="/"
             className="shrink-0 flex items-center hover:opacity-90 transition"
           >
             <img
-              className="h-9 sm:h-10 lg:h-11 w-auto"
+              className="h-7 sm:h-8 md:h-9 lg:h-10 w-auto"
               src={Logo}
               alt="FixNear"
             />
           </Link>
 
-          <div className="flex items-center gap-1.5 sm:gap-2 lg:gap-2.5 shrink-0">
+          <div className="flex items-center gap-0.5 sm:gap-1 md:gap-1.5">
             <Link
               to="/"
-              className="group flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 lg:px-3.5 py-2 rounded-lg text-xs sm:text-sm lg:text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-all whitespace-nowrap"
+              className="group flex items-center justify-center gap-1.5 px-2.5 lg:px-3.5 py-2 rounded-lg text-sm lg:text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-all whitespace-nowrap"
             >
               <FontAwesomeIcon
                 icon={faHouse}
-                className="text-[11px] sm:text-xs lg:text-sm group-hover:scale-110 transition-transform"
+                className="text-xs lg:text-sm shrink-0 group-hover:scale-110 transition-transform"
               />
               <span>Home</span>
             </Link>
 
             <Link
               to="/services"
-              className="group flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 lg:px-3.5 py-2 rounded-lg text-xs sm:text-sm lg:text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-all whitespace-nowrap"
+              className="group flex items-center justify-center gap-1.5 px-2.5 lg:px-3.5 py-2 rounded-lg text-sm lg:text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-all whitespace-nowrap"
             >
               <FontAwesomeIcon
                 icon={faWrench}
-                className="text-[11px] sm:text-xs lg:text-sm group-hover:rotate-12 transition-transform"
+                className="text-xs lg:text-sm shrink-0 group-hover:rotate-12 transition-transform"
               />
               <span>Services</span>
             </Link>
@@ -132,24 +138,34 @@ const Navbar = () => {
               <>
                 <Link
                   to="/professionals"
-                  className="hidden lg:flex group items-center gap-2 px-3.5 py-2 rounded-lg text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-all whitespace-nowrap"
+                  className={`${iconButtonClass} md:w-auto md:px-3`}
+                  title="Find Professionals"
+                  aria-label="Find Professionals"
                 >
                   <FontAwesomeIcon
                     icon={faUsers}
-                    className="text-sm group-hover:scale-110 transition-transform"
+                    className="text-[11px] sm:text-xs md:text-sm"
                   />
-                  <span>Find Professionals</span>
+
+                  <span className="hidden md:inline ml-1.5">
+                    Find Professionals
+                  </span>
                 </Link>
 
                 <Link
                   to="/become-professional"
-                  className="hidden lg:flex group items-center gap-2 px-3.5 py-2 rounded-lg text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-all whitespace-nowrap"
+                  className={`${iconButtonClass} md:w-auto md:px-3`}
+                  title="Become a Professional"
+                  aria-label="Become a Professional"
                 >
                   <FontAwesomeIcon
                     icon={faUserTie}
-                    className="text-sm group-hover:scale-110 transition-transform"
+                    className="text-[11px] sm:text-xs md:text-sm"
                   />
-                  <span>Become a Professional</span>
+
+                  <span className="hidden md:inline ml-1.5">
+                    Become a Professional
+                  </span>
                 </Link>
               </>
             )}
@@ -158,67 +174,91 @@ const Navbar = () => {
               <>
                 <Link
                   to={notificationPath}
-                  className="relative flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 ml-1 rounded-lg text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition-all"
+                  className={`${iconButtonClass} relative`}
                   title="Notifications"
                   aria-label="Notifications"
                 >
                   <FontAwesomeIcon
                     icon={faBell}
-                    className="text-sm sm:text-base lg:text-lg"
+                    className="text-[11px] sm:text-xs md:text-sm"
                   />
 
                   {unreadCount > 0 && (
-                    <span className="absolute -top-1 -right-1 min-w-4 h-4 sm:min-w-5 sm:h-5 px-1 flex items-center justify-center bg-red-500 text-white text-[8px] sm:text-[10px] font-bold rounded-full border-2 border-white">
+                    <span className="absolute -top-0.5 -right-0.5 min-w-3.5 h-3.5 sm:min-w-4 sm:h-4 px-0.5 flex items-center justify-center bg-red-500 text-white text-[6px] sm:text-[7px] md:text-[8px] font-bold rounded-full border border-white">
                       {unreadCount > 99 ? "99+" : unreadCount}
                     </span>
                   )}
+
+                  <span className="hidden md:inline ml-1.5">
+                    Notifications
+                  </span>
                 </Link>
 
                 <Link
                   to={dashboardPath}
-                  className="group flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 lg:px-3.5 py-2 rounded-lg text-xs sm:text-sm lg:text-base font-semibold text-blue-600 bg-blue-50 hover:bg-blue-100 transition-all whitespace-nowrap"
+                  className={`${iconButtonClass} md:w-auto md:px-3 text-blue-600`}
+                  title="Dashboard"
+                  aria-label="Dashboard"
                 >
                   <FontAwesomeIcon
                     icon={faGaugeHigh}
-                    className="text-[11px] sm:text-xs lg:text-sm group-hover:scale-110 transition-transform"
+                    className="text-[11px] sm:text-xs md:text-sm"
                   />
-                  <span>Dashboard</span>
+
+                  <span className="hidden md:inline ml-1.5">
+                    Dashboard
+                  </span>
                 </Link>
 
                 <button
                   type="button"
                   onClick={handleLogout}
-                  className="group flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 lg:px-4 py-2 rounded-lg border border-red-200 bg-white text-red-600 text-xs sm:text-sm lg:text-base font-medium hover:bg-red-50 hover:border-red-300 transition-all whitespace-nowrap"
+                  className={`${iconButtonClass} md:w-auto md:px-3 text-red-600 hover:text-red-700 hover:bg-red-50`}
+                  title="Logout"
+                  aria-label="Logout"
                 >
                   <FontAwesomeIcon
                     icon={faRightFromBracket}
-                    className="text-[11px] sm:text-xs lg:text-sm group-hover:translate-x-0.5 transition-transform"
+                    className="text-[11px] sm:text-xs md:text-sm"
                   />
-                  <span>Logout</span>
+
+                  <span className="hidden md:inline ml-1.5">
+                    Logout
+                  </span>
                 </button>
               </>
             ) : (
               <>
                 <Link
                   to="/login"
-                  className="group flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 lg:px-3.5 py-2 rounded-lg text-xs sm:text-sm lg:text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-all whitespace-nowrap"
+                  className={`${iconButtonClass} md:w-auto md:px-3 text-blue-600`}
+                  title="Login"
+                  aria-label="Login"
                 >
                   <FontAwesomeIcon
                     icon={faRightToBracket}
-                    className="text-[11px] sm:text-xs lg:text-sm group-hover:translate-x-0.5 transition-transform"
+                    className="text-[11px] sm:text-xs md:text-sm"
                   />
-                  <span>Login</span>
+
+                  <span className="hidden md:inline ml-1.5">
+                    Login
+                  </span>
                 </Link>
 
                 <Link
                   to="/register"
-                  className="group flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 lg:px-3.5 py-2 rounded-lg text-xs sm:text-sm lg:text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-all whitespace-nowrap"
+                  className={`${iconButtonClass} md:w-auto md:px-3 text-blue-600`}
+                  title="Register"
+                  aria-label="Register"
                 >
                   <FontAwesomeIcon
                     icon={faUserPlus}
-                    className="text-[11px] sm:text-xs lg:text-sm group-hover:scale-110 transition-transform"
+                    className="text-[11px] sm:text-xs md:text-sm"
                   />
-                  <span>Register</span>
+
+                  <span className="hidden md:inline ml-1.5">
+                    Register
+                  </span>
                 </Link>
               </>
             )}
