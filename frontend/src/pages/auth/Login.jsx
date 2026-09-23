@@ -9,6 +9,7 @@ import {
   faShieldHalved,
   faBolt,
   faCircleCheck,
+  faSpinner,
 } from "@fortawesome/free-solid-svg-icons";
 import { useAuth } from "../../context/AuthContext";
 import Logo from "../../assets/FixNearLogo.png";
@@ -70,10 +71,10 @@ const Login = () => {
   };
 
   return (
-    <section className="min-h-[calc(100vh-73px)] bg-gradient-to-br from-blue-50 via-white to-indigo-50 px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
+    <section className="min-h-[calc(100vh-73px)] bg-linear-to-br from-blue-50 via-white to-indigo-50 px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
       <div className="mx-auto flex min-h-[calc(100vh-137px)] w-full max-w-5xl items-center justify-center">
-        <div className="grid w-full overflow-hidden rounded-2xl sm:rounded-3xl border border-gray-100 bg-white shadow-xl shadow-blue-100/50 lg:grid-cols-2">
-          <div className="relative hidden overflow-hidden bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 p-8 text-white lg:flex lg:flex-col lg:justify-between xl:p-10">
+        <div className="grid w-full overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-xl shadow-blue-100/50 sm:rounded-3xl lg:grid-cols-2">
+          <div className="relative hidden overflow-hidden bg-linear-to-br from-blue-600 via-blue-700 to-indigo-800 p-8 text-white lg:flex lg:flex-col lg:justify-between xl:p-10">
             <div className="absolute -right-20 -top-20 h-56 w-56 rounded-full bg-white/10" />
             <div className="absolute -bottom-24 -left-20 h-64 w-64 rounded-full bg-white/10" />
 
@@ -103,6 +104,7 @@ const Login = () => {
                 <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-white/10">
                   <FontAwesomeIcon icon={faCircleCheck} />
                 </div>
+
                 <span className="text-sm text-blue-50">
                   Verified local professionals
                 </span>
@@ -112,6 +114,7 @@ const Login = () => {
                 <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-white/10">
                   <FontAwesomeIcon icon={faBolt} />
                 </div>
+
                 <span className="text-sm text-blue-50">
                   Fast and convenient booking
                 </span>
@@ -121,6 +124,7 @@ const Login = () => {
                 <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-white/10">
                   <FontAwesomeIcon icon={faShieldHalved} />
                 </div>
+
                 <span className="text-sm text-blue-50">
                   Safe and secure platform
                 </span>
@@ -173,7 +177,8 @@ const Login = () => {
                   placeholder="you@example.com"
                   required
                   autoComplete="email"
-                  className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100 sm:py-3.5 sm:text-base"
+                  disabled={loading}
+                  className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100 disabled:cursor-not-allowed disabled:opacity-60 sm:py-3.5 sm:text-base"
                 />
               </div>
 
@@ -197,13 +202,15 @@ const Login = () => {
                     placeholder="Enter your password"
                     required
                     autoComplete="current-password"
-                    className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 pr-12 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100 sm:py-3.5 sm:text-base"
+                    disabled={loading}
+                    className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 pr-12 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100 disabled:cursor-not-allowed disabled:opacity-60 sm:py-3.5 sm:text-base"
                   />
 
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-2 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-lg text-gray-400 transition hover:bg-gray-100 hover:text-gray-700"
+                    disabled={loading}
+                    className="absolute right-2 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-lg text-gray-400 transition hover:bg-gray-100 hover:text-gray-700 disabled:cursor-not-allowed disabled:opacity-50"
                     aria-label={
                       showPassword ? "Hide password" : "Show password"
                     }
@@ -227,17 +234,25 @@ const Login = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="group flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-200 transition hover:bg-blue-700 hover:shadow-blue-300 disabled:cursor-not-allowed disabled:bg-blue-300 disabled:shadow-none sm:py-3.5 sm:text-base"
+                className="flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-200 transition hover:bg-blue-700 hover:shadow-blue-300 disabled:cursor-not-allowed disabled:bg-blue-400 disabled:shadow-none sm:py-3.5 sm:text-base"
               >
-                <span>
-                  {loading ? "Logging in..." : "Login to FixNear"}
-                </span>
-
-                {!loading && (
-                  <FontAwesomeIcon
-                    icon={faArrowRight}
-                    className="text-xs transition-transform group-hover:translate-x-1"
-                  />
+                {loading ? (
+                  <>
+                    <FontAwesomeIcon
+                      icon={faSpinner}
+                      spin
+                      className="text-sm"
+                    />
+                    <span>Logging in...</span>
+                  </>
+                ) : (
+                  <>
+                    <span>Login to FixNear</span>
+                    <FontAwesomeIcon
+                      icon={faArrowRight}
+                      className="text-xs"
+                    />
+                  </>
                 )}
               </button>
             </form>
