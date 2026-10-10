@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -149,11 +149,11 @@ const AdminSidebar = () => {
           className="
             lg:hidden
             fixed
-            top-[58px]
-            sm:top-[68px]
+            top-14.5
+            sm:top-17
             left-2
             sm:left-3
-            z-[60]
+            z-60
             w-9
             h-9
             sm:w-10
@@ -185,8 +185,8 @@ const AdminSidebar = () => {
           className="
             lg:hidden
             fixed
-            top-[58px]
-            sm:top-[68px]
+            top-14.5
+            sm:top-17
             bottom-0
             left-0
             right-0

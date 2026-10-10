@@ -2,10 +2,7 @@ import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faBars,
-  faXmark,
-} from "@fortawesome/free-solid-svg-icons";
+import { faBars, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { getHelpSocket } from "../../services/helpSocket";
 
 const ProfessionalSidebar = () => {
@@ -67,7 +64,7 @@ const ProfessionalSidebar = () => {
             headers: {
               Authorization: `Bearer ${token}`,
             },
-          }
+          },
         );
 
         setUnreadCount(response.data.unreadCount || 0);
@@ -99,12 +96,10 @@ const ProfessionalSidebar = () => {
             headers: {
               Authorization: `Bearer ${token}`,
             },
-          }
+          },
         );
 
-        setHelpUnreadCount(
-          response.data?.conversation?.unreadForUser || 0
-        );
+        setHelpUnreadCount(response.data?.conversation?.unreadForUser || 0);
       } catch (error) {
         setHelpUnreadCount(0);
       }
@@ -145,17 +140,14 @@ const ProfessionalSidebar = () => {
 
     socket.on("help-message", handleHelpMessage);
     socket.on("new-help-message", handleHelpMessage);
-    window.addEventListener(
-      "help-unread-updated",
-      handleHelpUnreadUpdated
-    );
+    window.addEventListener("help-unread-updated", handleHelpUnreadUpdated);
 
     return () => {
       socket.off("help-message", handleHelpMessage);
       socket.off("new-help-message", handleHelpMessage);
       window.removeEventListener(
         "help-unread-updated",
-        handleHelpUnreadUpdated
+        handleHelpUnreadUpdated,
       );
     };
   }, []);
@@ -196,10 +188,7 @@ const ProfessionalSidebar = () => {
           "
           aria-label="Open sidebar"
         >
-          <FontAwesomeIcon
-            icon={faBars}
-            className="text-base sm:text-lg"
-          />
+          <FontAwesomeIcon icon={faBars} className="text-base sm:text-lg" />
         </button>
       )}
 
@@ -248,63 +237,25 @@ const ProfessionalSidebar = () => {
           duration-300
           ease-in-out
           ${
-            sidebarOpen
-              ? "translate-x-0"
-              : "-translate-x-full lg:translate-x-0"
+            sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
           }
           lg:min-h-screen
         `}
       >
-        <div
-          className="
-            px-3
-            sm:px-5
-            lg:px-6
-            py-3
-            sm:py-4
-            lg:py-6
-            border-b
-            border-gray-200
-            shrink-0
-            flex
-            items-center
-            justify-between
-          "
-        >
+        <div className="px-3 sm:px-5 lg:px-6 py-3 sm:py-4 lg:py-6 border-b border-gray-200 shrink-0 flex items-center justify-between">
           <div className="min-w-0">
-            <h1 className="text-lg sm:text-2xl font-bold text-blue-600">
-              FixNear
-            </h1>
-
-            <p className="text-[9px] sm:text-xs lg:text-sm text-gray-500 mt-0.5 sm:mt-1 truncate">
+            <h1 className="text-[15px] sm:text-lg font-bold lg:text-xl text-black mt-0.5 sm:mt-1 truncate">
               Professional Panel
-            </p>
+            </h1>
           </div>
 
           <button
             type="button"
             onClick={closeSidebar}
-            className="
-              lg:hidden
-              w-8
-              h-8
-              sm:w-9
-              sm:h-9
-              flex
-              items-center
-              justify-center
-              rounded-lg
-              text-gray-600
-              hover:bg-gray-100
-              transition
-              shrink-0
-            "
+            className="lg:hidden w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center rounded-lg text-gray-600 hover:bg-gray-100 transition shrink-0"
             aria-label="Close sidebar"
           >
-            <FontAwesomeIcon
-              icon={faXmark}
-              className="text-lg sm:text-xl"
-            />
+            <FontAwesomeIcon icon={faXmark} className="text-lg sm:text-xl" />
           </button>
         </div>
 
@@ -360,10 +311,9 @@ const ProfessionalSidebar = () => {
                 {link.name}
               </span>
 
-              {link.name === "Notifications" &&
-                unreadCount > 0 && (
-                  <span
-                    className="
+              {link.name === "Notifications" && unreadCount > 0 && (
+                <span
+                  className="
                       min-w-4
                       sm:min-w-5
                       h-4
@@ -380,15 +330,14 @@ const ProfessionalSidebar = () => {
                       rounded-full
                       shrink-0
                     "
-                  >
-                    {unreadCount > 99 ? "99+" : unreadCount}
-                  </span>
-                )}
+                >
+                  {unreadCount > 99 ? "99+" : unreadCount}
+                </span>
+              )}
 
-              {link.name === "Help & Support" &&
-                helpUnreadCount > 0 && (
-                  <span
-                    className="
+              {link.name === "Help & Support" && helpUnreadCount > 0 && (
+                <span
+                  className="
                       min-w-4
                       sm:min-w-5
                       h-4
@@ -405,12 +354,10 @@ const ProfessionalSidebar = () => {
                       rounded-full
                       shrink-0
                     "
-                  >
-                    {helpUnreadCount > 99
-                      ? "99+"
-                      : helpUnreadCount}
-                  </span>
-                )}
+                >
+                  {helpUnreadCount > 99 ? "99+" : helpUnreadCount}
+                </span>
+              )}
             </NavLink>
           ))}
         </nav>
