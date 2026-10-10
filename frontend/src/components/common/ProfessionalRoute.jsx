@@ -1,23 +1,27 @@
-  import React from "react";
-  import { Navigate, Outlet } from "react-router-dom";
-  import { useAuth } from "../../context/AuthContext";
+import React from "react";
+import { Navigate, Outlet } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
-  const ProfessionalRoute = () => {
-    const { user } = useAuth();
+const ProfessionalRoute = () => {
+  const { user } = useAuth();
 
-    if (!user) {
-      return <Navigate to="/login" replace />;
-    }
+  // Not logged in
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
 
-    if (user.role !== "professional") {
-      if (user.role === "admin") {
-        return <Navigate to="/admin-dashboard" replace />;
-      }
+  // User trying to access professional routes
+  if (user.role === "user") {
+    return <Navigate to="/dashboard" replace />;
+  }
 
-      return <Navigate to="/dashboard" replace />;
-    }
+  // Admin trying to access professional routes
+  if (user.role === "admin") {
+    return <Navigate to="/admin-dashboard" replace />;
+  }
 
-    return <Outlet />;
-  };
+  // Professional is allowed
+  return <Outlet />;
+};
 
-  export default ProfessionalRoute;
+export default ProfessionalRoute;

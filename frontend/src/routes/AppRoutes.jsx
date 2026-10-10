@@ -44,16 +44,18 @@ import ManageBookings from "../pages/admin/ManageBookings";
 import ManageReviews from "../pages/admin/ManageReviews";
 import AdminNotifications from "../pages/admin/AdminNotifications";
 import AdminHelp from "../pages/admin/AdminHelp";
-
+import PublicOnlyRoute from "../components/common/PublicOnlyRoute";
 import ErrorPage from "../pages/ErrorPage";
 
 const AppRoutes = () => {
   return (
     <Routes>
-      <Route element={<PublicLayout />}>
-        <Route path="/" element={<Home />} />
-        <Route path="/services" element={<Services />} />
-        <Route path="/services/:id" element={<ServiceDetails />} />
+      <Route element={<PublicOnlyRoute />}>
+        <Route element={<PublicLayout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/services" element={<Services />} />
+          <Route path="/services/:id" element={<ServiceDetails />} />
+        </Route>
       </Route>
 
       <Route element={<PublicRoute />}>
@@ -112,10 +114,7 @@ const AppRoutes = () => {
             path="/professional-notifications"
             element={<ProfessionalNotifications />}
           />
-          <Route
-            path="/professional-help"
-            element={<HelpSupport />}
-          />
+          <Route path="/professional-help" element={<HelpSupport />} />
         </Route>
       </Route>
 
@@ -129,10 +128,7 @@ const AppRoutes = () => {
           />
           <Route path="/admin-bookings" element={<ManageBookings />} />
           <Route path="/admin-reviews" element={<ManageReviews />} />
-          <Route
-            path="/admin-notifications"
-            element={<AdminNotifications />}
-          />
+          <Route path="/admin-notifications" element={<AdminNotifications />} />
           <Route path="/admin-help" element={<AdminHelp />} />
         </Route>
       </Route>

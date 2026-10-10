@@ -1,36 +1,27 @@
 import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 const AdminRoute = () => {
-  const token = localStorage.getItem("fixnearToken");
-  const userData = localStorage.getItem("fixnearUser");
+  const { user } = useAuth();
 
-
-  if (!token || !userData) {
+  // Not logged in
+  if (!user) {
     return <Navigate to="/login" replace />;
   }
 
-  
-  try {
-    const user = JSON.parse(userData);
-
-    if (user.role !== "admin") {
-      return <Navigate to="/dashboard" replace />;
-    }
-
-
-    return <Outlet />;
-  } catch (error) {
-    console.error(
-      "AdminRoute user data error:",
-      error
-    );
-
-    localStorage.removeItem("fixnearToken");
-    localStorage.removeItem("fixnearUser");
-
-    return <Navigate to="/login" replace />;
+  // User trying to access admin routes
+  if (user.role === "user") {
+    return <Navigate to="/dashboard" replace />;
   }
+
+  // Professional trying to access admin routes
+  if (user.role === "professional") {
+    return <Navigate to="/professional-dashboard" replace />;
+  }
+
+  // Admin is allowed
+  return <Outlet />;
 };
 
 export default AdminRoute;
