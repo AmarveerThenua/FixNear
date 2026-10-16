@@ -1,6 +1,12 @@
-import React from "react";
+import React, { useLayoutEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const HowItWorks = () => {
+  const sectionRef = useRef(null);
+
   const steps = [
     {
       id: 1,
@@ -25,10 +31,56 @@ const HowItWorks = () => {
     },
   ];
 
+  useLayoutEffect(() => {
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 80%",
+          once: true,
+        },
+      });
+
+      tl.from(".how-heading", {
+        y: 40,
+        opacity: 0,
+        duration: 0.7,
+        ease: "power3.out",
+      })
+        .from(
+          ".how-step",
+          {
+            y: 50,
+            opacity: 0,
+            stagger: 0.18,
+            duration: 0.6,
+            ease: "power3.out",
+          },
+          "-=0.25"
+        )
+        .from(
+          ".step-number",
+          {
+            scale: 0.5,
+            opacity: 0,
+            stagger: 0.18,
+            duration: 0.5,
+            ease: "back.out(1.7)",
+          },
+          "-=0.65"
+        );
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <section className="py-8 sm:py-12 lg:py-20 bg-gray-50">
+    <section
+      ref={sectionRef}
+      className="py-8 sm:py-12 lg:py-20 bg-gray-50"
+    >
       <div className="max-w-7xl mx-auto px-2.5 sm:px-5 lg:px-8">
-        <div className="text-center mb-6 sm:mb-9 lg:mb-14">
+        <div className="how-heading text-center mb-6 sm:mb-9 lg:mb-14">
           <p className="text-blue-600 font-semibold text-[10px] sm:text-xs md:text-sm lg:text-base mb-1 sm:mb-2">
             Simple & Easy
           </p>
@@ -46,9 +98,9 @@ const HowItWorks = () => {
           {steps.map((step) => (
             <div
               key={step.id}
-              className="text-center min-w-0"
+              className="how-step text-center min-w-0"
             >
-              <div className="w-9 h-9 sm:w-12 sm:h-12 md:w-14 md:h-14 lg:w-16 lg:h-16 mx-auto flex items-center justify-center rounded-full bg-blue-600 text-white text-[10px] sm:text-sm md:text-lg lg:text-xl font-bold">
+              <div className="step-number w-9 h-9 sm:w-12 sm:h-12 md:w-14 md:h-14 lg:w-16 lg:h-16 mx-auto flex items-center justify-center rounded-full bg-blue-600 text-white text-[10px] sm:text-sm md:text-lg lg:text-xl font-bold">
                 {step.number}
               </div>
 

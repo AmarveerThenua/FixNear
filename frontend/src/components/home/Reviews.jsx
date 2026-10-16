@@ -1,6 +1,14 @@
-import React from "react";
+import React, { useLayoutEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const Reviews = () => {
+  const sectionRef = useRef(null);
+  const headingRef = useRef(null);
+  const cardsRef = useRef(null);
+
   const reviews = [
     {
       id: 1,
@@ -31,10 +39,51 @@ const Reviews = () => {
     },
   ];
 
+  useLayoutEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.from(headingRef.current.children, {
+        y: 40,
+        opacity: 0,
+        duration: 0.8,
+        stagger: 0.12,
+        ease: "power3.out",
+        immediateRender: false,
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 80%",
+          once: true,
+        },
+      });
+
+      gsap.from(cardsRef.current.children, {
+        y: 60,
+        opacity: 0,
+        scale: 0.96,
+        duration: 0.8,
+        stagger: 0.15,
+        ease: "power3.out",
+        immediateRender: false,
+        scrollTrigger: {
+          trigger: cardsRef.current,
+          start: "top 80%",
+          once: true,
+        },
+      });
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <section className="py-8 sm:py-12 lg:py-20 bg-white">
+    <section
+      ref={sectionRef}
+      className="py-8 sm:py-12 lg:py-20 bg-white"
+    >
       <div className="max-w-7xl mx-auto px-2.5 sm:px-5 lg:px-8">
-        <div className="text-center mb-6 sm:mb-9 lg:mb-14">
+        <div
+          ref={headingRef}
+          className="text-center mb-6 sm:mb-9 lg:mb-14"
+        >
           <p className="text-blue-600 font-semibold text-[10px] sm:text-xs md:text-sm lg:text-base mb-1 sm:mb-2">
             Customer Stories
           </p>
@@ -49,7 +98,10 @@ const Reviews = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-3 gap-2 sm:gap-3 md:gap-5 lg:gap-6">
+        <div
+          ref={cardsRef}
+          className="grid grid-cols-3 gap-2 sm:gap-3 md:gap-5 lg:gap-6"
+        >
           {reviews.map((review) => (
             <div
               key={review.id}
@@ -59,6 +111,7 @@ const Reviews = () => {
                 <img
                   src={review.image}
                   alt={review.name}
+                  loading="lazy"
                   className="w-7 h-7 sm:w-9 sm:h-9 md:w-11 md:h-11 rounded-full object-cover flex-shrink-0"
                 />
 

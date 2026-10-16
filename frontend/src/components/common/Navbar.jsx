@@ -47,7 +47,7 @@ const Navbar = () => {
             headers: {
               Authorization: `Bearer ${token}`,
             },
-          }
+          },
         );
 
         if (isMounted) {
@@ -189,9 +189,7 @@ const Navbar = () => {
                     </span>
                   )}
 
-                  <span className="hidden md:inline ml-1.5">
-                    Notifications
-                  </span>
+                  <span className="hidden md:inline ml-1.5">Notifications</span>
                 </Link>
 
                 <Link
@@ -205,9 +203,7 @@ const Navbar = () => {
                     className="text-[11px] sm:text-xs md:text-sm"
                   />
 
-                  <span className="hidden md:inline ml-1.5">
-                    Dashboard
-                  </span>
+                  <span className="hidden md:inline ml-1.5">Dashboard</span>
                 </Link>
 
                 <button
@@ -222,9 +218,7 @@ const Navbar = () => {
                     className="text-[11px] sm:text-xs md:text-sm"
                   />
 
-                  <span className="hidden md:inline ml-1.5">
-                    Logout
-                  </span>
+                  <span className="hidden md:inline ml-1.5">Logout</span>
                 </button>
               </>
             ) : (
@@ -240,9 +234,7 @@ const Navbar = () => {
                     className="text-[11px] sm:text-xs md:text-sm"
                   />
 
-                  <span className="hidden md:inline ml-1.5">
-                    Login
-                  </span>
+                  <span className="hidden md:inline ml-1.5">Login</span>
                 </Link>
 
                 <Link
@@ -256,9 +248,7 @@ const Navbar = () => {
                     className="text-[11px] sm:text-xs md:text-sm"
                   />
 
-                  <span className="hidden md:inline ml-1.5">
-                    Register
-                  </span>
+                  <span className="hidden md:inline ml-1.5">Register</span>
                 </Link>
               </>
             )}

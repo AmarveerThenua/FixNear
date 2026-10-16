@@ -1,16 +1,67 @@
-import React, { useState } from "react";
+import React, { useLayoutEffect, useRef, useState } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import ServiceCard from "../services/ServiceCard";
 import services from "../../data/services";
 
+gsap.registerPlugin(ScrollTrigger);
+
 const PopularServices = () => {
   const [showAll, setShowAll] = useState(false);
+  const sectionRef = useRef(null);
 
   const visibleServices = showAll ? services : services.slice(0, 6);
 
+  useLayoutEffect(() => {
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 80%",
+          once: true,
+        },
+      });
+
+      tl.from(".services-heading", {
+        y: 40,
+        opacity: 0,
+        duration: 0.7,
+        ease: "power3.out",
+      })
+        .from(
+          ".service-card",
+          {
+            y: 50,
+            opacity: 0,
+            scale: 0.96,
+            stagger: 0.1,
+            duration: 0.6,
+            ease: "power3.out",
+          },
+          "-=0.3"
+        )
+        .from(
+          ".services-button",
+          {
+            y: 25,
+            opacity: 0,
+            duration: 0.5,
+            ease: "power3.out",
+          },
+          "-=0.2"
+        );
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <section className="py-8 sm:py-12 lg:py-20 bg-white">
+    <section
+      ref={sectionRef}
+      className="py-8 sm:py-12 lg:py-20 bg-white"
+    >
       <div className="max-w-7xl mx-auto px-2.5 sm:px-5 lg:px-8">
-        <div className="text-center mb-5 sm:mb-8 lg:mb-12">
+        <div className="services-heading text-center mb-5 sm:mb-8 lg:mb-12">
           <p className="text-blue-600 font-semibold text-[10px] sm:text-xs md:text-sm lg:text-base mb-1 sm:mb-2">
             Our Services
           </p>
@@ -27,15 +78,17 @@ const PopularServices = () => {
 
         <div className="grid grid-cols-3 gap-2 sm:gap-3 md:gap-4 lg:gap-6">
           {visibleServices.map((service) => (
-            <ServiceCard
+            <div
               key={service.id}
-              service={service}
-            />
+              className="service-card"
+            >
+              <ServiceCard service={service} />
+            </div>
           ))}
         </div>
 
         {services.length > 6 && (
-          <div className="flex justify-center mt-6 sm:mt-8 lg:mt-10">
+          <div className="services-button flex justify-center mt-6 sm:mt-8 lg:mt-10">
             <button
               type="button"
               onClick={() => setShowAll(!showAll)}
